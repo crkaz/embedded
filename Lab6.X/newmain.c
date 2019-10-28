@@ -14,6 +14,19 @@
 //#define psb RA2
 #define nop() asm("nop")
 
+//delay(2,70); //delay 503us
+//delay(2,8); //delay 70us
+//delay(2,60); //delay 430us
+//delay(2,7); //delay 63us
+//NOP(); //delay 1us 
+void delay(char x, char y)
+{
+ char z;
+ do{
+ z=y;
+ do{;}while(--z);
+ }while(--x);
+}
 
 void main(void) {
     return;
