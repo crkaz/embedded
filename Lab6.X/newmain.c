@@ -10,9 +10,8 @@
 #define rw RA4
 #define e RA3
 #define psb RA2
-#define rst RA0
-#define dq RB0
-#define dq_dir TRISB0
+#define dq RA0
+#define dq_dir TRISA0
 #define set_dq_high() dq_dir = 1
 #define set_dq_low() dq = 0; dq_dir = 0
 
@@ -56,7 +55,6 @@ void init() {
 //LCD init
 
 void lcd_init() {
-    rst = 0;
     writecmd(0x0F); //display on,cursor on,blink on.
     writecmd(0x01); //clr screen
     writecmd(0x38); // 8 bits 2 lines 5*7 mode. / Set function
@@ -65,7 +63,6 @@ void lcd_init() {
 //write a byte to lcd.
 
 void writechar(char x) {
-
     rs = 1; //is data not command.
     rw = 0; //is write not read.
     PORTD = x; //data send to PORTD
@@ -174,7 +171,6 @@ unsigned char read_byte() {
     unsigned char i;
     unsigned char value = 0; //read temperature         
     static char j;
-    //    static int j;
 
     for (i = 8; i > 0; i--) {
         value >>= 1;
@@ -199,25 +195,27 @@ unsigned char read_byte() {
 }
 
 void display_temp() {
+    lcd_init();
     TRISA = 0X00; //set A PORT all OUTPUT                          
-    PORTD = table[tens]; //display integer ten bit                        
+    //    PORTD = table[tens]; //display integer ten bit                        
+    writechar(tens);
     PORTA = 0x3e;
     delay2(tUKus);
-    PORTD = table[intEntries]&0X7F; //display integer Entries bit and decimal dot    
-    PORTA = 0x3d;
-    delay2(tUKus);
-    PORTD = table[pt10]; //display decimal ten cent bit                   
-    PORTA = 0x3b;
-    delay2(tUKus);
-    PORTD = table[pt100]; //display decimal hundred cent bit               
-    PORTA = 0x37;
-    delay2(tUKus);
-    PORTD = table[pt1000]; //display decimal thousand  cent bit             
-    PORTA = 0x2f;
-    delay2(tUKus);
-    PORTD = table[pt10000]; //display decimal myriad cent bit                
-    PORTA = 0x1f;
-    delay2(tUKus);
+    //    PORTD = table[intEntries]&0X7F; //display integer Entries bit and decimal dot    
+    //    PORTA = 0x3d;
+    //    delay2(tUKus);
+    //    PORTD = table[pt10]; //display decimal ten cent bit                   
+    //    PORTA = 0x3b;
+    //    delay2(tUKus);
+    //    PORTD = table[pt100]; //display decimal hundred cent bit               
+    //    PORTA = 0x37;
+    //    delay2(tUKus);
+    //    PORTD = table[pt1000]; //display decimal thousand  cent bit             
+    //    PORTA = 0x2f;
+    //    delay2(tUKus);
+    //    PORTD = table[pt10000]; //display decimal myriad cent bit                
+    //    PORTA = 0x1f;
+    //    delay2(tUKus);
 }
 
 reset(void) {
@@ -255,7 +253,7 @@ void get_temp() {
     TLV = read_byte(); //read temperature low byte                                                                                                                      
     THV = read_byte(); //read temperature high byte                                                                                                                     
     set_dq_high(); //release general line                                                                                                                           
-    TZ = (TLV >> 4) | (THV << 4)&0X3f; //temperature integer                                                                                                                            
+    TZ = (TLV >> 4) | ((THV << 4)&0X3f); //temperature integer                                                                                                                            
     TX = TLV << 4; //temperature decimal                                                                                                                            
     if (TZ > 100) {
         TZ / 100; //not display hundred bit // ISN'T DOING ANYTHING????
@@ -288,11 +286,7 @@ void main() {
     init(); //call system initialize function                                                                                                                                 
 
     while (1) {
-//        get_temp(); //call temperature convert function                                                                                                                                   
-//        display_temp(); //call display function                                                                                                                                           
-
-        char *str = "Hello";
-        setCursorPos(1, 2);
-        writeString(str);
+        get_temp(); //call temperature convert function                                                                                                                                   
+        display_temp(); //call display function                                                                                                                                          
     }
 }

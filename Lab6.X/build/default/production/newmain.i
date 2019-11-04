@@ -1728,7 +1728,7 @@ extern __bank0 __bit __timeout;
 #pragma config PWRTE = ON
 #pragma config BOREN = OFF
 #pragma config LVP = OFF
-# 20 "newmain.c"
+# 19 "newmain.c"
 int t503us[2] = {2, 70};
 int t430us[2] = {2, 60};
 int t70us[2] = {2, 8};
@@ -1768,7 +1768,6 @@ void init() {
 
 
 void lcd_init() {
-    RA0 = 0;
     writecmd(0x0F);
     writecmd(0x01);
     writecmd(0x38);
@@ -1777,7 +1776,6 @@ void lcd_init() {
 
 
 void writechar(char x) {
-
     RA5 = 1;
     RA4 = 0;
     PORTD = x;
@@ -1864,7 +1862,7 @@ void write_byte(unsigned char val) {
 
     for (i = 8; i > 0; i--) {
         temp = val & 0x01;
-        RB0 = 0; TRISB0 = 0;
+        RA0 = 0; TRISA0 = 0;
         __nop();
         __nop();
         __nop();
@@ -1872,10 +1870,10 @@ void write_byte(unsigned char val) {
         __nop();
 
         if (temp == 1) {
-            TRISB0 = 1;
+            TRISA0 = 1;
         }
         delay2(t63us);
-        TRISB0 = 1;
+        TRISA0 = 1;
         __nop();
         __nop();
         val = val >> 1;
@@ -1887,23 +1885,22 @@ unsigned char read_byte() {
     unsigned char value = 0;
     static char j;
 
-
     for (i = 8; i > 0; i--) {
         value >>= 1;
-        RB0 = 0; TRISB0 = 0;
+        RA0 = 0; TRISA0 = 0;
         __nop();
         __nop();
         __nop();
         __nop();
         __nop();
         __nop();
-        TRISB0 = 1;
+        TRISA0 = 1;
         __nop();
         __nop();
         __nop();
         __nop();
         __nop();
-        j = RB0;
+        j = RA0;
         if (j) value |= 0x80;
         delay2(t63us);
     }
@@ -1911,35 +1908,23 @@ unsigned char read_byte() {
 }
 
 void display_temp() {
+    lcd_init();
     TRISA = 0X00;
-    PORTD = table[tens];
+
+    writechar(tens);
     PORTA = 0x3e;
     delay2(tUKus);
-    PORTD = table[intEntries]&0X7F;
-    PORTA = 0x3d;
-    delay2(tUKus);
-    PORTD = table[pt10];
-    PORTA = 0x3b;
-    delay2(tUKus);
-    PORTD = table[pt100];
-    PORTA = 0x37;
-    delay2(tUKus);
-    PORTD = table[pt1000];
-    PORTA = 0x2f;
-    delay2(tUKus);
-    PORTD = table[pt10000];
-    PORTA = 0x1f;
-    delay2(tUKus);
+# 219 "newmain.c"
 }
 
 reset(void) {
     char presence = 1;
     while (presence) {
-        RB0 = 0; TRISB0 = 0;
+        RA0 = 0; TRISA0 = 0;
         delay2(t503us);
-        TRISB0 = 1;
+        TRISA0 = 1;
         delay2(t70us);
-        if (RB0 == 1) {
+        if (RA0 == 1) {
             presence = 1;
         } else {
             presence = 0;
@@ -1954,7 +1939,7 @@ void get_temp() {
 
 
     int i;
-    TRISB0 = 1;
+    TRISA0 = 1;
     reset();
     write_byte(0XCC);
     write_byte(0X44);
@@ -1966,8 +1951,8 @@ void get_temp() {
     write_byte(0XBE);
     TLV = read_byte();
     THV = read_byte();
-    TRISB0 = 1;
-    TZ = (TLV >> 4) | (THV << 4)&0X3f;
+    TRISA0 = 1;
+    TZ = (TLV >> 4) | ((THV << 4)&0X3f);
     TX = TLV << 4;
     if (TZ > 100) {
         TZ / 100;
@@ -2000,11 +1985,7 @@ void main() {
     init();
 
     while (1) {
-
-
-
-        char *str = "Hello";
-        setCursorPos(1, 2);
-        writeString(str);
+        get_temp();
+        display_temp();
     }
 }

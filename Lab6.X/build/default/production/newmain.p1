@@ -11,11 +11,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "2662
 [; ;C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h: 2662: extern volatile __bit RA2 __attribute__((address(0x2A)));
 [v _RA2 `Vb ~T0 @X0 0 e@42 ]
-"2656
-[; ;C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h: 2656: extern volatile __bit RA0 __attribute__((address(0x28)));
-[v _RA0 `Vb ~T0 @X0 0 e@40 ]
-"41 newmain.c
-[; ;newmain.c: 41: void writecmd(char x);
+"40 newmain.c
+[; ;newmain.c: 40: void writecmd(char x);
 [v _writecmd `(v ~T0 @X0 0 ef1`uc ]
 "2671 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h
 [; ;C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h: 2671: extern volatile __bit RA5 __attribute__((address(0x2D)));
@@ -29,15 +26,15 @@ Version 4.0 HI-TECH Software Intermediate Code
 "2665
 [; ;C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h: 2665: extern volatile __bit RA3 __attribute__((address(0x2B)));
 [v _RA3 `Vb ~T0 @X0 0 e@43 ]
-"43 newmain.c
-[; ;newmain.c: 43: void delay();
+"42 newmain.c
+[; ;newmain.c: 42: void delay();
 [v _delay `(v ~T0 @X0 0 e? ]
-"2674 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h
-[; ;C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h: 2674: extern volatile __bit RB0 __attribute__((address(0x30)));
-[v _RB0 `Vb ~T0 @X0 0 e@48 ]
-"2935
-[; ;C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h: 2935: extern volatile __bit TRISB0 __attribute__((address(0x430)));
-[v _TRISB0 `Vb ~T0 @X0 0 e@1072 ]
+"2656 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h
+[; ;C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h: 2656: extern volatile __bit RA0 __attribute__((address(0x28)));
+[v _RA0 `Vb ~T0 @X0 0 e@40 ]
+"2917
+[; ;C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h: 2917: extern volatile __bit TRISA0 __attribute__((address(0x428)));
+[v _TRISA0 `Vb ~T0 @X0 0 e@1064 ]
 "31 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic.h
 [v ___nop `(v ~T0 @X0 0 ef ]
 [p i ___nop ]
@@ -235,8 +232,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [p x BOREN = OFF ]
 "7
 [p x LVP = OFF ]
-"20
-[; ;newmain.c: 20: int t503us[2] = {2, 70};
+"19
+[; ;newmain.c: 19: int t503us[2] = {2, 70};
 [v _t503us `i ~T0 @X0 -> 2 `i e ]
 [i _t503us
 :U ..
@@ -244,8 +241,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 70 `i
 ..
 ]
-"21
-[; ;newmain.c: 21: int t430us[2] = {2, 60};
+"20
+[; ;newmain.c: 20: int t430us[2] = {2, 60};
 [v _t430us `i ~T0 @X0 -> 2 `i e ]
 [i _t430us
 :U ..
@@ -253,8 +250,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 60 `i
 ..
 ]
-"22
-[; ;newmain.c: 22: int t70us[2] = {2, 8};
+"21
+[; ;newmain.c: 21: int t70us[2] = {2, 8};
 [v _t70us `i ~T0 @X0 -> 2 `i e ]
 [i _t70us
 :U ..
@@ -262,8 +259,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 8 `i
 ..
 ]
-"23
-[; ;newmain.c: 23: int t63us[2] = {2, 7};
+"22
+[; ;newmain.c: 22: int t63us[2] = {2, 7};
 [v _t63us `i ~T0 @X0 -> 2 `i e ]
 [i _t63us
 :U ..
@@ -271,8 +268,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 7 `i
 ..
 ]
-"24
-[; ;newmain.c: 24: int tUKus[2] = {10, 70};
+"23
+[; ;newmain.c: 23: int tUKus[2] = {10, 70};
 [v _tUKus `i ~T0 @X0 -> 2 `i e ]
 [i _tUKus
 :U ..
@@ -280,43 +277,43 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> 70 `i
 ..
 ]
-"27
-[; ;newmain.c: 27: unsigned char TLV = 0;
+"26
+[; ;newmain.c: 26: unsigned char TLV = 0;
 [v _TLV `uc ~T0 @X0 1 e ]
 [i _TLV
 -> -> 0 `i `uc
 ]
-"28
-[; ;newmain.c: 28: unsigned char THV = 0;
+"27
+[; ;newmain.c: 27: unsigned char THV = 0;
 [v _THV `uc ~T0 @X0 1 e ]
 [i _THV
 -> -> 0 `i `uc
 ]
-"29
-[; ;newmain.c: 29: unsigned char TZ = 0;
+"28
+[; ;newmain.c: 28: unsigned char TZ = 0;
 [v _TZ `uc ~T0 @X0 1 e ]
 [i _TZ
 -> -> 0 `i `uc
 ]
-"30
-[; ;newmain.c: 30: unsigned char TX = 0;
+"29
+[; ;newmain.c: 29: unsigned char TX = 0;
 [v _TX `uc ~T0 @X0 1 e ]
 [i _TX
 -> -> 0 `i `uc
 ]
-"31
-[; ;newmain.c: 31: unsigned int wd;
+"30
+[; ;newmain.c: 30: unsigned int wd;
 [v _wd `ui ~T0 @X0 1 e ]
-"34
-[; ;newmain.c: 34: unsigned char tens, intEntries, pt10, pt100, pt1000, pt10000;
+"33
+[; ;newmain.c: 33: unsigned char tens, intEntries, pt10, pt100, pt1000, pt10000;
 [v _tens `uc ~T0 @X0 1 e ]
 [v _intEntries `uc ~T0 @X0 1 e ]
 [v _pt10 `uc ~T0 @X0 1 e ]
 [v _pt100 `uc ~T0 @X0 1 e ]
 [v _pt1000 `uc ~T0 @X0 1 e ]
 [v _pt10000 `uc ~T0 @X0 1 e ]
-"35
-[; ;newmain.c: 35: unsigned char table[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
+"34
+[; ;newmain.c: 34: unsigned char table[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
 [v _table `uc ~T0 @X0 -> 10 `i e ]
 [i _table
 :U ..
@@ -332,120 +329,117 @@ Version 4.0 HI-TECH Software Intermediate Code
 -> -> 144 `i `uc
 ..
 ]
-"48
-[; ;newmain.c: 48: void init() {
+"47
+[; ;newmain.c: 47: void init() {
 [v _init `(v ~T0 @X0 1 ef ]
 {
 [e :U _init ]
 [f ]
-"49
-[; ;newmain.c: 49:     ADCON1 = 0X07;
+"48
+[; ;newmain.c: 48:     ADCON1 = 0X07;
 [e = _ADCON1 -> -> 7 `i `uc ]
-"50
-[; ;newmain.c: 50:     TRISA = 0X00;
+"49
+[; ;newmain.c: 49:     TRISA = 0X00;
 [e = _TRISA -> -> 0 `i `uc ]
-"51
-[; ;newmain.c: 51:     TRISD = 0X00;
+"50
+[; ;newmain.c: 50:     TRISD = 0X00;
 [e = _TRISD -> -> 0 `i `uc ]
-"52
-[; ;newmain.c: 52:     RA2 = 1;
+"51
+[; ;newmain.c: 51:     RA2 = 1;
 [e = _RA2 -> -> 1 `i `b ]
-"53
-[; ;newmain.c: 53: }
+"52
+[; ;newmain.c: 52: }
 [e :UE 95 ]
 }
-"58
-[; ;newmain.c: 58: void lcd_init() {
+"57
+[; ;newmain.c: 57: void lcd_init() {
 [v _lcd_init `(v ~T0 @X0 1 ef ]
 {
 [e :U _lcd_init ]
 [f ]
-"59
-[; ;newmain.c: 59:     RA0 = 0;
-[e = _RA0 -> -> 0 `i `b ]
-"60
-[; ;newmain.c: 60:     writecmd(0x0F);
+"58
+[; ;newmain.c: 58:     writecmd(0x0F);
 [e ( _writecmd (1 -> -> 15 `i `uc ]
-"61
-[; ;newmain.c: 61:     writecmd(0x01);
+"59
+[; ;newmain.c: 59:     writecmd(0x01);
 [e ( _writecmd (1 -> -> 1 `i `uc ]
-"62
-[; ;newmain.c: 62:     writecmd(0x38);
+"60
+[; ;newmain.c: 60:     writecmd(0x38);
 [e ( _writecmd (1 -> -> 56 `i `uc ]
-"63
-[; ;newmain.c: 63: }
+"61
+[; ;newmain.c: 61: }
 [e :UE 96 ]
 }
-"67
-[; ;newmain.c: 67: void writechar(char x) {
+"65
+[; ;newmain.c: 65: void writechar(char x) {
 [v _writechar `(v ~T0 @X0 1 ef1`uc ]
 {
 [e :U _writechar ]
 [v _x `uc ~T0 @X0 1 r1 ]
 [f ]
-"69
-[; ;newmain.c: 69:     RA5 = 1;
+"66
+[; ;newmain.c: 66:     RA5 = 1;
 [e = _RA5 -> -> 1 `i `b ]
-"70
-[; ;newmain.c: 70:     RA4 = 0;
+"67
+[; ;newmain.c: 67:     RA4 = 0;
 [e = _RA4 -> -> 0 `i `b ]
-"71
-[; ;newmain.c: 71:     PORTD = x;
+"68
+[; ;newmain.c: 68:     PORTD = x;
 [e = _PORTD -> _x `uc ]
-"72
-[; ;newmain.c: 72:     RA3 = 0;
+"69
+[; ;newmain.c: 69:     RA3 = 0;
 [e = _RA3 -> -> 0 `i `b ]
-"73
-[; ;newmain.c: 73:     delay(6000);
+"70
+[; ;newmain.c: 70:     delay(6000);
 [e ( _delay -> 6000 `i ]
-"74
-[; ;newmain.c: 74:     RA3 = 1;
+"71
+[; ;newmain.c: 71:     RA3 = 1;
 [e = _RA3 -> -> 1 `i `b ]
-"75
-[; ;newmain.c: 75: }
+"72
+[; ;newmain.c: 72: }
 [e :UE 97 ]
 }
-"79
-[; ;newmain.c: 79: void writecmd(char x) {
+"76
+[; ;newmain.c: 76: void writecmd(char x) {
 [v _writecmd `(v ~T0 @X0 1 ef1`uc ]
 {
 [e :U _writecmd ]
 [v _x `uc ~T0 @X0 1 r1 ]
 [f ]
-"80
-[; ;newmain.c: 80:     RA5 = 0;
+"77
+[; ;newmain.c: 77:     RA5 = 0;
 [e = _RA5 -> -> 0 `i `b ]
-"81
-[; ;newmain.c: 81:     RA4 = 0;
+"78
+[; ;newmain.c: 78:     RA4 = 0;
 [e = _RA4 -> -> 0 `i `b ]
-"82
-[; ;newmain.c: 82:     PORTD = x;
+"79
+[; ;newmain.c: 79:     PORTD = x;
 [e = _PORTD -> _x `uc ]
-"83
-[; ;newmain.c: 83:     RA3 = 0;
+"80
+[; ;newmain.c: 80:     RA3 = 0;
 [e = _RA3 -> -> 0 `i `b ]
-"84
-[; ;newmain.c: 84:     delay(6000);
+"81
+[; ;newmain.c: 81:     delay(6000);
 [e ( _delay -> 6000 `i ]
-"85
-[; ;newmain.c: 85:     RA3 = 1;
+"82
+[; ;newmain.c: 82:     RA3 = 1;
 [e = _RA3 -> -> 1 `i `b ]
-"86
-[; ;newmain.c: 86: }
+"83
+[; ;newmain.c: 83: }
 [e :UE 98 ]
 }
-"90
-[; ;newmain.c: 90: void delay(int t) {
+"87
+[; ;newmain.c: 87: void delay(int t) {
 [v _delay `(v ~T0 @X0 1 ef1`i ]
 {
 [e :U _delay ]
 [v _t `i ~T0 @X0 1 r1 ]
 [f ]
-"91
-[; ;newmain.c: 91:     int i;
+"88
+[; ;newmain.c: 88:     int i;
 [v _i `i ~T0 @X0 1 a ]
-"92
-[; ;newmain.c: 92:     for (i = 0; i < t; i++);
+"89
+[; ;newmain.c: 89:     for (i = 0; i < t; i++);
 {
 [e = _i -> 0 `i ]
 [e $U 103  ]
@@ -455,311 +449,323 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ < _i _t 100  ]
 [e :U 101 ]
 }
-"93
-[; ;newmain.c: 93: }
+"90
+[; ;newmain.c: 90: }
 [e :UE 99 ]
 }
-"96
-[; ;newmain.c: 96: int strlen(char a[]) {
+"93
+[; ;newmain.c: 93: int strlen(char a[]) {
 [v _strlen `(i ~T0 @X0 1 ef1`*uc ]
 {
 [e :U _strlen ]
 [v _a `*uc ~T0 @X0 1 r1 ]
 [f ]
-"97
-[; ;newmain.c: 97:     int len = 0;
+"94
+[; ;newmain.c: 94:     int len = 0;
 [v _len `i ~T0 @X0 1 a ]
 [e = _len -> 0 `i ]
-"98
-[; ;newmain.c: 98:     while (a[len])
+"95
+[; ;newmain.c: 95:     while (a[len])
 [e $U 105  ]
 [e :U 106 ]
-"99
-[; ;newmain.c: 99:         len++;
+"96
+[; ;newmain.c: 96:         len++;
 [e ++ _len -> 1 `i ]
 [e :U 105 ]
-"98
-[; ;newmain.c: 98:     while (a[len])
+"95
+[; ;newmain.c: 95:     while (a[len])
 [e $ != -> *U + _a * -> _len `x -> -> # *U _a `i `x `i -> 0 `i 106  ]
 [e :U 107 ]
-"100
-[; ;newmain.c: 100:     return len;
+"97
+[; ;newmain.c: 97:     return len;
 [e ) _len ]
 [e $UE 104  ]
-"101
-[; ;newmain.c: 101: }
+"98
+[; ;newmain.c: 98: }
 [e :UE 104 ]
 }
-"103
-[; ;newmain.c: 103: void writeString(char str[]) {
+"100
+[; ;newmain.c: 100: void writeString(char str[]) {
 [v _writeString `(v ~T0 @X0 1 ef1`*uc ]
 {
 [e :U _writeString ]
 [v _str `*uc ~T0 @X0 1 r1 ]
 [f ]
-"104
-[; ;newmain.c: 104:     for (int i = 0; i < strlen(str); ++i) {
+"101
+[; ;newmain.c: 101:     for (int i = 0; i < strlen(str); ++i) {
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
 [e $U 112  ]
 [e :U 109 ]
 {
-"105
-[; ;newmain.c: 105:         writechar(str[i]);
+"102
+[; ;newmain.c: 102:         writechar(str[i]);
 [e ( _writechar (1 *U + _str * -> _i `x -> -> # *U _str `i `x ]
-"106
-[; ;newmain.c: 106:     }
+"103
+[; ;newmain.c: 103:     }
 }
 [e =+ _i -> 1 `i ]
 [e :U 112 ]
 [e $ < _i ( _strlen (1 _str 109  ]
 [e :U 110 ]
 }
-"107
-[; ;newmain.c: 107: }
+"104
+[; ;newmain.c: 104: }
 [e :UE 108 ]
 }
-"109
-[; ;newmain.c: 109: void setCursorPos(int lineN, int pos) {
+"106
+[; ;newmain.c: 106: void setCursorPos(int lineN, int pos) {
 [v _setCursorPos `(v ~T0 @X0 1 ef2`i`i ]
 {
 [e :U _setCursorPos ]
 [v _lineN `i ~T0 @X0 1 r1 ]
 [v _pos `i ~T0 @X0 1 r2 ]
 [f ]
-"110
-[; ;newmain.c: 110:     const int ln1 = 0xC0;
+"107
+[; ;newmain.c: 107:     const int ln1 = 0xC0;
 [v F894 `Ci ~T0 @X0 1 s ln1 ]
 [i F894
 -> 192 `i
 ]
-"111
-[; ;newmain.c: 111:     const int ln2 = 0xD0;
+"108
+[; ;newmain.c: 108:     const int ln2 = 0xD0;
 [v F895 `Ci ~T0 @X0 1 s ln2 ]
 [i F895
 -> 208 `i
 ]
-"112
-[; ;newmain.c: 112:     const int ln3 = 0xC8;
+"109
+[; ;newmain.c: 109:     const int ln3 = 0xC8;
 [v F896 `Ci ~T0 @X0 1 s ln3 ]
 [i F896
 -> 200 `i
 ]
-"113
-[; ;newmain.c: 113:     const int ln4 = 0xD8;
+"110
+[; ;newmain.c: 110:     const int ln4 = 0xD8;
 [v F897 `Ci ~T0 @X0 1 s ln4 ]
 [i F897
 -> 216 `i
 ]
-"115
-[; ;newmain.c: 115:     int addr;
+"112
+[; ;newmain.c: 112:     int addr;
 [v _addr `i ~T0 @X0 1 a ]
-"117
-[; ;newmain.c: 117:     if (lineN == 1) {
+"114
+[; ;newmain.c: 114:     if (lineN == 1) {
 [e $ ! == _lineN -> 1 `i 114  ]
 {
-"119
-[; ;newmain.c: 119:         addr = ln1 + pos;
+"116
+[; ;newmain.c: 116:         addr = ln1 + pos;
 [e = _addr + F894 _pos ]
-"120
-[; ;newmain.c: 120:     } else if (lineN == 2) {
+"117
+[; ;newmain.c: 117:     } else if (lineN == 2) {
 }
 [e $U 115  ]
 [e :U 114 ]
 [e $ ! == _lineN -> 2 `i 116  ]
 {
-"122
-[; ;newmain.c: 122:         addr = ln2 + pos;
+"119
+[; ;newmain.c: 119:         addr = ln2 + pos;
 [e = _addr + F895 _pos ]
-"123
-[; ;newmain.c: 123:     } else if (lineN == 3) {
+"120
+[; ;newmain.c: 120:     } else if (lineN == 3) {
 }
 [e $U 117  ]
 [e :U 116 ]
 [e $ ! == _lineN -> 3 `i 118  ]
 {
-"125
-[; ;newmain.c: 125:         addr = ln3 + pos;
+"122
+[; ;newmain.c: 122:         addr = ln3 + pos;
 [e = _addr + F896 _pos ]
-"126
-[; ;newmain.c: 126:     } else if (lineN == 4) {
+"123
+[; ;newmain.c: 123:     } else if (lineN == 4) {
 }
 [e $U 119  ]
 [e :U 118 ]
 [e $ ! == _lineN -> 4 `i 120  ]
 {
-"128
-[; ;newmain.c: 128:         addr = ln4 + pos;
+"125
+[; ;newmain.c: 125:         addr = ln4 + pos;
 [e = _addr + F897 _pos ]
-"129
-[; ;newmain.c: 129:     }
+"126
+[; ;newmain.c: 126:     }
 }
 [e :U 120 ]
 [e :U 119 ]
 [e :U 117 ]
 [e :U 115 ]
-"131
-[; ;newmain.c: 131:     writecmd(addr);
+"128
+[; ;newmain.c: 128:     writecmd(addr);
 [e ( _writecmd (1 -> _addr `uc ]
-"132
-[; ;newmain.c: 132: }
+"129
+[; ;newmain.c: 129: }
 [e :UE 113 ]
 }
-"135
-[; ;newmain.c: 135: void delay2(int t[]) {
+"132
+[; ;newmain.c: 132: void delay2(int t[]) {
 [v _delay2 `(v ~T0 @X0 1 ef1`*i ]
 {
 [e :U _delay2 ]
 [v _t `*i ~T0 @X0 1 r1 ]
 [f ]
-"136
-[; ;newmain.c: 136:     char x = t[0];
+"133
+[; ;newmain.c: 133:     char x = t[0];
 [v _x `uc ~T0 @X0 1 a ]
 [e = _x -> *U + _t * -> -> 0 `i `x -> -> # *U _t `i `x `uc ]
-"137
-[; ;newmain.c: 137:     char y = t[1];
+"134
+[; ;newmain.c: 134:     char y = t[1];
 [v _y `uc ~T0 @X0 1 a ]
 [e = _y -> *U + _t * -> -> 1 `i `x -> -> # *U _t `i `x `uc ]
-"139
-[; ;newmain.c: 139:     char z;
+"136
+[; ;newmain.c: 136:     char z;
 [v _z `uc ~T0 @X0 1 a ]
-"140
-[; ;newmain.c: 140:     do {
+"137
+[; ;newmain.c: 137:     do {
 [e :U 124 ]
 {
-"141
-[; ;newmain.c: 141:         z = y;
+"138
+[; ;newmain.c: 138:         z = y;
 [e = _z _y ]
-"142
-[; ;newmain.c: 142:         do {
+"139
+[; ;newmain.c: 139:         do {
 [e :U 127 ]
 {
-"144
-[; ;newmain.c: 144:         } while (--z);
+"141
+[; ;newmain.c: 141:         } while (--z);
 }
 [e $ != -> =- _z -> -> 1 `i `uc `i -> 0 `i 127  ]
 [e :U 126 ]
-"145
-[; ;newmain.c: 145:     } while (--x);
+"142
+[; ;newmain.c: 142:     } while (--x);
 }
 [e $ != -> =- _x -> -> 1 `i `uc `i -> 0 `i 124  ]
 [e :U 123 ]
-"146
-[; ;newmain.c: 146: }
+"143
+[; ;newmain.c: 143: }
 [e :UE 121 ]
 }
-"148
-[; ;newmain.c: 148: void write_byte(unsigned char val) {
+"145
+[; ;newmain.c: 145: void write_byte(unsigned char val) {
 [v _write_byte `(v ~T0 @X0 1 ef1`uc ]
 {
 [e :U _write_byte ]
 [v _val `uc ~T0 @X0 1 r1 ]
 [f ]
-"149
-[; ;newmain.c: 149:     unsigned char i;
+"146
+[; ;newmain.c: 146:     unsigned char i;
 [v _i `uc ~T0 @X0 1 a ]
-"150
-[; ;newmain.c: 150:     unsigned char temp;
+"147
+[; ;newmain.c: 147:     unsigned char temp;
 [v _temp `uc ~T0 @X0 1 a ]
-"153
-[; ;newmain.c: 153:     for (i = 8; i > 0; i--) {
+"150
+[; ;newmain.c: 150:     for (i = 8; i > 0; i--) {
 {
 [e = _i -> -> 8 `i `uc ]
 [e $ > -> _i `i -> 0 `i 129  ]
 [e $U 130  ]
 [e :U 129 ]
 {
-"154
-[; ;newmain.c: 154:         temp = val & 0x01;
+"151
+[; ;newmain.c: 151:         temp = val & 0x01;
 [e = _temp -> & -> _val `i -> 1 `i `uc ]
+"152
+[; ;newmain.c: 152:         RA0 = 0; TRISA0 = 0;
+[e = _RA0 -> -> 0 `i `b ]
+[e = _TRISA0 -> -> 0 `i `b ]
+"153
+[; ;newmain.c: 153:         __nop();
+[e ( ___nop ..  ]
+"154
+[; ;newmain.c: 154:         __nop();
+[e ( ___nop ..  ]
 "155
-[; ;newmain.c: 155:         RB0 = 0; TRISB0 = 0;
-[e = _RB0 -> -> 0 `i `b ]
-[e = _TRISB0 -> -> 0 `i `b ]
+[; ;newmain.c: 155:         __nop();
+[e ( ___nop ..  ]
 "156
 [; ;newmain.c: 156:         __nop();
 [e ( ___nop ..  ]
 "157
 [; ;newmain.c: 157:         __nop();
 [e ( ___nop ..  ]
-"158
-[; ;newmain.c: 158:         __nop();
-[e ( ___nop ..  ]
 "159
-[; ;newmain.c: 159:         __nop();
-[e ( ___nop ..  ]
-"160
-[; ;newmain.c: 160:         __nop();
-[e ( ___nop ..  ]
-"162
-[; ;newmain.c: 162:         if (temp == 1) {
+[; ;newmain.c: 159:         if (temp == 1) {
 [e $ ! == -> _temp `i -> 1 `i 132  ]
 {
-"163
-[; ;newmain.c: 163:             TRISB0 = 1;
-[e = _TRISB0 -> -> 1 `i `b ]
-"164
-[; ;newmain.c: 164:         }
+"160
+[; ;newmain.c: 160:             TRISA0 = 1;
+[e = _TRISA0 -> -> 1 `i `b ]
+"161
+[; ;newmain.c: 161:         }
 }
 [e :U 132 ]
-"165
-[; ;newmain.c: 165:         delay2(t63us);
+"162
+[; ;newmain.c: 162:         delay2(t63us);
 [e ( _delay2 (1 &U _t63us ]
+"163
+[; ;newmain.c: 163:         TRISA0 = 1;
+[e = _TRISA0 -> -> 1 `i `b ]
+"164
+[; ;newmain.c: 164:         __nop();
+[e ( ___nop ..  ]
+"165
+[; ;newmain.c: 165:         __nop();
+[e ( ___nop ..  ]
 "166
-[; ;newmain.c: 166:         TRISB0 = 1;
-[e = _TRISB0 -> -> 1 `i `b ]
-"167
-[; ;newmain.c: 167:         __nop();
-[e ( ___nop ..  ]
-"168
-[; ;newmain.c: 168:         __nop();
-[e ( ___nop ..  ]
-"169
-[; ;newmain.c: 169:         val = val >> 1;
+[; ;newmain.c: 166:         val = val >> 1;
 [e = _val -> >> -> _val `i -> 1 `i `uc ]
-"170
-[; ;newmain.c: 170:     }
+"167
+[; ;newmain.c: 167:     }
 }
 [e -- _i -> -> 1 `i `uc ]
 [e $ > -> _i `i -> 0 `i 129  ]
 [e :U 130 ]
 }
-"171
-[; ;newmain.c: 171: }
+"168
+[; ;newmain.c: 168: }
 [e :UE 128 ]
 }
-"173
-[; ;newmain.c: 173: unsigned char read_byte() {
+"170
+[; ;newmain.c: 170: unsigned char read_byte() {
 [v _read_byte `(uc ~T0 @X0 1 ef ]
 {
 [e :U _read_byte ]
 [f ]
-"174
-[; ;newmain.c: 174:     unsigned char i;
+"171
+[; ;newmain.c: 171:     unsigned char i;
 [v _i `uc ~T0 @X0 1 a ]
-"175
-[; ;newmain.c: 175:     unsigned char value = 0;
+"172
+[; ;newmain.c: 172:     unsigned char value = 0;
 [v _value `uc ~T0 @X0 1 a ]
 [e = _value -> -> 0 `i `uc ]
-"176
-[; ;newmain.c: 176:     static char j;
+"173
+[; ;newmain.c: 173:     static char j;
 [v F911 `uc ~T0 @X0 1 s j ]
-"179
-[; ;newmain.c: 179:     for (i = 8; i > 0; i--) {
+"175
+[; ;newmain.c: 175:     for (i = 8; i > 0; i--) {
 {
 [e = _i -> -> 8 `i `uc ]
 [e $ > -> _i `i -> 0 `i 134  ]
 [e $U 135  ]
 [e :U 134 ]
 {
-"180
-[; ;newmain.c: 180:         value >>= 1;
+"176
+[; ;newmain.c: 176:         value >>= 1;
 [e =>> _value -> -> 1 `i `uc ]
+"177
+[; ;newmain.c: 177:         RA0 = 0; TRISA0 = 0;
+[e = _RA0 -> -> 0 `i `b ]
+[e = _TRISA0 -> -> 0 `i `b ]
+"178
+[; ;newmain.c: 178:         __nop();
+[e ( ___nop ..  ]
+"179
+[; ;newmain.c: 179:         __nop();
+[e ( ___nop ..  ]
+"180
+[; ;newmain.c: 180:         __nop();
+[e ( ___nop ..  ]
 "181
-[; ;newmain.c: 181:         RB0 = 0; TRISB0 = 0;
-[e = _RB0 -> -> 0 `i `b ]
-[e = _TRISB0 -> -> 0 `i `b ]
+[; ;newmain.c: 181:         __nop();
+[e ( ___nop ..  ]
 "182
 [; ;newmain.c: 182:         __nop();
 [e ( ___nop ..  ]
@@ -767,8 +773,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;newmain.c: 183:         __nop();
 [e ( ___nop ..  ]
 "184
-[; ;newmain.c: 184:         __nop();
-[e ( ___nop ..  ]
+[; ;newmain.c: 184:         TRISA0 = 1;
+[e = _TRISA0 -> -> 1 `i `b ]
 "185
 [; ;newmain.c: 185:         __nop();
 [e ( ___nop ..  ]
@@ -779,357 +785,298 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;newmain.c: 187:         __nop();
 [e ( ___nop ..  ]
 "188
-[; ;newmain.c: 188:         TRISB0 = 1;
-[e = _TRISB0 -> -> 1 `i `b ]
+[; ;newmain.c: 188:         __nop();
+[e ( ___nop ..  ]
 "189
 [; ;newmain.c: 189:         __nop();
 [e ( ___nop ..  ]
 "190
-[; ;newmain.c: 190:         __nop();
-[e ( ___nop ..  ]
+[; ;newmain.c: 190:         j = RA0;
+[e = F911 -> _RA0 `uc ]
 "191
-[; ;newmain.c: 191:         __nop();
-[e ( ___nop ..  ]
-"192
-[; ;newmain.c: 192:         __nop();
-[e ( ___nop ..  ]
-"193
-[; ;newmain.c: 193:         __nop();
-[e ( ___nop ..  ]
-"194
-[; ;newmain.c: 194:         j = RB0;
-[e = F911 -> _RB0 `uc ]
-"195
-[; ;newmain.c: 195:         if (j) value |= 0x80;
+[; ;newmain.c: 191:         if (j) value |= 0x80;
 [e $ ! != -> F911 `i -> 0 `i 137  ]
 [e =| _value -> -> 128 `i `uc ]
 [e :U 137 ]
-"196
-[; ;newmain.c: 196:         delay2(t63us);
+"192
+[; ;newmain.c: 192:         delay2(t63us);
 [e ( _delay2 (1 &U _t63us ]
-"197
-[; ;newmain.c: 197:     }
+"193
+[; ;newmain.c: 193:     }
 }
 [e -- _i -> -> 1 `i `uc ]
 [e $ > -> _i `i -> 0 `i 134  ]
 [e :U 135 ]
 }
-"198
-[; ;newmain.c: 198:     return (value);
+"194
+[; ;newmain.c: 194:     return (value);
 [e ) _value ]
 [e $UE 133  ]
-"199
-[; ;newmain.c: 199: }
+"195
+[; ;newmain.c: 195: }
 [e :UE 133 ]
 }
-"201
-[; ;newmain.c: 201: void display_temp() {
+"197
+[; ;newmain.c: 197: void display_temp() {
 [v _display_temp `(v ~T0 @X0 1 ef ]
 {
 [e :U _display_temp ]
 [f ]
-"202
-[; ;newmain.c: 202:     TRISA = 0X00;
+"198
+[; ;newmain.c: 198:     lcd_init();
+[e ( _lcd_init ..  ]
+"199
+[; ;newmain.c: 199:     TRISA = 0X00;
 [e = _TRISA -> -> 0 `i `uc ]
-"203
-[; ;newmain.c: 203:     PORTD = table[tens];
-[e = _PORTD *U + &U _table * -> _tens `ux -> -> # *U &U _table `ui `ux ]
-"204
-[; ;newmain.c: 204:     PORTA = 0x3e;
+"201
+[; ;newmain.c: 201:     writechar(tens);
+[e ( _writechar (1 -> _tens `uc ]
+"202
+[; ;newmain.c: 202:     PORTA = 0x3e;
 [e = _PORTA -> -> 62 `i `uc ]
-"205
-[; ;newmain.c: 205:     delay2(tUKus);
+"203
+[; ;newmain.c: 203:     delay2(tUKus);
 [e ( _delay2 (1 &U _tUKus ]
-"206
-[; ;newmain.c: 206:     PORTD = table[intEntries]&0X7F;
-[e = _PORTD -> & -> *U + &U _table * -> _intEntries `ux -> -> # *U &U _table `ui `ux `i -> 127 `i `uc ]
-"207
-[; ;newmain.c: 207:     PORTA = 0x3d;
-[e = _PORTA -> -> 61 `i `uc ]
-"208
-[; ;newmain.c: 208:     delay2(tUKus);
-[e ( _delay2 (1 &U _tUKus ]
-"209
-[; ;newmain.c: 209:     PORTD = table[pt10];
-[e = _PORTD *U + &U _table * -> _pt10 `ux -> -> # *U &U _table `ui `ux ]
-"210
-[; ;newmain.c: 210:     PORTA = 0x3b;
-[e = _PORTA -> -> 59 `i `uc ]
-"211
-[; ;newmain.c: 211:     delay2(tUKus);
-[e ( _delay2 (1 &U _tUKus ]
-"212
-[; ;newmain.c: 212:     PORTD = table[pt100];
-[e = _PORTD *U + &U _table * -> _pt100 `ux -> -> # *U &U _table `ui `ux ]
-"213
-[; ;newmain.c: 213:     PORTA = 0x37;
-[e = _PORTA -> -> 55 `i `uc ]
-"214
-[; ;newmain.c: 214:     delay2(tUKus);
-[e ( _delay2 (1 &U _tUKus ]
-"215
-[; ;newmain.c: 215:     PORTD = table[pt1000];
-[e = _PORTD *U + &U _table * -> _pt1000 `ux -> -> # *U &U _table `ui `ux ]
-"216
-[; ;newmain.c: 216:     PORTA = 0x2f;
-[e = _PORTA -> -> 47 `i `uc ]
-"217
-[; ;newmain.c: 217:     delay2(tUKus);
-[e ( _delay2 (1 &U _tUKus ]
-"218
-[; ;newmain.c: 218:     PORTD = table[pt10000];
-[e = _PORTD *U + &U _table * -> _pt10000 `ux -> -> # *U &U _table `ui `ux ]
 "219
-[; ;newmain.c: 219:     PORTA = 0x1f;
-[e = _PORTA -> -> 31 `i `uc ]
-"220
-[; ;newmain.c: 220:     delay2(tUKus);
-[e ( _delay2 (1 &U _tUKus ]
-"221
-[; ;newmain.c: 221: }
+[; ;newmain.c: 219: }
 [e :UE 138 ]
 }
-"223
-[; ;newmain.c: 223: reset(void) {
+"221
+[; ;newmain.c: 221: reset(void) {
 [v _reset `(i ~T0 @X0 1 ef ]
 {
 [e :U _reset ]
 [f ]
-"224
-[; ;newmain.c: 224:     char presence = 1;
+"222
+[; ;newmain.c: 222:     char presence = 1;
 [v _presence `uc ~T0 @X0 1 a ]
 [e = _presence -> -> 1 `i `uc ]
-"225
-[; ;newmain.c: 225:     while (presence) {
+"223
+[; ;newmain.c: 223:     while (presence) {
 [e $U 140  ]
 [e :U 141 ]
 {
-"226
-[; ;newmain.c: 226:         RB0 = 0; TRISB0 = 0;
-[e = _RB0 -> -> 0 `i `b ]
-[e = _TRISB0 -> -> 0 `i `b ]
-"227
-[; ;newmain.c: 227:         delay2(t503us);
+"224
+[; ;newmain.c: 224:         RA0 = 0; TRISA0 = 0;
+[e = _RA0 -> -> 0 `i `b ]
+[e = _TRISA0 -> -> 0 `i `b ]
+"225
+[; ;newmain.c: 225:         delay2(t503us);
 [e ( _delay2 (1 &U _t503us ]
-"228
-[; ;newmain.c: 228:         TRISB0 = 1;
-[e = _TRISB0 -> -> 1 `i `b ]
-"229
-[; ;newmain.c: 229:         delay2(t70us);
+"226
+[; ;newmain.c: 226:         TRISA0 = 1;
+[e = _TRISA0 -> -> 1 `i `b ]
+"227
+[; ;newmain.c: 227:         delay2(t70us);
 [e ( _delay2 (1 &U _t70us ]
-"230
-[; ;newmain.c: 230:         if (RB0 == 1) {
-[e $ ! == -> _RB0 `i -> 1 `i 143  ]
+"228
+[; ;newmain.c: 228:         if (RA0 == 1) {
+[e $ ! == -> _RA0 `i -> 1 `i 143  ]
 {
-"231
-[; ;newmain.c: 231:             presence = 1;
+"229
+[; ;newmain.c: 229:             presence = 1;
 [e = _presence -> -> 1 `i `uc ]
-"232
-[; ;newmain.c: 232:         } else {
+"230
+[; ;newmain.c: 230:         } else {
 }
 [e $U 144  ]
 [e :U 143 ]
 {
-"233
-[; ;newmain.c: 233:             presence = 0;
+"231
+[; ;newmain.c: 231:             presence = 0;
 [e = _presence -> -> 0 `i `uc ]
-"234
-[; ;newmain.c: 234:         }
+"232
+[; ;newmain.c: 232:         }
 }
 [e :U 144 ]
-"235
-[; ;newmain.c: 235:         delay2(t430us);
+"233
+[; ;newmain.c: 233:         delay2(t430us);
 [e ( _delay2 (1 &U _t430us ]
-"236
-[; ;newmain.c: 236:     }
+"234
+[; ;newmain.c: 234:     }
 }
 [e :U 140 ]
-"225
-[; ;newmain.c: 225:     while (presence) {
+"223
+[; ;newmain.c: 223:     while (presence) {
 [e $ != -> _presence `i -> 0 `i 141  ]
 [e :U 142 ]
-"237
-[; ;newmain.c: 237: }
+"235
+[; ;newmain.c: 235: }
 [e :UE 139 ]
 }
-"239
-[; ;newmain.c: 239: void get_temp() {
+"237
+[; ;newmain.c: 237: void get_temp() {
 [v _get_temp `(v ~T0 @X0 1 ef ]
 {
 [e :U _get_temp ]
 [f ]
-"244
-[; ;newmain.c: 244:     int i;
+"242
+[; ;newmain.c: 242:     int i;
 [v _i `i ~T0 @X0 1 a ]
-"245
-[; ;newmain.c: 245:     TRISB0 = 1;
-[e = _TRISB0 -> -> 1 `i `b ]
-"246
-[; ;newmain.c: 246:     reset();
+"243
+[; ;newmain.c: 243:     TRISA0 = 1;
+[e = _TRISA0 -> -> 1 `i `b ]
+"244
+[; ;newmain.c: 244:     reset();
 [e ( _reset ..  ]
-"247
-[; ;newmain.c: 247:     write_byte(0XCC);
+"245
+[; ;newmain.c: 245:     write_byte(0XCC);
 [e ( _write_byte (1 -> -> 204 `i `uc ]
-"248
-[; ;newmain.c: 248:     write_byte(0X44);
+"246
+[; ;newmain.c: 246:     write_byte(0X44);
 [e ( _write_byte (1 -> -> 68 `i `uc ]
-"249
-[; ;newmain.c: 249:     for (i = 20; i > 0; i--) {
+"247
+[; ;newmain.c: 247:     for (i = 20; i > 0; i--) {
 {
 [e = _i -> 20 `i ]
 [e $ > _i -> 0 `i 146  ]
 [e $U 147  ]
 [e :U 146 ]
 {
-"250
-[; ;newmain.c: 250:         display_temp();
+"248
+[; ;newmain.c: 248:         display_temp();
 [e ( _display_temp ..  ]
-"251
-[; ;newmain.c: 251:     }
+"249
+[; ;newmain.c: 249:     }
 }
 [e -- _i -> 1 `i ]
 [e $ > _i -> 0 `i 146  ]
 [e :U 147 ]
 }
-"252
-[; ;newmain.c: 252:     reset();
+"250
+[; ;newmain.c: 250:     reset();
 [e ( _reset ..  ]
-"253
-[; ;newmain.c: 253:     write_byte(0XCC);
+"251
+[; ;newmain.c: 251:     write_byte(0XCC);
 [e ( _write_byte (1 -> -> 204 `i `uc ]
-"254
-[; ;newmain.c: 254:     write_byte(0XBE);
+"252
+[; ;newmain.c: 252:     write_byte(0XBE);
 [e ( _write_byte (1 -> -> 190 `i `uc ]
-"255
-[; ;newmain.c: 255:     TLV = read_byte();
+"253
+[; ;newmain.c: 253:     TLV = read_byte();
 [e = _TLV ( _read_byte ..  ]
-"256
-[; ;newmain.c: 256:     THV = read_byte();
+"254
+[; ;newmain.c: 254:     THV = read_byte();
 [e = _THV ( _read_byte ..  ]
-"257
-[; ;newmain.c: 257:     TRISB0 = 1;
-[e = _TRISB0 -> -> 1 `i `b ]
-"258
-[; ;newmain.c: 258:     TZ = (TLV >> 4) | (THV << 4)&0X3f;
+"255
+[; ;newmain.c: 255:     TRISA0 = 1;
+[e = _TRISA0 -> -> 1 `i `b ]
+"256
+[; ;newmain.c: 256:     TZ = (TLV >> 4) | ((THV << 4)&0X3f);
 [e = _TZ -> | >> -> _TLV `i -> 4 `i & << -> _THV `i -> 4 `i -> 63 `i `uc ]
-"259
-[; ;newmain.c: 259:     TX = TLV << 4;
+"257
+[; ;newmain.c: 257:     TX = TLV << 4;
 [e = _TX -> << -> _TLV `i -> 4 `i `uc ]
-"260
-[; ;newmain.c: 260:     if (TZ > 100) {
+"258
+[; ;newmain.c: 258:     if (TZ > 100) {
 [e $ ! > -> _TZ `i -> 100 `i 149  ]
 {
-"261
-[; ;newmain.c: 261:         TZ / 100;
+"259
+[; ;newmain.c: 259:         TZ / 100;
 [e / -> _TZ `i -> 100 `i ]
-"262
-[; ;newmain.c: 262:     }
+"260
+[; ;newmain.c: 260:     }
 }
 [e :U 149 ]
-"263
-[; ;newmain.c: 263:     intEntries = TZ % 10;
+"261
+[; ;newmain.c: 261:     intEntries = TZ % 10;
 [e = _intEntries -> % -> _TZ `i -> 10 `i `uc ]
-"264
-[; ;newmain.c: 264:     tens = TZ / 10;
+"262
+[; ;newmain.c: 262:     tens = TZ / 10;
 [e = _tens -> / -> _TZ `i -> 10 `i `uc ]
-"265
-[; ;newmain.c: 265:     wd = 0;
+"263
+[; ;newmain.c: 263:     wd = 0;
 [e = _wd -> -> 0 `i `ui ]
-"266
-[; ;newmain.c: 266:     if (TX & 0x80) {
+"264
+[; ;newmain.c: 264:     if (TX & 0x80) {
 [e $ ! != & -> _TX `i -> 128 `i -> 0 `i 150  ]
 {
-"267
-[; ;newmain.c: 267:         wd = wd + 5000;
+"265
+[; ;newmain.c: 265:         wd = wd + 5000;
 [e = _wd + _wd -> -> 5000 `i `ui ]
-"268
-[; ;newmain.c: 268:     }
+"266
+[; ;newmain.c: 266:     }
 }
 [e :U 150 ]
-"269
-[; ;newmain.c: 269:     if (TX & 0x40) {
+"267
+[; ;newmain.c: 267:     if (TX & 0x40) {
 [e $ ! != & -> _TX `i -> 64 `i -> 0 `i 151  ]
 {
-"270
-[; ;newmain.c: 270:         wd = wd + 2500;
+"268
+[; ;newmain.c: 268:         wd = wd + 2500;
 [e = _wd + _wd -> -> 2500 `i `ui ]
-"271
-[; ;newmain.c: 271:     }
+"269
+[; ;newmain.c: 269:     }
 }
 [e :U 151 ]
-"272
-[; ;newmain.c: 272:     if (TX & 0x20) {
+"270
+[; ;newmain.c: 270:     if (TX & 0x20) {
 [e $ ! != & -> _TX `i -> 32 `i -> 0 `i 152  ]
 {
-"273
-[; ;newmain.c: 273:         wd = wd + 1250;
+"271
+[; ;newmain.c: 271:         wd = wd + 1250;
 [e = _wd + _wd -> -> 1250 `i `ui ]
-"274
-[; ;newmain.c: 274:     }
+"272
+[; ;newmain.c: 272:     }
 }
 [e :U 152 ]
-"275
-[; ;newmain.c: 275:     if (TX & 0x10) {
+"273
+[; ;newmain.c: 273:     if (TX & 0x10) {
 [e $ ! != & -> _TX `i -> 16 `i -> 0 `i 153  ]
 {
-"276
-[; ;newmain.c: 276:         wd = wd + 625;
+"274
+[; ;newmain.c: 274:         wd = wd + 625;
 [e = _wd + _wd -> -> 625 `i `ui ]
-"277
-[; ;newmain.c: 277:     }
+"275
+[; ;newmain.c: 275:     }
 }
 [e :U 153 ]
-"278
-[; ;newmain.c: 278:     pt10 = wd / 1000;
+"276
+[; ;newmain.c: 276:     pt10 = wd / 1000;
 [e = _pt10 -> / _wd -> -> 1000 `i `ui `uc ]
-"279
-[; ;newmain.c: 279:     pt100 = (wd % 1000) / 100;
+"277
+[; ;newmain.c: 277:     pt100 = (wd % 1000) / 100;
 [e = _pt100 -> / % _wd -> -> 1000 `i `ui -> -> 100 `i `ui `uc ]
-"280
-[; ;newmain.c: 280:     pt1000 = (wd % 100) / 10;
+"278
+[; ;newmain.c: 278:     pt1000 = (wd % 100) / 10;
 [e = _pt1000 -> / % _wd -> -> 100 `i `ui -> -> 10 `i `ui `uc ]
-"281
-[; ;newmain.c: 281:     pt10000 = wd % 10;
+"279
+[; ;newmain.c: 279:     pt10000 = wd % 10;
 [e = _pt10000 -> % _wd -> -> 10 `i `ui `uc ]
-"282
-[; ;newmain.c: 282:     __nop();
+"280
+[; ;newmain.c: 280:     __nop();
 [e ( ___nop ..  ]
-"283
-[; ;newmain.c: 283: }
+"281
+[; ;newmain.c: 281: }
 [e :UE 145 ]
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
-"287
-[; ;newmain.c: 287: void main() {
+"285
+[; ;newmain.c: 285: void main() {
 [v _main `(v ~T0 @X0 1 ef ]
 {
 [e :U _main ]
 [f ]
-"288
-[; ;newmain.c: 288:     init();
+"286
+[; ;newmain.c: 286:     init();
 [e ( _init ..  ]
-"290
-[; ;newmain.c: 290:     while (1) {
+"288
+[; ;newmain.c: 288:     while (1) {
 [e :U 156 ]
 {
-"294
-[; ;newmain.c: 294:         char *str = "Hello";
-[v _str `*uc ~T0 @X0 1 a ]
-[e = _str :s 1C ]
-"295
-[; ;newmain.c: 295:         setCursorPos(1, 2);
-[e ( _setCursorPos (2 , -> 1 `i -> 2 `i ]
-"296
-[; ;newmain.c: 296:         writeString(str);
-[e ( _writeString (1 _str ]
-"297
-[; ;newmain.c: 297:     }
+"289
+[; ;newmain.c: 289:         get_temp();
+[e ( _get_temp ..  ]
+"290
+[; ;newmain.c: 290:         display_temp();
+[e ( _display_temp ..  ]
+"291
+[; ;newmain.c: 291:     }
 }
 [e :U 155 ]
 [e $U 156  ]
 [e :U 157 ]
-"298
-[; ;newmain.c: 298: }
+"292
+[; ;newmain.c: 292: }
 [e :UE 154 ]
 }
-[a 1C 72 101 108 108 111 0 ]
