@@ -10,8 +10,8 @@
 #define rw RA4
 #define e RA3
 #define psb RA2
-#define dq RA0
-#define dq_dir TRISA0
+#define dq RE0
+#define dq_dir TRISE0
 #define set_dq_high() dq_dir = 1
 #define set_dq_low() dq = 0; dq_dir = 0
 
@@ -20,7 +20,7 @@ int t503us[2] = {2, 70};
 int t430us[2] = {2, 60};
 int t70us[2] = {2, 8};
 int t63us[2] = {2, 7};
-int tUKus[2] = {10, 70};
+int tUKus[2] = {1, 70};
 
 //
 unsigned char TLV = 0; //temperature high byte                     
@@ -31,7 +31,7 @@ unsigned int wd; //temperature BCD code  after convert
 
 // Temperature component vars?
 unsigned char tens, intEntries, pt10, pt100, pt1000, pt10000;
-unsigned char table[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90};
+unsigned char table[] = {0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90}; // 7seg lcd nums 0-9
 //the display code of 0-9     
 
 //
@@ -41,6 +41,14 @@ void writecmd(char x); //display one byte
 void writechar(char x); //LCD display setting.
 void delay(); //delay
 void delay2(int arr[]);
+int strlen(char a[]);
+void writeString(char str[]);
+void setCursorPos(int lineN, int pos);
+unsigned char read_byte();
+void write_byte(unsigned char val);
+void display_temp();
+reset(void);
+void get_temp();
 
 //I/O init
 
@@ -195,24 +203,38 @@ unsigned char read_byte() {
 }
 
 void display_temp() {
-    lcd_init();
-    TRISA = 0X00; //set A PORT all OUTPUT                          
+    // SHOW ON BIG LCD
+    //    unsigned char tens, intEntries, pt10, pt100, pt1000, pt10000;
+    writechar(tens + 48); //display integer ten bit                        
+    writechar(intEntries + 48); //display integer ten bit                        
+    writechar('.'); //display integer ten bit                        
+    writechar(pt10 + 48); //display integer ten bit                        
+    writechar(pt100 + 48); //display integer ten bit                        
+    writechar(pt1000 + 48); //display integer ten bit                        
+    writechar(pt10000 + 48); //display integer ten bit                        
+    writecmd(0x01); // Clear lcd
+
+    //    // SHOW ON 7SEG LCD
     //    PORTD = table[tens]; //display integer ten bit                        
-    writechar(tens);
-    PORTA = 0x3e;
-    delay2(tUKus);
+    //    PORTA = 0x3e;
+    //    delay2(tUKus);
+    //
     //    PORTD = table[intEntries]&0X7F; //display integer Entries bit and decimal dot    
     //    PORTA = 0x3d;
     //    delay2(tUKus);
+    //
     //    PORTD = table[pt10]; //display decimal ten cent bit                   
     //    PORTA = 0x3b;
     //    delay2(tUKus);
+    //
     //    PORTD = table[pt100]; //display decimal hundred cent bit               
     //    PORTA = 0x37;
     //    delay2(tUKus);
+    //
     //    PORTD = table[pt1000]; //display decimal thousand  cent bit             
     //    PORTA = 0x2f;
     //    delay2(tUKus);
+    //
     //    PORTD = table[pt10000]; //display decimal myriad cent bit                
     //    PORTA = 0x1f;
     //    delay2(tUKus);
@@ -244,9 +266,9 @@ void get_temp() {
     reset(); //reset,wait for  18b20 response.                                                                                                              
     write_byte(0XCC); //ignore ROM matching                                                                                                                            
     write_byte(0X44); //send  temperature convert command                                                                                                              
-    for (i = 20; i > 0; i--) {
-        display_temp(); //call some display function,insure the time of convert temperature                                                                              
-    }
+    //    for (i = 20; i > 0; i--) {
+    //        display_temp(); //call some display function,insure the time of convert temperature                                                                              
+    //    }
     reset(); //reset again,wait for 18b20 response                                                                                                        
     write_byte(0XCC); //ignore ROM matching                                                                                                                            
     write_byte(0XBE); //send read temperature command                                                                                                                  
@@ -277,16 +299,16 @@ void get_temp() {
     pt100 = (wd % 1000) / 100; //hundred cent bit                                                                       
     pt1000 = (wd % 100) / 10; //thousand cent bit                                                                      
     pt10000 = wd % 10; //myriad cent bit                                                                        
-    NOP();
 }
 
 //main
 
 void main() {
     init(); //call system initialize function                                                                                                                                 
+    lcd_init();
 
     while (1) {
         get_temp(); //call temperature convert function                                                                                                                                   
-        display_temp(); //call display function                                                                                                                                          
+        display_temp(); //call display function
     }
 }

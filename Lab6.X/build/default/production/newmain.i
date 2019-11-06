@@ -1733,7 +1733,7 @@ int t503us[2] = {2, 70};
 int t430us[2] = {2, 60};
 int t70us[2] = {2, 8};
 int t63us[2] = {2, 7};
-int tUKus[2] = {10, 70};
+int tUKus[2] = {1, 70};
 
 
 unsigned char TLV = 0;
@@ -1754,6 +1754,14 @@ void writecmd(char x);
 void writechar(char x);
 void delay();
 void delay2(int arr[]);
+int strlen(char a[]);
+void writeString(char str[]);
+void setCursorPos(int lineN, int pos);
+unsigned char read_byte();
+void write_byte(unsigned char val);
+void display_temp();
+reset(void);
+void get_temp();
 
 
 
@@ -1862,7 +1870,7 @@ void write_byte(unsigned char val) {
 
     for (i = 8; i > 0; i--) {
         temp = val & 0x01;
-        RA0 = 0; TRISA0 = 0;
+        RE0 = 0; TRISE0 = 0;
         __nop();
         __nop();
         __nop();
@@ -1870,10 +1878,10 @@ void write_byte(unsigned char val) {
         __nop();
 
         if (temp == 1) {
-            TRISA0 = 1;
+            TRISE0 = 1;
         }
         delay2(t63us);
-        TRISA0 = 1;
+        TRISE0 = 1;
         __nop();
         __nop();
         val = val >> 1;
@@ -1887,20 +1895,20 @@ unsigned char read_byte() {
 
     for (i = 8; i > 0; i--) {
         value >>= 1;
-        RA0 = 0; TRISA0 = 0;
+        RE0 = 0; TRISE0 = 0;
         __nop();
         __nop();
         __nop();
         __nop();
         __nop();
         __nop();
-        TRISA0 = 1;
+        TRISE0 = 1;
         __nop();
         __nop();
         __nop();
         __nop();
         __nop();
-        j = RA0;
+        j = RE0;
         if (j) value |= 0x80;
         delay2(t63us);
     }
@@ -1908,23 +1916,27 @@ unsigned char read_byte() {
 }
 
 void display_temp() {
-    lcd_init();
-    TRISA = 0X00;
 
-    writechar(tens);
-    PORTA = 0x3e;
-    delay2(tUKus);
-# 219 "newmain.c"
+
+    writechar(tens + 48);
+    writechar(intEntries + 48);
+    writechar('.');
+    writechar(pt10 + 48);
+    writechar(pt100 + 48);
+    writechar(pt1000 + 48);
+    writechar(pt10000 + 48);
+    writecmd(0x01);
+# 241 "newmain.c"
 }
 
 reset(void) {
     char presence = 1;
     while (presence) {
-        RA0 = 0; TRISA0 = 0;
+        RE0 = 0; TRISE0 = 0;
         delay2(t503us);
-        TRISA0 = 1;
+        TRISE0 = 1;
         delay2(t70us);
-        if (RA0 == 1) {
+        if (RE0 == 1) {
             presence = 1;
         } else {
             presence = 0;
@@ -1939,19 +1951,19 @@ void get_temp() {
 
 
     int i;
-    TRISA0 = 1;
+    TRISE0 = 1;
     reset();
     write_byte(0XCC);
     write_byte(0X44);
-    for (i = 20; i > 0; i--) {
-        display_temp();
-    }
+
+
+
     reset();
     write_byte(0XCC);
     write_byte(0XBE);
     TLV = read_byte();
     THV = read_byte();
-    TRISA0 = 1;
+    TRISE0 = 1;
     TZ = (TLV >> 4) | ((THV << 4)&0X3f);
     TX = TLV << 4;
     if (TZ > 100) {
@@ -1976,13 +1988,13 @@ void get_temp() {
     pt100 = (wd % 1000) / 100;
     pt1000 = (wd % 100) / 10;
     pt10000 = wd % 10;
-    __nop();
 }
 
 
 
 void main() {
     init();
+    lcd_init();
 
     while (1) {
         get_temp();

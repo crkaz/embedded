@@ -19,35 +19,33 @@
 [v ___eecpymem __eecpymem `(v  1 e 1 0 ]
 "39
 [v ___memcpyee __memcpyee `(v  1 e 1 0 ]
-"47 C:\Users\Zak\source\repos\embedded\Lab6.X\newmain.c
+"55 C:\Users\Zak\source\repos\embedded\Lab6.X\newmain.c
 [v _init init `(v  1 e 1 0 ]
-"57
-[v _lcd_init lcd_init `(v  1 e 1 0 ]
 "65
+[v _lcd_init lcd_init `(v  1 e 1 0 ]
+"73
 [v _writechar writechar `(v  1 e 1 0 ]
-"76
+"84
 [v _writecmd writecmd `(v  1 e 1 0 ]
-"87
+"95
 [v _delay delay `(v  1 e 1 0 ]
-"93
+"101
 [v _strlen strlen `(i  1 e 2 0 ]
-"132
+"140
 [v _delay2 delay2 `(v  1 e 1 0 ]
-"145
+"153
 [v _write_byte write_byte `(v  1 e 1 0 ]
-"170
+"178
 [v _read_byte read_byte `(uc  1 e 1 0 ]
-"197
+"205
 [v _display_temp display_temp `(v  1 e 1 0 ]
-"221
+"243
 [v _reset reset `(i  1 e 2 0 ]
-"237
+"259
 [v _get_temp get_temp `(v  1 e 1 0 ]
-"285
+"306
 [v _main main `(v  1 e 1 0 ]
-"166 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h
-[v _PORTA PORTA `VEuc  1 e 1 @5 ]
-"340
+"340 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h
 [v _PORTD PORTD `VEuc  1 e 1 @8 ]
 "1325
 [v _TRISA TRISA `VEuc  1 e 1 @133 ]
@@ -55,8 +53,6 @@
 [v _TRISD TRISD `VEuc  1 e 1 @136 ]
 "2229
 [v _ADCON1 ADCON1 `VEuc  1 e 1 @159 ]
-"2656
-[v _RA0 RA0 `VEb  1 e 0 @40 ]
 "2662
 [v _RA2 RA2 `VEb  1 e 0 @42 ]
 "2665
@@ -65,8 +61,10 @@
 [v _RA4 RA4 `VEb  1 e 0 @44 ]
 "2671
 [v _RA5 RA5 `VEb  1 e 0 @45 ]
-"2917
-[v _TRISA0 TRISA0 `VEb  1 e 0 @1064 ]
+"2773
+[v _RE0 RE0 `VEb  1 e 0 @72 ]
+"3007
+[v _TRISE0 TRISE0 `VEb  1 e 0 @1096 ]
 "19 C:\Users\Zak\source\repos\embedded\Lab6.X\newmain.c
 [v _t503us t503us `[2]i  1 e 4 0 ]
 "20
@@ -75,8 +73,6 @@
 [v _t70us t70us `[2]i  1 e 4 0 ]
 "22
 [v _t63us t63us `[2]i  1 e 4 0 ]
-"23
-[v _tUKus tUKus `[2]i  1 e 4 0 ]
 "26
 [v _TLV TLV `uc  1 e 1 0 ]
 "27
@@ -94,104 +90,72 @@
 [v _pt100 pt100 `uc  1 e 1 0 ]
 [v _pt1000 pt1000 `uc  1 e 1 0 ]
 [v _pt10000 pt10000 `uc  1 e 1 0 ]
-"285
+"306
 [v _main main `(v  1 e 1 0 ]
 {
-"292
+"314
 } 0
-"47
+"65
+[v _lcd_init lcd_init `(v  1 e 1 0 ]
+{
+"69
+} 0
+"55
 [v _init init `(v  1 e 1 0 ]
 {
-"52
+"60
 } 0
-"237
+"259
 [v _get_temp get_temp `(v  1 e 1 0 ]
 {
-"242
-[v get_temp@i i `i  1 a 2 4 ]
-"281
+"302
 } 0
-"145
+"153
 [v _write_byte write_byte `(v  1 e 1 0 ]
 {
 [v write_byte@val val `uc  1 a 1 wreg ]
-"146
+"154
 [v write_byte@i i `uc  1 a 1 9 ]
-"147
+"155
 [v write_byte@temp temp `uc  1 a 1 7 ]
-"145
+"153
 [v write_byte@val val `uc  1 a 1 wreg ]
-"150
+"158
 [v write_byte@val val `uc  1 a 1 8 ]
-"168
+"176
 } 0
-"221
+"243
 [v _reset reset `(i  1 e 2 0 ]
 {
-"222
+"244
 [v reset@presence presence `uc  1 a 1 5 ]
-"235
+"257
 } 0
-"170
+"178
 [v _read_byte read_byte `(uc  1 e 1 0 ]
 {
-"171
+"179
 [v read_byte@i i `uc  1 a 1 7 ]
-"172
+"180
 [v read_byte@value value `uc  1 a 1 6 ]
-"173
+"181
 [v read_byte@j j `uc  1 s 1 j ]
-"195
+"203
 } 0
-"197
-[v _display_temp display_temp `(v  1 e 1 0 ]
-{
-"219
-} 0
-"65
-[v _writechar writechar `(v  1 e 1 0 ]
-{
-[v writechar@x x `uc  1 a 1 wreg ]
-[v writechar@x x `uc  1 a 1 wreg ]
-[v writechar@x x `uc  1 a 1 5 ]
-"72
-} 0
-"57
-[v _lcd_init lcd_init `(v  1 e 1 0 ]
-{
-"61
-} 0
-"76
-[v _writecmd writecmd `(v  1 e 1 0 ]
-{
-[v writecmd@x x `uc  1 a 1 wreg ]
-[v writecmd@x x `uc  1 a 1 wreg ]
-[v writecmd@x x `uc  1 a 1 5 ]
-"83
-} 0
-"87
-[v _delay delay `(v  1 e 1 0 ]
-{
-"88
-[v delay@i i `i  1 a 2 3 ]
-"87
-[v delay@t t `i  1 p 2 0 ]
-"90
-} 0
-"132
+"140
 [v _delay2 delay2 `(v  1 e 1 0 ]
 {
 [v delay2@t t `*.4i  1 a 1 wreg ]
-"136
+"144
 [v delay2@z z `uc  1 a 1 3 ]
-"134
+"142
 [v delay2@y y `uc  1 a 1 2 ]
-"133
+"141
 [v delay2@x x `uc  1 a 1 1 ]
-"132
+"140
 [v delay2@t t `*.4i  1 a 1 wreg ]
 [v delay2@t t `*.4i  1 a 1 4 ]
-"143
+"151
 } 0
 "5 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\sources\c90\common\lwmod.c
 [v ___lwmod __lwmod `(ui  1 e 2 0 ]
@@ -238,4 +202,34 @@
 [v ___awdiv@divisor divisor `i  1 p 2 0 ]
 [v ___awdiv@dividend dividend `i  1 p 2 2 ]
 "41
+} 0
+"205 C:\Users\Zak\source\repos\embedded\Lab6.X\newmain.c
+[v _display_temp display_temp `(v  1 e 1 0 ]
+{
+"241
+} 0
+"84
+[v _writecmd writecmd `(v  1 e 1 0 ]
+{
+[v writecmd@x x `uc  1 a 1 wreg ]
+[v writecmd@x x `uc  1 a 1 wreg ]
+[v writecmd@x x `uc  1 a 1 5 ]
+"91
+} 0
+"73
+[v _writechar writechar `(v  1 e 1 0 ]
+{
+[v writechar@x x `uc  1 a 1 wreg ]
+[v writechar@x x `uc  1 a 1 wreg ]
+[v writechar@x x `uc  1 a 1 5 ]
+"80
+} 0
+"95
+[v _delay delay `(v  1 e 1 0 ]
+{
+"96
+[v delay@i i `i  1 a 2 3 ]
+"95
+[v delay@t t `i  1 p 2 0 ]
+"98
 } 0
