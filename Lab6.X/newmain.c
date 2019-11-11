@@ -39,7 +39,7 @@ void init(); //I/O init
 void lcd_init(); //LCD init
 void writecmd(char x); //display one byte
 void writechar(char x); //LCD display setting.
-void delay(); //delay
+void delay(int t); //delay
 void delay2(int arr[]);
 int strlen(char a[]);
 void writeString(char str[]);
@@ -47,8 +47,9 @@ void setCursorPos(int lineN, int pos);
 unsigned char read_byte();
 void write_byte(unsigned char val);
 void display_temp();
-reset(void);
-void get_temp();
+void reset(void);
+int get_temp();
+
 
 //I/O init
 
@@ -81,6 +82,10 @@ void writechar(char x) {
     delay(60); //for a while.
     e = 1; //pull high to build the rising edge.
 }
+
+void writeInt(int x) {
+    writechar(x + 48);
+}
 //--------------------------------------
 //lcd display setting
 
@@ -96,8 +101,7 @@ void writecmd(char x) {
 //delay
 
 void delay(int t) {
-    int i;
-    for (i = 0; i < t; i++);
+    for (int i = 0; i < t; i++);
 }
 //---------------------------------------
 
@@ -206,18 +210,44 @@ unsigned char read_byte() {
 }
 
 void display_temp() {
+    TX = TLV << 4; //temperature decimal
+    intEntries = TZ % 10; //integer Entries bit                                                                                                                            
+    tens = TZ / 10; //integer ten bit                                                                                                                                
+    wd = 0;
+    if (TX & 0x80) {
+        wd = wd + 5000;
+    }
+    if (TX & 0x40) {
+        wd = wd + 2500;
+    }
+    if (TX & 0x20) {
+        wd = wd + 1250;
+    }
+    if (TX & 0x10) {
+        wd = wd + 625; //hereinbefore four instructions are turn  decimal into BCD code        
+    }
+    pt10 = wd / 1000; //ten cent bit                                                                           
+    pt100 = (wd % 1000) / 100; //hundred cent bit                                                                       
+    pt1000 = (wd % 100) / 10; //thousand cent bit                                                                      
+    pt10000 = wd % 10; //myriad cent bit
+    
+    
+    
+    
+    
+    
     // SHOW ON BIG LCD
     //    unsigned char tens, intEntries, pt10, pt100, pt1000, pt10000;
     writecmd(0x01); // Clear lcd
-    writechar(tens + 48); //display integer ten bit                        
-    writechar(intEntries + 48); //display integer ten bit                        
+    writeInt(tens); //display integer ten bit                        
+    writeInt(intEntries); //display integer ten bit                        
     writechar('.'); //display integer ten bit                        
-    writechar(pt10 + 48); //display integer ten bit                        
-    writechar(pt100 + 48); //display integer ten bit                        
-    writechar(pt1000 + 48); //display integer ten bit                        
-    writechar(pt10000 + 48); //display integer ten bit      
+    writeInt(pt10); //display integer ten bit                        
+    writeInt(pt100); //display integer ten bit                        
+    writeInt(pt1000); //display integer ten bit                        
+    writeInt(pt10000); //display integer ten bit      
     delay(10000);
-
+    
     //    // SHOW ON 7SEG LCD
     //    PORTD = table[tens]; //display integer ten bit                        
     //    PORTA = 0x3e;
@@ -244,23 +274,23 @@ void display_temp() {
     //    delay2(tUKus);
 }
 
-reset(void) {
+void reset(void) {
     char presence = 1;
     while (presence) {
         set_dq_low(); // MCU pull low
         delay2(t503us);
         set_dq_high(); // release general line and wait for pull high
         delay2(t70us);
-        if (dq == 1) {
+        if (dq == 1) 
             presence = 1; // Didn't receive response.
-        } else {
+        else
             presence = 0; // Received response.
-        }
+        
         delay2(t430us);
     }
 }
 
-void get_temp() {
+int get_temp() {
     //The sequence has to be
     // followed by each transaction: 1 Initialisation -> 2 ROM Function Command -> 3Memory
     // Function Command -> 4 Transaction/Data
@@ -273,47 +303,29 @@ void get_temp() {
     //    for (int i = 0; i < 2; ++i) {
     //        delay2(t503us);
     //    }
-    display_temp(); //call display function
+    
+    delay(20000); //Might want to lower
+    
     reset(); //reset again,wait for 18b20 response                                                                                                        
     write_byte(0XCC); //ignore ROM matching                                                                                                                            
     write_byte(0XBE); //send read temperature command                                                                                                                  
     TLV = read_byte(); //read temperature low byte                                                                                                                      
-    THV = read_byte(); //read temperature high byte                                                                                                                     
+    THV = read_byte(); //read temperature high byte                                                                                                                   
     set_dq_high(); //release general line                                                                                                                           
-    TZ = (TLV >> 4) | ((THV << 4)&0X3f); //temperature integer                                                                                                                            
-    TX = TLV << 4; //temperature decimal                                                                                                                            
-    //    if (TZ > 100) {
-    //        TZ / 100; //not display hundred bit // ISN'T DOING ANYTHING????
-    //    }
-    intEntries = TZ % 10; //integer Entries bit                                                                                                                            
-    tens = TZ / 10; //integer ten bit                                                                                                                                
-    wd = 0;
-    if (TX & 0x80) {
-        wd = wd + 5000;
-    }
-    if (TX & 0x40) {
-        wd = wd + 2500;
-    }
-    if (TX & 0x20) {
-        wd = wd + 1250;
-    }
-    if (TX & 0x10) {
-        wd = wd + 625; //hereinbefore four instructions are turn  decimal into BCD code        
-    }
-    pt10 = wd / 1000; //ten cent bit                                                                           
-    pt100 = (wd % 1000) / 100; //hundred cent bit                                                                       
-    pt1000 = (wd % 100) / 10; //thousand cent bit                                                                      
-    pt10000 = wd % 10; //myriad cent bit      
+    TZ = (TLV >> 4) | ((THV << 4)&0X3f); //temperature integer       
+    
+    return TZ;
 }
 
 //main
 
 void main() {
     init(); //call system initialize function                                                                                                                                 
-
-    while (1) {
-        lcd_init();
+    lcd_init();
+    while (1) {       
         get_temp(); //call temperature convert function
+        display_temp(); //call display function
+        
+        delay(10000);
     }
-
 }
