@@ -2,50 +2,52 @@
 [d version 1.1 ]
 [d edition pro ]
 [d chip 16F877A ]
-[d frameptr 0 ]
-"5 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\sources\c90\common\awdiv.c
+[d frameptr 6 ]
+"5 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c90\common\awdiv.c
 [v ___awdiv __awdiv `(i  1 e 2 0 ]
-"5 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\sources\c90\common\awmod.c
+"5 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c90\common\awmod.c
 [v ___awmod __awmod `(i  1 e 2 0 ]
-"5 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\sources\c90\common\lwdiv.c
+"5 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c90\common\lwdiv.c
 [v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
-"5 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\sources\c90\common\lwmod.c
+"5 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c90\common\lwmod.c
 [v ___lwmod __lwmod `(ui  1 e 2 0 ]
-"10 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\sources\c90\common\sprcadd.c
+"10 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c90\common\sprcadd.c
 [v ___fladd __fladd `(d  1 e 4 0 ]
-"4 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\sources\c90\common\Umul8_16.c
+"4 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c90\common\Umul8_16.c
 [v __Umul8_16 _Umul8_16 `(ui  1 e 2 0 ]
-"6 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\sources\c90\pic\__eeprom.c
+"6 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c90\pic\__eeprom.c
 [v ___eecpymem __eecpymem `(v  1 e 1 0 ]
 "39
 [v ___memcpyee __memcpyee `(v  1 e 1 0 ]
-"55 C:\Users\Zak\source\repos\embedded\Lab6.X\newmain.c
+"56 C:\Users\CSuser\embedded\Lab6.X\newmain.c
 [v _init init `(v  1 e 1 0 ]
-"66
+"67
 [v _lcd_init lcd_init `(v  1 e 1 0 ]
-"76
+"77
 [v _writechar writechar `(v  1 e 1 0 ]
-"87
+"86
+[v _writeInt writeInt `(v  1 e 1 0 ]
+"92
 [v _writecmd writecmd `(v  1 e 1 0 ]
-"98
+"103
 [v _delay delay `(v  1 e 1 0 ]
-"104
+"109
 [v _strlen strlen `(i  1 e 2 0 ]
-"143
+"148
 [v _delay2 delay2 `(v  1 e 1 0 ]
-"156
+"161
 [v _write_byte write_byte `(v  1 e 1 0 ]
-"181
+"186
 [v _read_byte read_byte `(uc  1 e 1 0 ]
-"208
+"213
 [v _display_temp display_temp `(v  1 e 1 0 ]
-"247
-[v _reset reset `(i  1 e 2 0 ]
-"263
-[v _get_temp get_temp `(v  1 e 1 0 ]
-"311
+"278
+[v _reset reset `(v  1 e 1 0 ]
+"294
+[v _get_temp get_temp `(i  1 e 2 0 ]
+"323
 [v _main main `(v  1 e 1 0 ]
-"340 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h
+"340 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\include\pic16f877a.h
 [v _PORTD PORTD `VEuc  1 e 1 @8 ]
 "1325
 [v _TRISA TRISA `VEuc  1 e 1 @133 ]
@@ -67,7 +69,7 @@
 [v _RC0 RC0 `VEb  1 e 0 @56 ]
 "2959
 [v _TRISC0 TRISC0 `VEb  1 e 0 @1080 ]
-"19 C:\Users\Zak\source\repos\embedded\Lab6.X\newmain.c
+"19 C:\Users\CSuser\embedded\Lab6.X\newmain.c
 [v _t503us t503us `[2]i  1 e 4 0 ]
 "20
 [v _t430us t430us `[2]i  1 e 4 0 ]
@@ -92,104 +94,110 @@
 [v _pt100 pt100 `uc  1 e 1 0 ]
 [v _pt1000 pt1000 `uc  1 e 1 0 ]
 [v _pt10000 pt10000 `uc  1 e 1 0 ]
-"311
+"323
 [v _main main `(v  1 e 1 0 ]
+{
+"333
+} 0
+"67
+[v _lcd_init lcd_init `(v  1 e 1 0 ]
+{
+"73
+} 0
+"56
+[v _init init `(v  1 e 1 0 ]
+{
+"62
+} 0
+"294
+[v _get_temp get_temp `(i  1 e 2 0 ]
 {
 "319
 } 0
-"66
-[v _lcd_init lcd_init `(v  1 e 1 0 ]
-{
-"72
-} 0
-"55
-[v _init init `(v  1 e 1 0 ]
-{
-"61
-} 0
-"263
-[v _get_temp get_temp `(v  1 e 1 0 ]
-{
-"307
-} 0
-"156
+"161
 [v _write_byte write_byte `(v  1 e 1 0 ]
 {
 [v write_byte@val val `uc  1 a 1 wreg ]
-"157
+"162
 [v write_byte@i i `uc  1 a 1 9 ]
-"158
+"163
 [v write_byte@temp temp `uc  1 a 1 7 ]
-"156
-[v write_byte@val val `uc  1 a 1 wreg ]
 "161
+[v write_byte@val val `uc  1 a 1 wreg ]
+"166
 [v write_byte@val val `uc  1 a 1 8 ]
-"179
+"184
 } 0
-"247
-[v _reset reset `(i  1 e 2 0 ]
+"278
+[v _reset reset `(v  1 e 1 0 ]
 {
-"248
+"279
 [v reset@presence presence `uc  1 a 1 5 ]
-"261
+"292
 } 0
-"181
+"186
 [v _read_byte read_byte `(uc  1 e 1 0 ]
 {
-"182
+"187
 [v read_byte@i i `uc  1 a 1 7 ]
-"183
+"188
 [v read_byte@value value `uc  1 a 1 6 ]
-"184
+"189
 [v read_byte@j j `uc  1 s 1 j ]
-"206
+"211
 } 0
-"143
+"148
 [v _delay2 delay2 `(v  1 e 1 0 ]
 {
 [v delay2@t t `*.4i  1 a 1 wreg ]
-"147
+"152
 [v delay2@z z `uc  1 a 1 3 ]
-"145
+"150
 [v delay2@y y `uc  1 a 1 2 ]
-"144
+"149
 [v delay2@x x `uc  1 a 1 1 ]
-"143
+"148
 [v delay2@t t `*.4i  1 a 1 wreg ]
 [v delay2@t t `*.4i  1 a 1 4 ]
-"154
+"159
 } 0
-"208
+"213
 [v _display_temp display_temp `(v  1 e 1 0 ]
 {
-"245
+"276
 } 0
-"87
+"92
 [v _writecmd writecmd `(v  1 e 1 0 ]
 {
 [v writecmd@x x `uc  1 a 1 wreg ]
 [v writecmd@x x `uc  1 a 1 wreg ]
 [v writecmd@x x `uc  1 a 1 5 ]
-"94
+"99
 } 0
-"76
+"86
+[v _writeInt writeInt `(v  1 e 1 0 ]
+{
+[v writeInt@x x `i  1 p 2 6 ]
+"88
+} 0
+"77
 [v _writechar writechar `(v  1 e 1 0 ]
 {
 [v writechar@x x `uc  1 a 1 wreg ]
 [v writechar@x x `uc  1 a 1 wreg ]
 [v writechar@x x `uc  1 a 1 5 ]
-"83
+"84
 } 0
-"98
+"103
 [v _delay delay `(v  1 e 1 0 ]
 {
-"99
+"104
 [v delay@i i `i  1 a 2 3 ]
-"98
+"103
 [v delay@t t `i  1 p 2 0 ]
-"101
+"106
 } 0
-"5 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\sources\c90\common\lwmod.c
+"5 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c90\common\lwmod.c
 [v ___lwmod __lwmod `(ui  1 e 2 0 ]
 {
 "10
@@ -199,7 +207,7 @@
 [v ___lwmod@dividend dividend `ui  1 p 2 2 ]
 "25
 } 0
-"5 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\sources\c90\common\lwdiv.c
+"5 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c90\common\lwdiv.c
 [v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
 {
 "10
@@ -211,7 +219,7 @@
 [v ___lwdiv@dividend dividend `ui  1 p 2 8 ]
 "30
 } 0
-"5 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\sources\c90\common\awmod.c
+"5 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c90\common\awmod.c
 [v ___awmod __awmod `(i  1 e 2 0 ]
 {
 "10
@@ -222,7 +230,7 @@
 [v ___awmod@dividend dividend `i  1 p 2 2 ]
 "34
 } 0
-"5 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\sources\c90\common\awdiv.c
+"5 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\sources\c90\common\awdiv.c
 [v ___awdiv __awdiv `(i  1 e 2 0 ]
 {
 "10

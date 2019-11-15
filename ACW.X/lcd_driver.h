@@ -28,8 +28,8 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef XC_HEADER_TEMPLATE_H
-#define	XC_HEADER_TEMPLATE_H
+#ifndef XC_LCD_H
+#define	XC_LCD_H
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
@@ -62,6 +62,12 @@
  */
 // TODO Insert declarations or function prototypes (right here) to leverage 
 // live documentation
+void writecmd(char command);
+void writechar(char character);
+void writeInt(int i);
+void setCursorPos(int lineN, int pos);
+void lcd_init(void);
+
 
 #ifdef	__cplusplus
 extern "C" {

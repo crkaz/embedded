@@ -16,18 +16,31 @@
 // ---
 
 // Drivers
-#include "buzzer_driver.h"
+//#include "buzzer_driver.h"
+#include "Utils.h"
 #include "lcd_driver.h"
-#include "rtc_driver.h"
-#include "thermometer_driver.h"
+
+//#include "rtc_driver.h"
+//#include "thermometer_driver.h"
 // ---
+#define psb RA2
 
 void main(void) {
+
+	ADCON1 = 0X07; //a port as ordinary i/o.
+	TRISA = 0X00; //a port as output.
+	TRISD = 0X00; //d port as output.
+	TRISC = 0x00;
+	psb = 1;
+
+	
+	lcd_init();
+	writechar('b');
     while (1) {
         // ---
-        
         // Code here.
-        
+	
+
         // ---
     }
 }

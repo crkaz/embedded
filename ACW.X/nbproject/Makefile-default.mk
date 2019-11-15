@@ -57,18 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=main.c buzzer_driver.c lcd_driver.c thermometer_driver.c rtc_driver.c
+SOURCEFILES_QUOTED_IF_SPACED=main.c buzzer_driver.c lcd_driver.c thermometer_driver.c rtc_driver.c Utils.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.p1 ${OBJECTDIR}/buzzer_driver.p1 ${OBJECTDIR}/lcd_driver.p1 ${OBJECTDIR}/thermometer_driver.p1 ${OBJECTDIR}/rtc_driver.p1
-POSSIBLE_DEPFILES=${OBJECTDIR}/main.p1.d ${OBJECTDIR}/buzzer_driver.p1.d ${OBJECTDIR}/lcd_driver.p1.d ${OBJECTDIR}/thermometer_driver.p1.d ${OBJECTDIR}/rtc_driver.p1.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.p1 ${OBJECTDIR}/buzzer_driver.p1 ${OBJECTDIR}/lcd_driver.p1 ${OBJECTDIR}/thermometer_driver.p1 ${OBJECTDIR}/rtc_driver.p1 ${OBJECTDIR}/Utils.p1
+POSSIBLE_DEPFILES=${OBJECTDIR}/main.p1.d ${OBJECTDIR}/buzzer_driver.p1.d ${OBJECTDIR}/lcd_driver.p1.d ${OBJECTDIR}/thermometer_driver.p1.d ${OBJECTDIR}/rtc_driver.p1.d ${OBJECTDIR}/Utils.p1.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/main.p1 ${OBJECTDIR}/buzzer_driver.p1 ${OBJECTDIR}/lcd_driver.p1 ${OBJECTDIR}/thermometer_driver.p1 ${OBJECTDIR}/rtc_driver.p1
+OBJECTFILES=${OBJECTDIR}/main.p1 ${OBJECTDIR}/buzzer_driver.p1 ${OBJECTDIR}/lcd_driver.p1 ${OBJECTDIR}/thermometer_driver.p1 ${OBJECTDIR}/rtc_driver.p1 ${OBJECTDIR}/Utils.p1
 
 # Source Files
-SOURCEFILES=main.c buzzer_driver.c lcd_driver.c thermometer_driver.c rtc_driver.c
-
+SOURCEFILES=main.c buzzer_driver.c lcd_driver.c thermometer_driver.c rtc_driver.c Utils.c
 
 
 CFLAGS=
@@ -134,6 +133,14 @@ ${OBJECTDIR}/rtc_driver.p1: rtc_driver.c  nbproject/Makefile-${CND_CONF}.mk
 	@-${MV} ${OBJECTDIR}/rtc_driver.d ${OBJECTDIR}/rtc_driver.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/rtc_driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
+${OBJECTDIR}/Utils.p1: Utils.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Utils.p1.d 
+	@${RM} ${OBJECTDIR}/Utils.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/Utils.p1 Utils.c 
+	@-${MV} ${OBJECTDIR}/Utils.d ${OBJECTDIR}/Utils.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Utils.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
 else
 ${OBJECTDIR}/main.p1: main.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
@@ -174,6 +181,14 @@ ${OBJECTDIR}/rtc_driver.p1: rtc_driver.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/rtc_driver.p1 rtc_driver.c 
 	@-${MV} ${OBJECTDIR}/rtc_driver.d ${OBJECTDIR}/rtc_driver.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/rtc_driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/Utils.p1: Utils.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/Utils.p1.d 
+	@${RM} ${OBJECTDIR}/Utils.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/Utils.p1 Utils.c 
+	@-${MV} ${OBJECTDIR}/Utils.d ${OBJECTDIR}/Utils.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/Utils.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 endif
 
