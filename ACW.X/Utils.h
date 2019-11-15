@@ -6,6 +6,7 @@
 	
 	void delay(int t);
 	void delay2(int t[]);
-
+	int strlen(char a[]);
+	void resetThermometer(void);
 #endif	/* XC_Utils_H */
 

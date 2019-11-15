@@ -12,6 +12,7 @@
 //#include "buzzer_driver.h"
 #include "Utils.h"
 #include "lcd_driver.h"
+#include "thermometer_driver.h"
 
 //#include "rtc_driver.h"
 //#include "thermometer_driver.h"
@@ -35,7 +36,7 @@ void main(void) {
     while (1) {
         // ---
         // Code here.
-	
+	hello
 
         // ---
     }

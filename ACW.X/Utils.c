@@ -16,3 +16,10 @@ void delay2(int t[]) {
 		} while (--z);
 	} while (--x);
 }
+
+int strlen(char a[]) {
+	int len = 0;
+	while (a[len])
+		len++;
+	return len;
+}
