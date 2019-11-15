@@ -1,6 +1,21 @@
 #include <xc.h>
 #include "Utils.h"
 
+#define dq RC0
+#define dq_dir TRISC0
+#define set_dq_high() dq_dir = 1
+#define set_dq_low() dq = 0; dq_dir = 0
+
+unsigned char TLV = 0; //temperature high byte                     
+unsigned char THV = 0; //temperature low byte   
+
+// Timings for delay2 args. Cannot be const.
+int t503us[2] = { 2, 70 };
+int t430us[2] = { 2, 60 };
+int t70us[2] = { 2, 8 };
+int t63us[2] = { 2, 7 };
+int tUKus[2] = { 1, 70 };
+
 void write_byte(unsigned char val) {
 	unsigned char i;
 	unsigned char temp;
@@ -58,10 +73,8 @@ int get_temp() {
 	// followed by each transaction: 1 Initialisation -> 2 ROM Function Command -> 3Memory
 	// Function Command -> 4 Transaction/Data
 
-	unsigned char TLV = 0; //temperature high byte                     
-	unsigned char THV = 0; //temperature low byte   
 	set_dq_high();
-	reset(); //reset,wait for  18b20 response.                                                                                                              
+	resetThermometer(); //reset,wait for  18b20 response.                                                                                                              
 	write_byte(0XCC); //ignore ROM matching                                                                                                                            
 	write_byte(0X44); //send  temperature convert command                                                                                                              
 	//    for (int i = 0; i < 2; ++i) {
@@ -70,7 +83,7 @@ int get_temp() {
 
 	delay(20000); //Might want to lower
 
-	reset(); //reset again,wait for 18b20 response                                                                                                        
+	resetThermometer(); //reset again,wait for 18b20 response                                                                                                        
 	write_byte(0XCC); //ignore ROM matching                                                                                                                            
 	write_byte(0XBE); //send read temperature command                                                                                                                  
 	TLV = read_byte(); //read temperature low byte                                                                                                                      

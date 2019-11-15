@@ -7,13 +7,6 @@
 # 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.05\\pic\\include\\language_support.h" 1 3
 # 2 "<built-in>" 2
 # 1 "main.c" 2
-
-
-
-
-
-
-
 # 1 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.05\\pic\\include\\xc.h" 1 3
 # 18 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.05\\pic\\include\\xc.h" 3
 extern const char __xc8_OPTIM_SPEED;
@@ -1727,7 +1720,7 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 27 "C:\\Program Files (x86)\\Microchip\\xc8\\v2.05\\pic\\include\\xc.h" 2 3
-# 8 "main.c" 2
+# 1 "main.c" 2
 
 
 
@@ -1742,19 +1735,45 @@ extern __bank0 __bit __timeout;
 
 
 # 1 "./Utils.h" 1
-# 66 "./Utils.h"
-void delay(int t);
-void delay2(int t[]);
-# 20 "main.c" 2
+
+
+
+
+
+
+ void delay(int t);
+ void delay2(int t[]);
+ int strlen(char a[]);
+ void resetThermometer(void);
+# 13 "main.c" 2
 
 # 1 "./lcd_driver.h" 1
-# 65 "./lcd_driver.h"
-void writecmd(char command);
-void writechar(char character);
-void writeInt(int i);
-void setCursorPos(int lineN, int pos);
-void lcd_init(void);
-# 21 "main.c" 2
+
+
+
+
+
+
+ void writecmd(char command);
+ void writechar(char character);
+ void writeInt(int i);
+ void writeString(char str[]);
+ void setCursorPos(int lineN, int pos);
+ void lcd_init(void);
+# 14 "main.c" 2
+
+# 1 "./thermometer_driver.h" 1
+
+
+
+
+
+ void write_byte(unsigned char val);
+ unsigned char read_byte();
+ int get_temp();
+ void resetThermometer(void);
+ void display_temp(int TZ);
+# 15 "main.c" 2
 
 
 
@@ -1777,7 +1796,6 @@ void main(void) {
  lcd_init();
  writechar('c');
     while (1) {
-
 
 
 

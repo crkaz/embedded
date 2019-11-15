@@ -36,7 +36,6 @@ void main(void) {
     while (1) {
         // ---
         // Code here.
-	hello
 
         // ---
     }

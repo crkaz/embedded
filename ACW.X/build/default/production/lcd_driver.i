@@ -1723,13 +1723,32 @@ extern __bank0 __bit __timeout;
 # 1 "lcd_driver.c" 2
 
 # 1 "./Utils.h" 1
-# 66 "./Utils.h"
-void delay(int t);
-void delay2(int t[]);
+
+
+
+
+
+
+ void delay(int t);
+ void delay2(int t[]);
+ int strlen(char a[]);
+ void resetThermometer(void);
 # 2 "lcd_driver.c" 2
 
+# 1 "./lcd_driver.h" 1
 
 
+
+
+
+
+ void writecmd(char command);
+ void writechar(char character);
+ void writeInt(int i);
+ void writeString(char str[]);
+ void setCursorPos(int lineN, int pos);
+ void lcd_init(void);
+# 3 "lcd_driver.c" 2
 
 
 
@@ -1753,6 +1772,12 @@ void writechar(char character) {
 
 void writeInt(int i) {
  writechar(i + 48);
+}
+
+void writeString(char str[]) {
+ for (int i = 0; i < strlen(str); ++i) {
+  writechar(str[i]);
+ }
 }
 
 void setCursorPos(int lineN, int pos) {

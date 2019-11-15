@@ -179,15 +179,32 @@ Version 4.0 HI-TECH Software Intermediate Code
 "2363
 [; ;C:\Program Files (x86)\Microchip\xc8\v2.05\pic\include\pic16f877a.h: 2363: __asm("EECON2 equ 018Dh");
 [; <" EECON2 equ 018Dh ;# ">
-"3 Utils.c
-[; ;Utils.c: 3: void delay(int t) {
+"6 Utils.c
+[; ;Utils.c: 6: unsigned char table[] = { 0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90 };
+[v _table `uc ~T0 @X0 -> 10 `i e ]
+[i _table
+:U ..
+-> -> 192 `i `uc
+-> -> 249 `i `uc
+-> -> 164 `i `uc
+-> -> 176 `i `uc
+-> -> 153 `i `uc
+-> -> 146 `i `uc
+-> -> 130 `i `uc
+-> -> 248 `i `uc
+-> -> 128 `i `uc
+-> -> 144 `i `uc
+..
+]
+"8
+[; ;Utils.c: 8: void delay(int t) {
 [v _delay `(v ~T0 @X0 1 ef1`i ]
 {
 [e :U _delay ]
 [v _t `i ~T0 @X0 1 r1 ]
 [f ]
-"4
-[; ;Utils.c: 4:  for (int i = 0; i < t; i++);
+"9
+[; ;Utils.c: 9:  for (int i = 0; i < t; i++);
 {
 [v _i `i ~T0 @X0 1 a ]
 [e = _i -> 0 `i ]
@@ -198,50 +215,81 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e $ < _i _t 96  ]
 [e :U 97 ]
 }
-"5
-[; ;Utils.c: 5: }
+"10
+[; ;Utils.c: 10: }
 [e :UE 95 ]
 }
-"7
-[; ;Utils.c: 7: void delay2(int t[]) {
+"12
+[; ;Utils.c: 12: void delay2(int t[]) {
 [v _delay2 `(v ~T0 @X0 1 ef1`*i ]
 {
 [e :U _delay2 ]
 [v _t `*i ~T0 @X0 1 r1 ]
 [f ]
-"8
-[; ;Utils.c: 8:  char x = t[0];
+"13
+[; ;Utils.c: 13:  char x = t[0];
 [v _x `uc ~T0 @X0 1 a ]
 [e = _x -> *U + _t * -> -> 0 `i `x -> -> # *U _t `i `x `uc ]
-"9
-[; ;Utils.c: 9:  char y = t[1];
+"14
+[; ;Utils.c: 14:  char y = t[1];
 [v _y `uc ~T0 @X0 1 a ]
 [e = _y -> *U + _t * -> -> 1 `i `x -> -> # *U _t `i `x `uc ]
-"11
-[; ;Utils.c: 11:  char z;
+"16
+[; ;Utils.c: 16:  char z;
 [v _z `uc ~T0 @X0 1 a ]
-"12
-[; ;Utils.c: 12:  do {
+"17
+[; ;Utils.c: 17:  do {
 [e :U 103 ]
 {
-"13
-[; ;Utils.c: 13:   z = y;
+"18
+[; ;Utils.c: 18:   z = y;
 [e = _z _y ]
-"14
-[; ;Utils.c: 14:   do {
+"19
+[; ;Utils.c: 19:   do {
 [e :U 106 ]
 {
-"16
-[; ;Utils.c: 16:   } while (--z);
+"21
+[; ;Utils.c: 21:   } while (--z);
 }
 [e $ != -> =- _z -> -> 1 `i `uc `i -> 0 `i 106  ]
 [e :U 105 ]
-"17
-[; ;Utils.c: 17:  } while (--x);
+"22
+[; ;Utils.c: 22:  } while (--x);
 }
 [e $ != -> =- _x -> -> 1 `i `uc `i -> 0 `i 103  ]
 [e :U 102 ]
-"18
-[; ;Utils.c: 18: }
+"23
+[; ;Utils.c: 23: }
 [e :UE 100 ]
+}
+"25
+[; ;Utils.c: 25: int strlen(char a[]) {
+[v _strlen `(i ~T0 @X0 1 ef1`*uc ]
+{
+[e :U _strlen ]
+[v _a `*uc ~T0 @X0 1 r1 ]
+[f ]
+"26
+[; ;Utils.c: 26:  int len = 0;
+[v _len `i ~T0 @X0 1 a ]
+[e = _len -> 0 `i ]
+"27
+[; ;Utils.c: 27:  while (a[len])
+[e $U 108  ]
+[e :U 109 ]
+"28
+[; ;Utils.c: 28:   len++;
+[e ++ _len -> 1 `i ]
+[e :U 108 ]
+"27
+[; ;Utils.c: 27:  while (a[len])
+[e $ != -> *U + _a * -> _len `x -> -> # *U _a `i `x `i -> 0 `i 109  ]
+[e :U 110 ]
+"29
+[; ;Utils.c: 29:  return len;
+[e ) _len ]
+[e $UE 107  ]
+"30
+[; ;Utils.c: 30: }
+[e :UE 107 ]
 }

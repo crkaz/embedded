@@ -1,9 +1,7 @@
 #include <xc.h>
 #include "Utils.h"
+#include "lcd_driver.h"
 
-#define rs RA5
-#define rw RA4
-#define e RA3
 
 void writecmd(char command) {
 	rs = 0; //is command not data
