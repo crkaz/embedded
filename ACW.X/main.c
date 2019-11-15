@@ -1,10 +1,3 @@
-/*
- * File:   main.c
- * Author: Zak
- *
- * Created on 04 November 2019, 15:32
- */
-
 #include <xc.h>
 
 // Config
@@ -25,17 +18,20 @@
 // ---
 #define psb RA2
 
-void main(void) {
-
+void init() {
 	ADCON1 = 0X07; //a port as ordinary i/o.
 	TRISA = 0X00; //a port as output.
 	TRISD = 0X00; //d port as output.
 	TRISC = 0x00;
 	psb = 1;
+}
 
-	
+void main(void) {
+
+	init();
+
 	lcd_init();
-	writechar('b');
+	writechar('c');
     while (1) {
         // ---
         // Code here.

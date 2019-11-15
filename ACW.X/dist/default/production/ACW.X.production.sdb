@@ -18,6 +18,8 @@
 "59
 [v _lcd_init lcd_init `(v  1 e 1 0 ]
 "28 C:\Users\CSuser\embedded\ACW.X\main.c
+[v _init init `(v  1 e 1 0 ]
+"36
 [v _main main `(v  1 e 1 0 ]
 "3 C:\Users\CSuser\embedded\ACW.X\Utils.c
 [v _delay delay `(v  1 e 1 0 ]
@@ -39,10 +41,10 @@
 [v _RA4 RA4 `VEb  1 e 0 @44 ]
 "2671
 [v _RA5 RA5 `VEb  1 e 0 @45 ]
-"28 C:\Users\CSuser\embedded\ACW.X\main.c
+"36 C:\Users\CSuser\embedded\ACW.X\main.c
 [v _main main `(v  1 e 1 0 ]
 {
-"46
+"49
 } 0
 "17 C:\Users\CSuser\embedded\ACW.X\lcd_driver.c
 [v _writechar writechar `(v  1 e 1 0 ]
@@ -73,4 +75,9 @@
 "3
 [v delay@t t `i  1 p 2 0 ]
 "5
+} 0
+"28 C:\Users\CSuser\embedded\ACW.X\main.c
+[v _init init `(v  1 e 1 0 ]
+{
+"34
 } 0

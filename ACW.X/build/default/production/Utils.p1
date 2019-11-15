@@ -202,3 +202,46 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;Utils.c: 5: }
 [e :UE 95 ]
 }
+"7
+[; ;Utils.c: 7: void delay2(int t[]) {
+[v _delay2 `(v ~T0 @X0 1 ef1`*i ]
+{
+[e :U _delay2 ]
+[v _t `*i ~T0 @X0 1 r1 ]
+[f ]
+"8
+[; ;Utils.c: 8:  char x = t[0];
+[v _x `uc ~T0 @X0 1 a ]
+[e = _x -> *U + _t * -> -> 0 `i `x -> -> # *U _t `i `x `uc ]
+"9
+[; ;Utils.c: 9:  char y = t[1];
+[v _y `uc ~T0 @X0 1 a ]
+[e = _y -> *U + _t * -> -> 1 `i `x -> -> # *U _t `i `x `uc ]
+"11
+[; ;Utils.c: 11:  char z;
+[v _z `uc ~T0 @X0 1 a ]
+"12
+[; ;Utils.c: 12:  do {
+[e :U 103 ]
+{
+"13
+[; ;Utils.c: 13:   z = y;
+[e = _z _y ]
+"14
+[; ;Utils.c: 14:   do {
+[e :U 106 ]
+{
+"16
+[; ;Utils.c: 16:   } while (--z);
+}
+[e $ != -> =- _z -> -> 1 `i `uc `i -> 0 `i 106  ]
+[e :U 105 ]
+"17
+[; ;Utils.c: 17:  } while (--x);
+}
+[e $ != -> =- _x -> -> 1 `i `uc `i -> 0 `i 103  ]
+[e :U 102 ]
+"18
+[; ;Utils.c: 18: }
+[e :UE 100 ]
+}

@@ -276,26 +276,26 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "31
 [; ;lcd_driver.c: 31:  const int ln1 = 0xC0;
-[v F861 `Ci ~T0 @X0 1 s ln1 ]
-[i F861
+[v F863 `Ci ~T0 @X0 1 s ln1 ]
+[i F863
 -> 192 `i
 ]
 "32
 [; ;lcd_driver.c: 32:  const int ln2 = 0xD0;
-[v F862 `Ci ~T0 @X0 1 s ln2 ]
-[i F862
+[v F864 `Ci ~T0 @X0 1 s ln2 ]
+[i F864
 -> 208 `i
 ]
 "33
 [; ;lcd_driver.c: 33:  const int ln3 = 0xC8;
-[v F863 `Ci ~T0 @X0 1 s ln3 ]
-[i F863
+[v F865 `Ci ~T0 @X0 1 s ln3 ]
+[i F865
 -> 200 `i
 ]
 "34
 [; ;lcd_driver.c: 34:  const int ln4 = 0xD8;
-[v F864 `Ci ~T0 @X0 1 s ln4 ]
-[i F864
+[v F866 `Ci ~T0 @X0 1 s ln4 ]
+[i F866
 -> 216 `i
 ]
 "36
@@ -307,7 +307,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 "40
 [; ;lcd_driver.c: 40:   addr = ln1 + pos;
-[e = _addr + F861 _pos ]
+[e = _addr + F863 _pos ]
 "41
 [; ;lcd_driver.c: 41:  }
 }
@@ -319,7 +319,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 "44
 [; ;lcd_driver.c: 44:   addr = ln2 + pos;
-[e = _addr + F862 _pos ]
+[e = _addr + F864 _pos ]
 "45
 [; ;lcd_driver.c: 45:  }
 }
@@ -331,7 +331,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 "48
 [; ;lcd_driver.c: 48:   addr = ln3 + pos;
-[e = _addr + F863 _pos ]
+[e = _addr + F865 _pos ]
 "49
 [; ;lcd_driver.c: 49:  }
 }
@@ -343,7 +343,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 "52
 [; ;lcd_driver.c: 52:   addr = ln4 + pos;
-[e = _addr + F864 _pos ]
+[e = _addr + F866 _pos ]
 "53
 [; ;lcd_driver.c: 53:  }
 }

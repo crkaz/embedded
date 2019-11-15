@@ -27,6 +27,12 @@ void writeInt(int i) {
 	writechar(i + 48);
 }
 
+void writeString(char str[]) {
+	for (int i = 0; i < strlen(str); ++i) {
+		writechar(str[i]);
+	}
+}
+
 void setCursorPos(int lineN, int pos) {
 	const int ln1 = 0xC0;
 	const int ln2 = 0xD0;

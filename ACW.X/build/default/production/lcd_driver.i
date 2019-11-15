@@ -1725,6 +1725,7 @@ extern __bank0 __bit __timeout;
 # 1 "./Utils.h" 1
 # 66 "./Utils.h"
 void delay(int t);
+void delay2(int t[]);
 # 2 "lcd_driver.c" 2
 
 

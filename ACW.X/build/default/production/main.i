@@ -1744,6 +1744,7 @@ extern __bank0 __bit __timeout;
 # 1 "./Utils.h" 1
 # 66 "./Utils.h"
 void delay(int t);
+void delay2(int t[]);
 # 20 "main.c" 2
 
 # 1 "./lcd_driver.h" 1
@@ -1761,17 +1762,20 @@ void lcd_init(void);
 
 
 
-void main(void) {
-
+void init() {
  ADCON1 = 0X07;
  TRISA = 0X00;
  TRISD = 0X00;
  TRISC = 0x00;
  RA2 = 1;
+}
 
+void main(void) {
+
+ init();
 
  lcd_init();
- writechar('b');
+ writechar('c');
     while (1) {
 
 

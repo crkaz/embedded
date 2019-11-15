@@ -1,5 +1,4 @@
 Version 4.0 HI-TECH Software Intermediate Code
-[p mainexit ]
 "2229 C:\Program Files (x86)\Microchip\xc8\v2.05\pic\include\pic16f877a.h
 [; ;C:\Program Files (x86)\Microchip\xc8\v2.05\pic\include\pic16f877a.h: 2229: extern volatile unsigned char ADCON1 __attribute__((address(0x09F)));
 [v _ADCON1 `Vuc ~T0 @X0 0 e@159 ]
@@ -15,6 +14,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 "2662
 [; ;C:\Program Files (x86)\Microchip\xc8\v2.05\pic\include\pic16f877a.h: 2662: extern volatile __bit RA2 __attribute__((address(0x2A)));
 [v _RA2 `Vb ~T0 @X0 0 e@42 ]
+[p mainexit ]
 "69 ./lcd_driver.h
 [; ;./lcd_driver.h: 69: void lcd_init(void);
 [v _lcd_init `(v ~T0 @X0 0 ef ]
@@ -211,45 +211,58 @@ Version 4.0 HI-TECH Software Intermediate Code
 [p x BOREN = OFF ]
 "15
 [p x LVP = OFF ]
-[v $root$_main `(v ~T0 @X0 0 e ]
 "28
-[; ;main.c: 28: void main(void) {
+[; ;main.c: 28: void init() {
+[v _init `(v ~T0 @X0 1 ef ]
+{
+[e :U _init ]
+[f ]
+"29
+[; ;main.c: 29:  ADCON1 = 0X07;
+[e = _ADCON1 -> -> 7 `i `uc ]
+"30
+[; ;main.c: 30:  TRISA = 0X00;
+[e = _TRISA -> -> 0 `i `uc ]
+"31
+[; ;main.c: 31:  TRISD = 0X00;
+[e = _TRISD -> -> 0 `i `uc ]
+"32
+[; ;main.c: 32:  TRISC = 0x00;
+[e = _TRISC -> -> 0 `i `uc ]
+"33
+[; ;main.c: 33:  RA2 = 1;
+[e = _RA2 -> -> 1 `i `b ]
+"34
+[; ;main.c: 34: }
+[e :UE 95 ]
+}
+[v $root$_main `(v ~T0 @X0 0 e ]
+"36
+[; ;main.c: 36: void main(void) {
 [v _main `(v ~T0 @X0 1 ef ]
 {
 [e :U _main ]
 [f ]
-"30
-[; ;main.c: 30:  ADCON1 = 0X07;
-[e = _ADCON1 -> -> 7 `i `uc ]
-"31
-[; ;main.c: 31:  TRISA = 0X00;
-[e = _TRISA -> -> 0 `i `uc ]
-"32
-[; ;main.c: 32:  TRISD = 0X00;
-[e = _TRISD -> -> 0 `i `uc ]
-"33
-[; ;main.c: 33:  TRISC = 0x00;
-[e = _TRISC -> -> 0 `i `uc ]
-"34
-[; ;main.c: 34:  RA2 = 1;
-[e = _RA2 -> -> 1 `i `b ]
-"37
-[; ;main.c: 37:  lcd_init();
-[e ( _lcd_init ..  ]
 "38
-[; ;main.c: 38:  writechar('b');
-[e ( _writechar (1 -> -> 98 `ui `uc ]
-"39
-[; ;main.c: 39:     while (1) {
-[e :U 97 ]
-{
-"45
-[; ;main.c: 45:     }
-}
-[e :U 96 ]
-[e $U 97  ]
+[; ;main.c: 38:  init();
+[e ( _init ..  ]
+"40
+[; ;main.c: 40:  lcd_init();
+[e ( _lcd_init ..  ]
+"41
+[; ;main.c: 41:  writechar('c');
+[e ( _writechar (1 -> -> 99 `ui `uc ]
+"42
+[; ;main.c: 42:     while (1) {
 [e :U 98 ]
-"46
-[; ;main.c: 46: }
-[e :UE 95 ]
+{
+"48
+[; ;main.c: 48:     }
+}
+[e :U 97 ]
+[e $U 98  ]
+[e :U 99 ]
+"49
+[; ;main.c: 49: }
+[e :UE 96 ]
 }
