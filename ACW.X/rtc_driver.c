@@ -7,16 +7,21 @@
 #include "Utils.h"
 #include "rtc_driver.h"
 
+// DS1302 pin config.
+#define i_o   RB4 //1302I_O           
+#define sclk  RB0 //1302 clock        
+#define rst   RB5 //1302 enable bit   
+
 // Args for get/set_time_bit()
 // NB: Write mode by default; +1 to set to read).
-const char SEC = 0x80;
-const char MIN = 0x82;
-const char HOUR = 0x84;
-const char DATE = 0x86;
-const char MONTH = 0x88;
-const char DAY = 0x8A;
-const char YEAR = 0x8C;
-const char CTRL = 0x8E;
+//const char SEC = 0x80;
+//const char MIN = 0x82;
+//const char HOUR = 0x84;
+//const char DATE = 0x86;
+//const char MONTH = 0x88;
+//const char DAY = 0x8A;
+//const char YEAR = 0x8C;
+//const char CTRL = 0x8E;
 //AM-PM/12-24 MODE
 //Bit 7 of the hours register is defined as the 12? or 24?hour mode select bit. When high, the 12?hour
 //mode is selected. In the 12?hour mode, bit 5 is the AM/PM bit with logic high being PM. In the 24?hour
@@ -28,7 +33,7 @@ unsigned char time_rx = 0x30; //define receive reg.
 char table1[7]; //define the read time and date save table.
 
 // Initialise required ports.
-void port_init() {
+void rtc_port_init() {
     TRISA = 0x00; //a port all output
     TRISD = 0X00; //d port all output
     ADCON1 = 0X06; //a port all i/o
@@ -83,14 +88,15 @@ void get_time() {
     rst = 0; //reset DS1302
 }
 
-// GET INDIVIDUAL TIME COMPONENT
-// get_time_bit(YEAR); // EXAMPLE: returning YEAR bit.
-char get_time_bit(char b) {
+// GET INDIVIDUAL TIME COMPONENT AS INT
+// get_time_bit(YEAR); // EXAMPLE: returning YEAR bit as int.
+char* get_time_bit_as_string(char b) {
     rst = 1; //enable DS1302
     write_byte(b + 1); // Read individual bit (+ 1 sets read bit).
     char t = read_byte();
     rst = 0; //reset DS1302
-    return t;
+    
+    return convert_bcd_to_string(t); // Convert binary coded decimal to str for ease of use.
 }
 
 // Write byte to active register.
