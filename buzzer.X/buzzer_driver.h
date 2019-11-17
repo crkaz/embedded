@@ -4,12 +4,11 @@
 	#define	XC_BUZZER_H
 	
 	#include <xc.h> // include processor files - each processor file is guarded.  
-//	void writecmd(char command);
-//	void writechar(char character);
-//	void writeInt(int i);
-//	void writeString(char str[])
-//	void setCursorPos(int lineN, int pos);
-//	void lcd_init(void);
+    void buzzer_init(void);
+    void buzzer_on(void);
+    void buzzer_off(void);
+    void getButtonInput(void);
+
 
 #endif	/* XC_HEADER_TEMPLATE_H */
 
