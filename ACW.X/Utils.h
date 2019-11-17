@@ -6,6 +6,8 @@
 	
 	void delay(int t);
 	void delay2(int t[]);
-
+    int strlen(char*); // Get length of a string.
+    char* convert_bcd_to_string(char); // Convert BCD (binary coded decimal) to decimal.
+    
 #endif	/* XC_Utils_H */
-
+    

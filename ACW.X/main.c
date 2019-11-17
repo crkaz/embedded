@@ -9,9 +9,9 @@
 // ---
 
 // Drivers
-//#include "buzzer_driver.h"
+#include "buzzer_driver.h"
 #include "Utils.h"
-#include "lcd_driver.h"
+//#include "lcd_driver.h"
 
 //#include "rtc_driver.h"
 //#include "thermometer_driver.h"
@@ -29,14 +29,13 @@ void init() {
 void main(void) {
 
 	init();
-
-	lcd_init();
-	writechar('c');
+    
+    buzzer_init();
     while (1) {
         // ---
         // Code here.
-	
-
+        // Constant alarm.
+        buzzer_sound(12500, 5000, 1);
         // ---
     }
 }
