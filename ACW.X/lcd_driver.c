@@ -22,12 +22,21 @@ void writechar(char character) {
 }
 
 void writeInt(int i) {
-	writechar(i + 48);
+	if (i == 46) //Makes '.' print out correctly
+		writechar(i);
+	else
+		writechar(i + 48);
 }
 
 void writeString(char str[]) {
 	for (int i = 0; i < strlen(str); ++i) {
 		writechar(str[i]);
+	}
+}
+
+void writeIntArray(char ints[]) {
+	for (int i = 0; i < strlen(ints); i++) {
+		writeInt(ints[i]);
 	}
 }
 

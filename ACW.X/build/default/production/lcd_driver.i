@@ -1732,6 +1732,7 @@ extern __bank0 __bit __timeout;
  void delay(int t);
  void delay2(int t[]);
  int strlen(char a[]);
+ int strlenPointer(unsigned char a[]);
  void resetThermometer(void);
 # 2 "lcd_driver.c" 2
 
@@ -1746,6 +1747,7 @@ extern __bank0 __bit __timeout;
  void writechar(char character);
  void writeInt(int i);
  void writeString(char str[]);
+ void writeIntArray(char ints[]);
  void setCursorPos(int lineN, int pos);
  void lcd_init(void);
 # 3 "lcd_driver.c" 2
@@ -1771,12 +1773,21 @@ void writechar(char character) {
 }
 
 void writeInt(int i) {
- writechar(i + 48);
+ if (i == 46)
+  writechar(i);
+ else
+  writechar(i + 48);
 }
 
 void writeString(char str[]) {
  for (int i = 0; i < strlen(str); ++i) {
   writechar(str[i]);
+ }
+}
+
+void writeIntArray(char ints[]) {
+ for (int i = 0; i < strlen(ints); i++) {
+  writeInt(ints[i]);
  }
 }
 

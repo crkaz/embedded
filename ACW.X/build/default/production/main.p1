@@ -15,9 +15,21 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;C:\Program Files (x86)\Microchip\xc8\v2.05\pic\include\pic16f877a.h: 2662: extern volatile __bit RA2 __attribute__((address(0x2A)));
 [v _RA2 `Vb ~T0 @X0 0 e@42 ]
 [p mainexit ]
-"12 ./lcd_driver.h
-[; ;./lcd_driver.h: 12:  void lcd_init(void);
+"13 ./lcd_driver.h
+[; ;./lcd_driver.h: 13:  void lcd_init(void);
 [v _lcd_init `(v ~T0 @X0 0 ef ]
+"7 ./Utils.h
+[; ;./Utils.h: 7:  void delay(int t);
+[v _delay `(v ~T0 @X0 0 ef1`i ]
+"8 ./thermometer_driver.h
+[; ;./thermometer_driver.h: 8:  int get_temp();
+[v _get_temp `(i ~T0 @X0 0 e? ]
+"10
+[; ;./thermometer_driver.h: 10:  char* calculate_temp(int TZ);
+[v _calculate_temp `(*uc ~T0 @X0 0 ef1`i ]
+"11 ./lcd_driver.h
+[; ;./lcd_driver.h: 11:  void writeIntArray(char ints[]);
+[v _writeIntArray `(v ~T0 @X0 0 ef1`*uc ]
 "8
 [; ;./lcd_driver.h: 8:  void writechar(char character);
 [v _writechar `(v ~T0 @X0 0 ef1`uc ]
@@ -249,20 +261,37 @@ Version 4.0 HI-TECH Software Intermediate Code
 "34
 [; ;main.c: 34:  lcd_init();
 [e ( _lcd_init ..  ]
-"35
-[; ;main.c: 35:  writechar('c');
-[e ( _writechar (1 -> -> 99 `ui `uc ]
 "36
-[; ;main.c: 36:     while (1) {
+[; ;main.c: 36:  delay(10000);
+[e ( _delay (1 -> 10000 `i ]
+"37
+[; ;main.c: 37:     while (1) {
 [e :U 98 ]
 {
+"38
+[; ;main.c: 38:   int temp = get_temp();
+[v _temp `i ~T0 @X0 1 a ]
+[e = _temp ( _get_temp ..  ]
+"39
+[; ;main.c: 39:   char* tempa = calculate_temp(temp);
+[v _tempa `*uc ~T0 @X0 1 a ]
+[e = _tempa ( _calculate_temp (1 _temp ]
+"40
+[; ;main.c: 40:   writeIntArray(tempa);
+[e ( _writeIntArray (1 _tempa ]
 "41
-[; ;main.c: 41:     }
+[; ;main.c: 41:   writechar(' ');
+[e ( _writechar (1 -> -> 32 `ui `uc ]
+"42
+[; ;main.c: 42:   delay(10000);
+[e ( _delay (1 -> 10000 `i ]
+"43
+[; ;main.c: 43:     }
 }
 [e :U 97 ]
 [e $U 98  ]
 [e :U 99 ]
-"42
-[; ;main.c: 42: }
+"44
+[; ;main.c: 44: }
 [e :UE 96 ]
 }

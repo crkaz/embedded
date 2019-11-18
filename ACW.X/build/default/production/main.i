@@ -1744,6 +1744,7 @@ extern __bank0 __bit __timeout;
  void delay(int t);
  void delay2(int t[]);
  int strlen(char a[]);
+ int strlenPointer(unsigned char a[]);
  void resetThermometer(void);
 # 13 "main.c" 2
 
@@ -1758,6 +1759,7 @@ extern __bank0 __bit __timeout;
  void writechar(char character);
  void writeInt(int i);
  void writeString(char str[]);
+ void writeIntArray(char ints[]);
  void setCursorPos(int lineN, int pos);
  void lcd_init(void);
 # 14 "main.c" 2
@@ -1772,7 +1774,7 @@ extern __bank0 __bit __timeout;
  unsigned char read_byte();
  int get_temp();
  void resetThermometer(void);
- void display_temp(int TZ);
+ char* calculate_temp(int TZ);
 # 15 "main.c" 2
 
 
@@ -1794,11 +1796,13 @@ void main(void) {
  init();
 
  lcd_init();
- writechar('c');
+
+ delay(10000);
     while (1) {
-
-
-
-
+  int temp = get_temp();
+  char* tempa = calculate_temp(temp);
+  writeIntArray(tempa);
+  writechar(' ');
+  delay(10000);
     }
 }

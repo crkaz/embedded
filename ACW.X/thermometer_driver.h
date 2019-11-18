@@ -7,6 +7,6 @@
 	unsigned char read_byte();
 	int get_temp();
 	void resetThermometer(void);
-	void display_temp(int TZ);
+	char* calculate_temp(int TZ);
 #endif	/* XC_Thermometer_H */
 

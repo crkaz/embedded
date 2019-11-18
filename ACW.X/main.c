@@ -32,11 +32,13 @@ void main(void) {
 	init();
 
 	lcd_init();
-	writechar('c');
-    while (1) {
-        // ---
-        // Code here.
 
-        // ---
+	delay(10000);
+    while (1) {
+		int temp = get_temp();
+		char* tempa = calculate_temp(temp);
+		writeIntArray(tempa);
+		writechar(' ');
+		delay(10000);
     }
 }

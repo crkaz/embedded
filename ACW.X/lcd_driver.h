@@ -8,6 +8,7 @@
 	void writechar(char character);
 	void writeInt(int i);
 	void writeString(char str[]);
+	void writeIntArray(char ints[]);
 	void setCursorPos(int lineN, int pos);
 	void lcd_init(void);
     

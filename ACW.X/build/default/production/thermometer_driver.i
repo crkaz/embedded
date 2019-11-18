@@ -1732,6 +1732,7 @@ extern __bank0 __bit __timeout;
  void delay(int t);
  void delay2(int t[]);
  int strlen(char a[]);
+ int strlenPointer(unsigned char a[]);
  void resetThermometer(void);
 # 2 "thermometer_driver.c" 2
 
@@ -1743,7 +1744,7 @@ extern __bank0 __bit __timeout;
 
 unsigned char TLV = 0;
 unsigned char THV = 0;
-
+char temperature[8];
 
 int t503us[2] = { 2, 70 };
 int t430us[2] = { 2, 60 };
@@ -1758,7 +1759,7 @@ void write_byte(unsigned char val) {
 
  for (i = 8; i > 0; i--) {
   temp = val & 0x01;
-  RC0 = 0; TRISC0 = 0;
+  RE0 = 0; TRISE0 = 0;
   __nop();
   __nop();
   __nop();
@@ -1766,10 +1767,10 @@ void write_byte(unsigned char val) {
   __nop();
 
   if (temp == 1) {
-   TRISC0 = 1;
+   TRISE0 = 1;
   }
   delay2(t63us);
-  TRISC0 = 1;
+  TRISE0 = 1;
   __nop();
   __nop();
   val = val >> 1;
@@ -1783,20 +1784,20 @@ unsigned char read_byte() {
 
  for (i = 8; i > 0; i--) {
   value >>= 1;
-  RC0 = 0; TRISC0 = 0;
+  RE0 = 0; TRISE0 = 0;
   __nop();
   __nop();
   __nop();
   __nop();
   __nop();
   __nop();
-  TRISC0 = 1;
+  TRISE0 = 1;
   __nop();
   __nop();
   __nop();
   __nop();
   __nop();
-  j = RC0;
+  j = RE0;
   if (j) value |= 0x80;
   delay2(t63us);
  }
@@ -1808,7 +1809,7 @@ int get_temp() {
 
 
 
- TRISC0 = 1;
+ TRISE0 = 1;
  resetThermometer();
  write_byte(0XCC);
  write_byte(0X44);
@@ -1823,18 +1824,18 @@ int get_temp() {
  write_byte(0XBE);
  TLV = read_byte();
  THV = read_byte();
- TRISC0 = 1;
+ TRISE0 = 1;
  return (TLV >> 4) | ((THV << 4) & 0X3f);
 }
 
 void resetThermometer(void) {
  char presence = 1;
  while (presence) {
-  RC0 = 0; TRISC0 = 0;
+  RE0 = 0; TRISE0 = 0;
   delay2(t503us);
-  TRISC0 = 1;
+  TRISE0 = 1;
   delay2(t70us);
-  if (RC0 == 1)
+  if (RE0 == 1)
    presence = 1;
   else
    presence = 0;
@@ -1843,11 +1844,14 @@ void resetThermometer(void) {
  }
 }
 
-void display_temp(int TZ) {
+char* calculate_temp(int TZ) {
  unsigned int wd = 0;
  unsigned char TX = TLV << 4;
- intEntries = TZ % 10;
- tens = TZ / 10;
+
+
+ temperature[0] = TZ / 10;
+ temperature[1] = TZ % 10;
+ temperature[2] = '.';
 
  if (TX & 0x80) {
   wd = wd + 5000;
@@ -1862,19 +1866,11 @@ void display_temp(int TZ) {
   wd = wd + 625;
  }
 
- pt10 = wd / 1000;
- pt100 = (wd % 1000) / 100;
- pt1000 = (wd % 100) / 10;
- pt10000 = wd % 10;
-# 142 "thermometer_driver.c"
- writecmd(0x01);
- writeInt(tens);
- writeInt(intEntries);
- writechar('.');
- writeInt(pt10);
- writeInt(pt100);
- writeInt(pt1000);
- writeInt(pt10000);
- delay(10000);
-# 176 "thermometer_driver.c"
+ temperature[3] = wd / 1000;
+ temperature[4] = (wd % 1000) / 100;
+ temperature[5] = (wd % 100) / 10;
+ temperature[6] = wd % 10;
+ temperature[7] = '\0';
+ return temperature;
+# 180 "thermometer_driver.c"
 }

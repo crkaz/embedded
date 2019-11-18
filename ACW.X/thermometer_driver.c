@@ -1,14 +1,14 @@
 #include <xc.h>
 #include "Utils.h"
 
-#define dq RC0
-#define dq_dir TRISC0
+#define dq RE0
+#define dq_dir TRISE0
 #define set_dq_high() dq_dir = 1
 #define set_dq_low() dq = 0; dq_dir = 0
 
 unsigned char TLV = 0; //temperature high byte                     
 unsigned char THV = 0; //temperature low byte   
-
+char temperature[8]; //Stores the temperature
 // Timings for delay2 args. Cannot be const.
 int t503us[2] = { 2, 70 };
 int t430us[2] = { 2, 60 };
@@ -108,11 +108,14 @@ void resetThermometer(void) {
 	}
 }
 
-void display_temp(int TZ) {
+char* calculate_temp(int TZ) {
 	unsigned int wd = 0; //temperature BCD code  after convert
 	unsigned char TX = TLV << 4; //temperature decimal
-	intEntries = TZ % 10; //integer Entries bit                                                                                                                            
-	tens = TZ / 10; //integer ten bit	
+	
+
+	temperature[0] = TZ / 10; //integer ten bit	
+	temperature[1] = TZ % 10; //integer Entries bit                                                                                                                            
+	temperature[2] = '.';
 	
 	if (TX & 0x80) {
 		wd = wd + 5000;
@@ -127,27 +130,28 @@ void display_temp(int TZ) {
 		wd = wd + 625; //hereinbefore four instructions are turn  decimal into BCD code        
 	}
 
-	pt10 = wd / 1000; //ten cent bit                                                                           
-	pt100 = (wd % 1000) / 100; //hundred cent bit                                                                       
-	pt1000 = (wd % 100) / 10; //thousand cent bit                                                                      
-	pt10000 = wd % 10; //myriad cent bit
+	temperature[3] = wd / 1000; //ten cent bit                                                                           
+	temperature[4] = (wd % 1000) / 100; //hundred cent bit                                                                       
+	temperature[5] = (wd % 100) / 10; //thousand cent bit                                                                      
+	temperature[6] = wd % 10; //myriad cent bit
+	temperature[7] = '\0';
+	return temperature;
 
 
 
 
 
-
-	// SHOW ON BIG LCD
-	//    unsigned char tens, intEntries, pt10, pt100, pt1000, pt10000;
-	writecmd(0x01); // Clear lcd
-	writeInt(tens); //display integer ten bit                        
-	writeInt(intEntries); //display integer ten bit                        
-	writechar('.'); //display integer ten bit                        
-	writeInt(pt10); //display integer ten bit                        
-	writeInt(pt100); //display integer ten bit                        
-	writeInt(pt1000); //display integer ten bit                        
-	writeInt(pt10000); //display integer ten bit      
-	delay(10000);
+	//// SHOW ON BIG LCD
+	////    unsigned char tens, intEntries, pt10, pt100, pt1000, pt10000;
+	//writecmd(0x01); // Clear lcd
+	//writeInt(tens); //display integer ten bit                        
+	//writeInt(intEntries); //display integer ten bit                        
+	//writechar('.'); //display integer ten bit                        
+	//writeInt(pt10); //display integer ten bit                        
+	//writeInt(pt100); //display integer ten bit                        
+	//writeInt(pt1000); //display integer ten bit                        
+	//writeInt(pt10000); //display integer ten bit      
+	//delay(10000);
 
 	//    // SHOW ON 7SEG LCD
 	//    PORTD = table[tens]; //display integer ten bit                        
