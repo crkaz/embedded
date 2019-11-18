@@ -15,12 +15,30 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h: 2662: extern volatile __bit RA2 __attribute__((address(0x2A)));
 [v _RA2 `Vb ~T0 @X0 0 e@42 ]
 [p mainexit ]
-"8 ./buzzer_driver.h
-[; ;./buzzer_driver.h: 8:     void buzzer_init(void);
-[v _buzzer_init `(v ~T0 @X0 0 ef ]
-"9
-[; ;./buzzer_driver.h: 9:     void buzzer_sound(int bT, int pT, int reps);
-[v _buzzer_sound `(v ~T0 @X0 0 ef3`i`i`i ]
+"12 ./lcd_driver.h
+[; ;./lcd_driver.h: 12:  void lcd_init(void);
+[v _lcd_init `(v ~T0 @X0 0 ef ]
+"16 ./rtc_driver.h
+[; ;./rtc_driver.h: 16:     void rtc_port_init();
+[v _rtc_port_init `(v ~T0 @X0 0 e? ]
+"17
+[; ;./rtc_driver.h: 17:     void rtc_init();
+[v _rtc_init `(v ~T0 @X0 0 e? ]
+"18
+[; ;./rtc_driver.h: 18:     void set_time();
+[v _set_time `(v ~T0 @X0 0 e? ]
+"13 ./lcd_driver.h
+[; ;./lcd_driver.h: 13:     void lcd_clear(void);
+[v _lcd_clear `(v ~T0 @X0 0 ef ]
+"10
+[; ;./lcd_driver.h: 10:  void writeString(char str[]);
+[v _writeString `(v ~T0 @X0 0 ef1`*uc ]
+"23 ./rtc_driver.h
+[; ;./rtc_driver.h: 23:     char* get_time_as_string();
+[v _get_time_as_string `(*uc ~T0 @X0 0 e? ]
+"7 ./Utils.h
+[; ;./Utils.h: 7:  void delay(int t);
+[v _delay `(v ~T0 @X0 0 ef1`i ]
 "54 C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h
 [; ;C:\Program Files (x86)\Microchip\xc8\v2.10\pic\include\pic16f877a.h: 54: __asm("INDF equ 00h");
 [; <" INDF equ 00h ;# ">
@@ -211,58 +229,121 @@ Version 4.0 HI-TECH Software Intermediate Code
 [p x BOREN = OFF ]
 "8
 [p x LVP = OFF ]
-"21
-[; ;main.c: 21: void init() {
+"7 ./rtc_driver.h
+[; ;./rtc_driver.h: 7:     const char SEC = 0x80;
+[v _SEC `Cuc ~T0 @X0 1 e ]
+[i _SEC
+-> -> 128 `i `uc
+]
+"8
+[; ;./rtc_driver.h: 8:     const char MIN = 0x82;
+[v _MIN `Cuc ~T0 @X0 1 e ]
+[i _MIN
+-> -> 130 `i `uc
+]
+"9
+[; ;./rtc_driver.h: 9:     const char HOUR = 0x84;
+[v _HOUR `Cuc ~T0 @X0 1 e ]
+[i _HOUR
+-> -> 132 `i `uc
+]
+"10
+[; ;./rtc_driver.h: 10:     const char DATE = 0x86;
+[v _DATE `Cuc ~T0 @X0 1 e ]
+[i _DATE
+-> -> 134 `i `uc
+]
+"11
+[; ;./rtc_driver.h: 11:     const char MONTH = 0x88;
+[v _MONTH `Cuc ~T0 @X0 1 e ]
+[i _MONTH
+-> -> 136 `i `uc
+]
+"12
+[; ;./rtc_driver.h: 12:     const char DAY = 0x8A;
+[v _DAY `Cuc ~T0 @X0 1 e ]
+[i _DAY
+-> -> 138 `i `uc
+]
+"13
+[; ;./rtc_driver.h: 13:     const char YEAR = 0x8C;
+[v _YEAR `Cuc ~T0 @X0 1 e ]
+[i _YEAR
+-> -> 140 `i `uc
+]
+"14
+[; ;./rtc_driver.h: 14:     const char CTRL = 0x8E;
+[v _CTRL `Cuc ~T0 @X0 1 e ]
+[i _CTRL
+-> -> 142 `i `uc
+]
+"20 main.c
+[; ;main.c: 20: void init() {
 [v _init `(v ~T0 @X0 1 ef ]
 {
 [e :U _init ]
 [f ]
-"22
-[; ;main.c: 22:  ADCON1 = 0X07;
+"21
+[; ;main.c: 21:     ADCON1 = 0X07;
 [e = _ADCON1 -> -> 7 `i `uc ]
-"23
-[; ;main.c: 23:  TRISA = 0X00;
+"22
+[; ;main.c: 22:     TRISA = 0X00;
 [e = _TRISA -> -> 0 `i `uc ]
-"24
-[; ;main.c: 24:  TRISD = 0X00;
+"23
+[; ;main.c: 23:     TRISD = 0X00;
 [e = _TRISD -> -> 0 `i `uc ]
-"25
-[; ;main.c: 25:  TRISC = 0x00;
+"24
+[; ;main.c: 24:     TRISC = 0x00;
 [e = _TRISC -> -> 0 `i `uc ]
-"26
-[; ;main.c: 26:  RA2 = 1;
+"25
+[; ;main.c: 25:     RA2 = 1;
 [e = _RA2 -> -> 1 `i `b ]
-"27
-[; ;main.c: 27: }
+"26
+[; ;main.c: 26: }
 [e :UE 95 ]
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
-"29
-[; ;main.c: 29: void main(void) {
+"28
+[; ;main.c: 28: void main(void) {
 [v _main `(v ~T0 @X0 1 ef ]
 {
 [e :U _main ]
 [f ]
-"31
-[; ;main.c: 31:  init();
+"30
+[; ;main.c: 30:     init();
 [e ( _init ..  ]
+"31
+[; ;main.c: 31:     lcd_init();
+[e ( _lcd_init ..  ]
+"32
+[; ;main.c: 32:     rtc_port_init();
+[e ( _rtc_port_init ..  ]
 "33
-[; ;main.c: 33:     buzzer_init();
-[e ( _buzzer_init ..  ]
+[; ;main.c: 33:     rtc_init();
+[e ( _rtc_init ..  ]
 "34
-[; ;main.c: 34:     while (1) {
+[; ;main.c: 34:     set_time();
+[e ( _set_time ..  ]
+"35
+[; ;main.c: 35:     while (1) {
 [e :U 98 ]
 {
-"38
-[; ;main.c: 38:         buzzer_sound(12500, 5000, 1);
-[e ( _buzzer_sound (3 , , -> 12500 `i -> 5000 `i -> 1 `i ]
 "40
-[; ;main.c: 40:     }
+[; ;main.c: 40:         lcd_clear();
+[e ( _lcd_clear ..  ]
+"41
+[; ;main.c: 41:         writeString(get_time_as_string());
+[e ( _writeString (1 ( _get_time_as_string ..  ]
+"52
+[; ;main.c: 52:         delay(1500);
+[e ( _delay (1 -> 1500 `i ]
+"55
+[; ;main.c: 55:     }
 }
 [e :U 97 ]
 [e $U 98  ]
 [e :U 99 ]
-"41
-[; ;main.c: 41: }
+"56
+[; ;main.c: 56: }
 [e :UE 96 ]
 }

@@ -1735,71 +1735,90 @@ extern __bank0 __bit __timeout;
     char* convert_bcd_to_string(char);
 # 2 "lcd_driver.c" 2
 
+# 1 "./lcd_driver.h" 1
+
+
+
+
+
+
+ void writecmd(char command);
+ void writechar(char character);
+ void writeInt(int i);
+ void writeString(char str[]);
+ void setCursorPos(int lineN, int pos);
+ void lcd_init(void);
+    void lcd_clear(void);
+    void lcd_home(void);
+# 3 "lcd_driver.c" 2
+
 
 
 
 
 
 void writecmd(char command) {
- RA5 = 0;
- RA4 = 0;
- PORTD = command;
- RA3 = 0;
- delay(60);
- RA3 = 1;
+    RA5 = 0;
+    RA4 = 0;
+    PORTD = command;
+    RA3 = 0;
+    delay(60);
+    RA3 = 1;
 }
 
 void writechar(char character) {
- RA5 = 1;
- RA4 = 0;
- PORTD = character;
- RA3 = 0;
- delay(60);
- RA3 = 1;
+    RA5 = 1;
+    RA4 = 0;
+    PORTD = character;
+    RA3 = 0;
+    delay(30);
+    RA3 = 1;
 }
 
 void writeInt(int i) {
- writechar(i + 48);
+    writechar(i + 48);
 }
 
 void writeString(char str[]) {
- for (int i = 0; i < strlen(str); ++i) {
-  writechar(str[i]);
- }
+    for (int i = 0; i < strlen(str); ++i) {
+        writechar(str[i]);
+    }
 }
 
 void setCursorPos(int lineN, int pos) {
- const int ln1 = 0xC0;
- const int ln2 = 0xD0;
- const int ln3 = 0xC8;
- const int ln4 = 0xD8;
+    const int ln1 = 0xC0;
+    const int ln2 = 0xD0;
+    const int ln3 = 0xC8;
+    const int ln4 = 0xD8;
 
- int addr;
+    int addr;
 
- if (lineN == 1) {
+    switch (lineN) {
+        case 1: addr = ln1 + pos;
+            break;
+        case 2: addr = ln2 + pos;
+            break;
+        case 3: addr = ln3 + pos;
+            break;
+        case 4: addr = ln4 + pos;
+            break;
+        default: break;
+    }
 
-  addr = ln1 + pos;
- }
- else if (lineN == 2) {
-
-  addr = ln2 + pos;
- }
- else if (lineN == 3) {
-
-  addr = ln3 + pos;
- }
- else if (lineN == 4) {
-
-  addr = ln4 + pos;
- }
-
- writecmd(addr);
+    writecmd(addr);
 }
 
-
 void lcd_init(void) {
- writecmd(0x0F);
- writecmd(0x38);
- writecmd(0x01);
+    writecmd(0x0F);
+    writecmd(0x38);
+    writecmd(0x01);
 
+}
+
+void lcd_clear() {
+    writecmd(0x01);
+}
+
+void lcd_home() {
+    writecmd(0x02);
 }

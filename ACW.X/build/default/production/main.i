@@ -1733,17 +1733,6 @@ extern __bank0 __bit __timeout;
 
 
 
-# 1 "./buzzer_driver.h" 1
-
-
-
-
-
-
-
-    void buzzer_init(void);
-    void buzzer_sound(int bT, int pT, int reps);
-# 12 "main.c" 2
 
 # 1 "./Utils.h" 1
 
@@ -1758,31 +1747,79 @@ extern __bank0 __bit __timeout;
     char* convert_bcd_to_string(char);
 # 13 "main.c" 2
 
+# 1 "./lcd_driver.h" 1
 
 
+
+
+
+
+ void writecmd(char command);
+ void writechar(char character);
+ void writeInt(int i);
+ void writeString(char str[]);
+ void setCursorPos(int lineN, int pos);
+ void lcd_init(void);
+    void lcd_clear(void);
+    void lcd_home(void);
+# 14 "main.c" 2
+
+# 1 "./rtc_driver.h" 1
+
+
+
+
+
+
+    const char SEC = 0x80;
+    const char MIN = 0x82;
+    const char HOUR = 0x84;
+    const char DATE = 0x86;
+    const char MONTH = 0x88;
+    const char DAY = 0x8A;
+    const char YEAR = 0x8C;
+    const char CTRL = 0x8E;
+
+    void rtc_port_init();
+    void rtc_init();
+    void set_time();
+    void get_time();
+    void write_byte(unsigned char time_tx);
+    unsigned char read_byte();
+    char* get_time_bit_as_string(char);
+    char* get_time_as_string();
+    void set_time_bit(char, char);
+# 15 "main.c" 2
 
 
 
 
 
 void init() {
- ADCON1 = 0X07;
- TRISA = 0X00;
- TRISD = 0X00;
- TRISC = 0x00;
- RA2 = 1;
+    ADCON1 = 0X07;
+    TRISA = 0X00;
+    TRISD = 0X00;
+    TRISC = 0x00;
+    RA2 = 1;
 }
 
 void main(void) {
 
- init();
-
-    buzzer_init();
+    init();
+    lcd_init();
+    rtc_port_init();
+    rtc_init();
+    set_time();
     while (1) {
 
 
 
-        buzzer_sound(12500, 5000, 1);
+
+        lcd_clear();
+        writeString(get_time_as_string());
+# 52 "main.c"
+        delay(1500);
+
 
     }
 }

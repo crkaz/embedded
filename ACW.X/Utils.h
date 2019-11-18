@@ -10,4 +10,4 @@
     char* convert_bcd_to_string(char); // Convert BCD (binary coded decimal) to decimal.
     
 #endif	/* XC_Utils_H */
-    
+

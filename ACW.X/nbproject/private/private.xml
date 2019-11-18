@@ -3,9 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Zak/Desktop/Embedded/embedded/ACW.X/buzzer_driver.h</file>
-            <file>file:/C:/Users/Zak/Desktop/Embedded/embedded/ACW.X/main.c</file>
-            <file>file:/C:/Users/Zak/Desktop/Embedded/embedded/ACW.X/buzzer_driver.c</file>
+            <file>file:/C:/Users/Zak/MPLABXProjects/ACW.X/lcd_driver.c</file>
+            <file>file:/C:/Users/Zak/MPLABXProjects/ACW.X/rtc_driver.h</file>
+            <file>file:/C:/Users/Zak/MPLABXProjects/ACW.X/main.c</file>
+            <file>file:/C:/Users/Zak/MPLABXProjects/ACW.X/rtc_driver.c</file>
+            <file>file:/C:/Users/Zak/MPLABXProjects/ACW.X/lcd_driver.h</file>
         </group>
     </open-files>
 </project-private>

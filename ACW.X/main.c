@@ -9,33 +9,48 @@
 // ---
 
 // Drivers
-#include "buzzer_driver.h"
+//#include "buzzer_driver.h"
 #include "Utils.h"
-//#include "lcd_driver.h"
-
-//#include "rtc_driver.h"
+#include "lcd_driver.h"
+#include "rtc_driver.h"
 //#include "thermometer_driver.h"
 // ---
 #define psb RA2
 
 void init() {
-	ADCON1 = 0X07; //a port as ordinary i/o.
-	TRISA = 0X00; //a port as output.
-	TRISD = 0X00; //d port as output.
-	TRISC = 0x00;
-	psb = 1;
+    ADCON1 = 0X07; //a port as ordinary i/o.
+    TRISA = 0X00; //a port as output.
+    TRISD = 0X00; //d port as output.
+    TRISC = 0x00;
+    psb = 1;
 }
 
 void main(void) {
 
-	init();
-    
-    buzzer_init();
+    init();
+    lcd_init();
+    rtc_port_init();
+    rtc_init();
+    set_time();
     while (1) {
         // ---
         // Code here.
-        // Constant alarm.
-        buzzer_sound(12500, 5000, 1);
+        //        writeString(get_time_bit_as_string(0x80)); // Not working as expected.
+        //        setCursorPos(2, 2);
+        lcd_clear();
+        writeString(get_time_as_string());
+        
+//        writechar(get_time_bit_as_string(HOUR)[0]);
+//        writechar(get_time_bit_as_string(HOUR)[1]);
+//        writechar(':');
+//        writechar(get_time_bit_as_string(MIN)[0]);
+//        writechar(get_time_bit_as_string(MIN)[1]);
+//        writechar(':');
+//        writechar(get_time_bit_as_string(SEC)[0]);
+//        writechar(get_time_bit_as_string(SEC)[1]);
+//        
+        delay(1500);
         // ---
+        
     }
 }

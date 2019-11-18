@@ -7,9 +7,10 @@
 	void writecmd(char command);
 	void writechar(char character);
 	void writeInt(int i);
-	void writeString(char str[])
+	void writeString(char str[]);
 	void setCursorPos(int lineN, int pos);
 	void lcd_init(void);
-
+    void lcd_clear(void);
+    void lcd_home(void);
 #endif	/* XC_HEADER_TEMPLATE_H */
 
