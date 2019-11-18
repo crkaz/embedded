@@ -70,6 +70,7 @@ OBJECTFILES=${OBJECTDIR}/main.p1 ${OBJECTDIR}/buzzer_driver.p1 ${OBJECTDIR}/lcd_
 SOURCEFILES=main.c buzzer_driver.c lcd_driver.c thermometer_driver.c rtc_driver.c Utils.c
 
 
+
 CFLAGS=
 ASFLAGS=
 LDLIBSOPTIONS=
