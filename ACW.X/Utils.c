@@ -44,8 +44,8 @@ char IntToChar(int i) {
 }
 
 // Convert BCD (binary coded decimal) to decimal.
-//char* BcdToDec(char bcd) {
-// Multiply most significant bit and add least significant.
-//    int dec = ((bcd & 0xF0) >> 4) * 10 + (bcd & 0x0F);
-//    return dec;
-//}
+char* BcdToDec(char bcd) {
+//    Multiply most significant bit and add least significant.
+            int dec = ((bcd & 0xF0) >> 4) * 10 + (bcd & 0x0F);
+    return dec;
+}

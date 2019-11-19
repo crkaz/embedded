@@ -17,19 +17,24 @@
 #include "thermometer_driver.h"
 // ---
 
-int mode = 0; // 0 == , 1 == , 2 == ,
+const int DAYTIME[2] = {6, 30}; // 6:30am
+const int NIGHTTIME[2] = {19, 30}; // 7:30pm
+
+int mode[2]; // Store UI state e.g. mode[1,0] == settings menu. mode[0,1] == settings>set time.
+float lowerThreshold[2] = {5.0, 2.5}; // Temperature heating[0] and alarm[1] thresholds.
+float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] thresholds.
 
 // Initialise default ports.
 void InitPorts() {
-//    ADCON1 = 0X07; //a port as ordinary i/o.
+    //    ADCON1 = 0X07; //a port as ordinary i/o.
 }
 
 // Initialise each component and set the rtc time.
 void InitComponents() {
     lcd_Init();
-    rtc_port_init();
-    rtc_init();
-    set_time();
+    rtc_PortInit();
+    rtc_Init();
+    rtc_SetTime();
 }
 
 // Ready the application.
@@ -38,22 +43,36 @@ void Init() {
     InitComponents();
 }
 
-
-// Check temperature thresholds and sound alarm if appropriate.
-void CheckTemperature(){
-    lcd_SetCursorPos(1, 1);
-    lcd_Clear();
-    lcd_PrintString(get_time_as_string());
+// Check temperature thresholds and sound alarm or turn heating/cooling on if appropriate.
+void CheckTemperature() {
+    //    float temp = temp_GetTemp();
+    //    if (temp > upperThreshold[1] || temp < lowerThreshold[1]) {
+    //        buz_Sound(500, 500, 500);
+    //    }
+    //    if (temp > upperThreshold[0]
+    //        // Switch cooling on.
+    //    }
+    //    else if (temp < lowerThreshold[0]){
+    //        // Switch heating output on.
+    //    }
 }
 
 // Display the time on the second row of the LCD.
-void DisplayTime(){
-    lcd_SetCursorPos(2, 1);
+void DisplayDateAndTime() {
     lcd_Clear();
-    lcd_PrintString(get_time_as_string());
+    lcd_SetCursorPos(1, 1);
+    lcd_PrintString(rtc_GetDateString());
+    lcd_SetCursorPos(2, 1);
+    lcd_PrintString(rtc_GetTimeString());
 }
+
 // Set nighttime (0) or daytime (1) mode
-void SetMode(int i){
+void CheckTime(int i) {
+    
+}
+
+// Set time, set temperature thresholds.
+void DisplaySettings(){
 }
 
 // Main operation loop.
@@ -61,12 +80,29 @@ void Loop() {
     int input;
 
     for (;;) {
-        // input = BTN_GetInput();
+        CheckTemperature();
+
+        switch(mode){
+            case [0, 0]: DisplayDateAndTime(); break;
+            case [1, 0]: DisplaySettings(); break;
+            case [1, 1]: DisplaySettings(); break;
+            case [1, 2]: DisplaySettings(); break;
+            case [1, 3]: DisplaySettings(); break;
+
+//            case [2, 0]: ; break;
+//            case [3, 0]: Demo(); break;
+        }
+
+        //         input = BTN_GetInput();
         switch (input) {
             case 0: break;
+                mode = 0;
             case 1: break;
+                mode = 1;
             case 2: break;
+                mode = 2;
             case 3: break;
+                mode = 3;
             case 4: break;
             case 5: break;
             case 6: break;
@@ -79,6 +115,7 @@ void Loop() {
             case 13: break;
             case 14: break;
             case 15: break;
+
         }
     }
 }
