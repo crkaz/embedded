@@ -11,6 +11,7 @@
 #define i_o   RB4 //1302I_O           
 #define sclk  RB0 //1302 clock        
 #define rst   RB5 //1302 enable bit   
+//#define psb RA2 // This is for lcd.
 
 // Args for get/set_time_bit()
 // NB: Write mode by default; +1 to set to read).
@@ -102,7 +103,7 @@ char* get_time_bit_as_string(char b) {
     char t = read_byte();
     rst = 0; //reset DS1302
 
-    return convert_bcd_to_string(t); // Convert binary coded decimal to str for ease of use.
+    return BcdToStr(t); // Convert binary coded decimal to str for ease of use.
 }
 
 // Collate hour/min/second components and return a string.

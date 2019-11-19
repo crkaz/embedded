@@ -9,48 +9,81 @@
 // ---
 
 // Drivers
-//#include "buzzer_driver.h"
 #include "Utils.h"
+//#include "button_driver.h"
+#include "buzzer_driver.h"
 #include "lcd_driver.h"
 #include "rtc_driver.h"
-//#include "thermometer_driver.h"
+#include "thermometer_driver.h"
 // ---
-#define psb RA2
 
-void init() {
-    ADCON1 = 0X07; //a port as ordinary i/o.
-    TRISA = 0X00; //a port as output.
-    TRISD = 0X00; //d port as output.
-    TRISC = 0x00;
-    psb = 1;
+int mode = 0; // 0 == , 1 == , 2 == ,
+
+// Initialise default ports.
+void InitPorts() {
+//    ADCON1 = 0X07; //a port as ordinary i/o.
 }
 
-void main(void) {
-
-    init();
-    lcd_init();
+// Initialise each component and set the rtc time.
+void InitComponents() {
+    lcd_Init();
     rtc_port_init();
     rtc_init();
     set_time();
-    while (1) {
-        // ---
-        // Code here.
-        //        writeString(get_time_bit_as_string(0x80)); // Not working as expected.
-        //        setCursorPos(2, 2);
-        lcd_clear();
-        writeString(get_time_as_string());
-        
-//        writechar(get_time_bit_as_string(HOUR)[0]);
-//        writechar(get_time_bit_as_string(HOUR)[1]);
-//        writechar(':');
-//        writechar(get_time_bit_as_string(MIN)[0]);
-//        writechar(get_time_bit_as_string(MIN)[1]);
-//        writechar(':');
-//        writechar(get_time_bit_as_string(SEC)[0]);
-//        writechar(get_time_bit_as_string(SEC)[1]);
-//        
-        delay(1500);
-        // ---
-        
+}
+
+// Ready the application.
+void Init() {
+    InitPorts();
+    InitComponents();
+}
+
+
+// Check temperature thresholds and sound alarm if appropriate.
+void CheckTemperature(){
+    lcd_SetCursorPos(1, 1);
+    lcd_Clear();
+    lcd_PrintString(get_time_as_string());
+}
+
+// Display the time on the second row of the LCD.
+void DisplayTime(){
+    lcd_SetCursorPos(2, 1);
+    lcd_Clear();
+    lcd_PrintString(get_time_as_string());
+}
+// Set nighttime (0) or daytime (1) mode
+void SetMode(int i){
+}
+
+// Main operation loop.
+void Loop() {
+    int input;
+
+    for (;;) {
+        // input = BTN_GetInput();
+        switch (input) {
+            case 0: break;
+            case 1: break;
+            case 2: break;
+            case 3: break;
+            case 4: break;
+            case 5: break;
+            case 6: break;
+            case 7: break;
+            case 8: break;
+            case 9: break;
+            case 10: break;
+            case 11: break;
+            case 12: break;
+            case 13: break;
+            case 14: break;
+            case 15: break;
+        }
     }
+}
+
+void main(void) {
+    Init(); // Initialise ports and components.
+    Loop(); // Main operations.
 }
