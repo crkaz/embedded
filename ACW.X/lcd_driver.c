@@ -1,9 +1,7 @@
 #include <xc.h>
 #include "Utils.h"
+#include "lcd_driver.h"
 
-#define rs RA5
-#define rw RA4
-#define e RA3
 
 void writecmd(char command) {
 	rs = 0; //is command not data
@@ -24,12 +22,21 @@ void writechar(char character) {
 }
 
 void writeInt(int i) {
-	writechar(i + 48);
+	if (i == 46) //Makes '.' print out correctly
+		writechar(i);
+	else
+		writechar(i + 48);
 }
 
 void writeString(char str[]) {
 	for (int i = 0; i < strlen(str); ++i) {
 		writechar(str[i]);
+	}
+}
+
+void writeIntArray(char ints[]) {
+	for (int i = 0; i < strlen(ints); i++) {
+		writeInt(ints[i]);
 	}
 }
 

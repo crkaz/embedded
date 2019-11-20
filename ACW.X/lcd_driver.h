@@ -7,9 +7,14 @@
 	void writecmd(char command);
 	void writechar(char character);
 	void writeInt(int i);
-	void writeString(char str[])
+	void writeString(char str[]);
+	void writeIntArray(char ints[]);
 	void setCursorPos(int lineN, int pos);
 	void lcd_init(void);
+    
+    #define rs RA5
+#define rw RA4
+#define e RA3
 
 #endif	/* XC_HEADER_TEMPLATE_H */
 
