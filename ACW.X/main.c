@@ -9,7 +9,7 @@
 // ---
 
 // Drivers
-//#include "buzzer_driver.h"
+#include "buzzer_driver.h"
 #include "Utils.h"
 #include "lcd_driver.h"
 #include "thermometer_driver.h"

@@ -9,6 +9,8 @@
 	int strlen(char a[]);
 	int strlenPointer(unsigned char a[]);
 	void resetThermometer(void);
-	
-#endif	/* XC_Utils_H */
 
+    char* convert_bcd_to_string(char); // Convert BCD (binary coded decimal) to decimal.
+    
+#endif	/* XC_Utils_H */
+    
