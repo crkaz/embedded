@@ -52,7 +52,6 @@ void init() {
     TRISA = 0X00; //a port as output.
     TRISD = 0X00; //d port as output.
     TRISC = 0x00;
-    psb = 1;
 }
 
 // Check temperature thresholds and sound alarm or turn heating/cooling on if appropriate.
