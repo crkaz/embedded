@@ -18,7 +18,7 @@
 //mode, bit 5 is the second 10-hour bit (20 ? 23 hours).
 
 //define the time:       sec,  min,  hour, day, month, week, year, control word.
-const char defaults[] = {0x00, 0x37, 0x13, 0x8, 0x21, 0x11, 0x19, 0x00};
+const char defaults[] = {0x30, 0x58, 0x16, 0x21, 0x11, 0x47, 0x19, 0x00};
 unsigned char time_rx = 0x30; //define receive reg.
 char table1[7]; //define the read time and date save table.
 

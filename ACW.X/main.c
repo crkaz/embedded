@@ -66,9 +66,10 @@ void CheckTemperature() {
 // Display the time on the second row of the LCD.
 
 void DisplayDateAndTime() {
-    lcd_Clear();
-    lcd_PrintString(rtc_GetDateString(), 0, 0);
-    lcd_PrintString(rtc_GetTimeString(), 1, 0);
+    lcd_PrintString("Date:", 0, 0);
+    lcd_PrintString(rtc_GetDateString(), 0, 3);
+    lcd_PrintString("Time:", 1, 0);
+    lcd_PrintString(rtc_GetTimeString(), 1, 3);
     Delay(100); // Stop flicker.
 }
 
