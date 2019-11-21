@@ -43,5 +43,6 @@ void main(void) {
         if (inp != ' ') {
             writechar(display());
         }
+        delay(1000);
     }
 }

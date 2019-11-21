@@ -6,42 +6,45 @@ void matrix_Init() {
 }
 
 void matrix_Scan() {
+    const int HALFMASK = 0xF0;
+    
     PORTC = 0XF7; //C3 OUTPUT low,the other 3 bits OUTPUT high                      
     NOP(); //delay                                                           
     result = PORTC; //read C PORT                                                     
-    result = result & 0xF0; //clear low 4 bits                                                
-    if (result != 0xF0) //judge if high 4 bits all 1(all 1 is no key press)               
+    result &= HALFMASK; //clear low 4 bits                                                
+    if (result != HALFMASK) //judge if high 4 bits all 1(all 1 is no key press)               
     {
         result = result | 0x07; //no,add low 4 bits 0x07 as key scan result                       
     } else //yes,change low 4 bits OUTPUT, judge if a key press again        
     {
-        PORTC = 0XFb; //C2 OUTPUT low,the other 3 bits OUTPUT high                      
+        
+        PORTC = 0XFB; //C2 OUTPUT low,the other 3 bits OUTPUT high                      
         NOP(); //delay                                                           
         result = PORTC; //read C PORT                                                     
-        result = result & 0xF0; //clear low 4 bits                                                
-        if (result != 0xF0) //judge if high 4 bits all 1(all 1 is no key press)               
+        result &= HALFMASK; //clear low 4 bits                                                
+        if (result != HALFMASK) //judge if high 4 bits all 1(all 1 is no key press)               
         {
-            result = result | 0x0B; //no,add low 4 bits 0x0b as key scan result                       
+            result |= 0x0B; //no,add low 4 bits 0x0b as key scan result                       
         } else //yes,change low 4 bits OUTPUT, judge if a key press again        
         {
+            
             PORTC = 0XFd; //C1 OUTPUT low,the other 3 bits OUTPUT high                      
-            NOP();
-            ; //delay                                                           
+            NOP(); //delay                                                           
             result = PORTC; //read C PORT                                                     
-            result = result & 0xF0; //clear low 4 bits                                                
-            if (result != 0xF0) //judge if high 4 bits all 1(all 1 is no key press)               
+            result &= HALFMASK; //clear low 4 bits                                                
+            if (result != HALFMASK) //judge if high 4 bits all 1(all 1 is no key press)               
             {
-                result = result | 0x0D; //no,add low 4 bits 0x0d as key scan result                       
+                result |= 0x0D; //no,add low 4 bits 0x0d as key scan result                       
             } else //yes,change low 4 bits OUTPUT, judge if a key press again        
             {
+                
                 PORTC = 0XFe; //C0 OUTPUT low,the other 3 bits OUTPUT high                      
-                NOP();
-                ; //delay                                                           
+                NOP(); //delay                                                           
                 result = PORTC; //read C PORT                                                     
-                result = result & 0xF0; //clear low 4 bits                                                
-                if (result != 0xF0) //judge if high 4 bits all 1(all 1 is no key press)               
+                result &= HALFMASK; //clear low 4 bits                                                
+                if (result != HALFMASK) //judge if high 4 bits all 1(all 1 is no key press)               
                 {
-                    result = result | 0x0E; //no,add low 4 bits 0x0e as key scan result                    
+                    result |= 0x0E; //no,add low 4 bits 0x0e as key scan result                    
                 } else //yes,all key scan end,no key press,set no key press flag         
                 {
                     result = 0xFF; //key scan result 0xff as no key press flag                       
@@ -69,6 +72,6 @@ char display() {
         case 0x7b: return 'D';
         case 0x7d: return 'E';
         case 0x7e: return 'F';
-        case 0xff: return ' ';
     }
+    return ' ';
 }
