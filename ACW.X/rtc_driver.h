@@ -23,8 +23,8 @@
     void rtc_WriteByte(unsigned char time_tx); //write one byte subroutine.
     unsigned char rtc_ReadByte(); //read one byte subroutine.
     char* rtc_GetTimeComponentAsString(char); // Get individual time/date component.
-    char* rtc_GetTimeString(); // Get full time as string.
-    char* rtc_GetDateString(); // Get full date as string.
+//    char* rtc_GetTimeString(); // Get full time as string.
+//    char* rtc_GetDateString(); // Get full date as string.
     void rtc_SetTimeComponent(char, char); // Set individual time component.
 
 #endif	/* XC_RTC_H */

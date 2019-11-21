@@ -21,7 +21,7 @@
 const int DAYTIME[2] = {6, 30}; // 6:30am
 const int NIGHTTIME[2] = {19, 30}; // 7:30pm
 
-int mode[2]; // Store UI state e.g. mode[1,0] == settings menu. mode[0,1] == settings>set time.
+int mode = 0; // Store UI state
 float lowerThreshold[2] = {5.0, 2.5}; // Temperature heating[0] and alarm[1] thresholds.
 float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] thresholds.
 
@@ -62,14 +62,14 @@ void CheckTemperature() {
 void DisplayDateAndTime() {
     lcd_Clear();
     lcd_SetCursorPos(1, 1);
-    lcd_PrintString(rtc_GetDateString());
+   // lcd_PrintString(rtc_GetDateString(), 1, 1);
     lcd_SetCursorPos(2, 1);
-    lcd_PrintString(rtc_GetTimeString());
+   //lcd_PrintString(rtc_GetTimeString(), 2, 1);
 }
 
 // Check/set nighttime (0) or daytime (1) mode
 void CheckTime(int i) {
-    int time[4] = rtc_GetTime();
+    //int time[4] = rtc_GetTime();
     
 }
 
@@ -79,13 +79,13 @@ void Loop() {
 
     for (;;) {
         CheckTemperature(); // Check alarms
-        CheckTime(); // Check daytime/nighttime mode.
+        //CheckTime(); // Check daytime/nighttime mode.
 
         switch(mode){
             case 0: DisplayDateAndTime(); break;
-            case 1: SetTime(); break;
-            case 2: SetThresholds(); break;
-            case 3: Test(); break;
+//            case 1: SetTime(); break;
+//            case 2: SetThresholds(); break;
+//            case 3: Test(); break;
         }
 
         //         input = BTN_GetInput();
