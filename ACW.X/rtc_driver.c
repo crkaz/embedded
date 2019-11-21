@@ -66,7 +66,7 @@ void rtc_SetTimeComponent(char b, char t) {
     rst = 0; //reset
 }
 
-// Read ALL components (sec, min, hour etc..) with BUST mode.
+// Read ALL components (sec, min, hour etc..) with BURST mode.
 void rtc_GetTime() {
     int i; //set loop counter.
     rst = 1; //enable DS1302
@@ -85,51 +85,6 @@ char rtc_GetTimeComponent(char b){
     char t = rtc_ReadByte();
     rst = 0; //reset DS1302
     
-    return t;
-}
-
-// GET INDIVIDUAL TIME COMPONENT AS INT
-// get_time_bit(YEAR); // EXAMPLE: returning YEAR bit as int.
-char* rtc_GetTimeComponentAsString(char b) {
-    rst = 1; //enable DS1302
-    rtc_WriteByte(b + 1); // Read individual bit (+ 1 sets read bit).
-    char t = rtc_ReadByte();
-    rst = 0; //reset DS1302
-
-    return BcdToStr(t); // Convert binary coded decimal to str for ease of use.
-}
-
-// Collate hour/min/second components and return a string.
-char* rtc_GetTimeString() {
-    char t[] = {
-        rtc_GetTimeComponentAsString(HOUR)[0],
-        rtc_GetTimeComponentAsString(HOUR)[1],
-        ':',
-        rtc_GetTimeComponentAsString(MIN)[0],
-        rtc_GetTimeComponentAsString(MIN)[1],
-        ':',
-        rtc_GetTimeComponentAsString(SEC)[0],
-        rtc_GetTimeComponentAsString(SEC)[1],
-        '\0'
-    };
-
-    return t;
-}
-
-char* rtc_GetDateString() {
-    char t[] = {
-        '2', '0',
-        rtc_GetTimeComponentAsString(YEAR)[0],
-        rtc_GetTimeComponentAsString(YEAR)[1],
-        ':',
-        rtc_GetTimeComponentAsString(MONTH)[0],
-        rtc_GetTimeComponentAsString(MONTH)[1],
-        ':',
-        rtc_GetTimeComponentAsString(DAY)[0],
-        rtc_GetTimeComponentAsString(DAY)[1],
-        '\0'
-    };
-
     return t;
 }
 

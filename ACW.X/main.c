@@ -66,13 +66,10 @@ void DisplayDateAndTime() {
     lcd_PrintString(rtc_GetTimeString());
 }
 
-// Set nighttime (0) or daytime (1) mode
+// Check/set nighttime (0) or daytime (1) mode
 void CheckTime(int i) {
+    int time[4] = rtc_GetTime();
     
-}
-
-// Set time, set temperature thresholds.
-void DisplaySettings(){
 }
 
 // Main operation loop.
@@ -80,17 +77,14 @@ void Loop() {
     int input;
 
     for (;;) {
-        CheckTemperature();
+        CheckTemperature(); // Check alarms
+        CheckTime(); // Check daytime/nighttime mode.
 
         switch(mode){
-            case [0, 0]: DisplayDateAndTime(); break;
-            case [1, 0]: DisplaySettings(); break;
-            case [1, 1]: DisplaySettings(); break;
-            case [1, 2]: DisplaySettings(); break;
-            case [1, 3]: DisplaySettings(); break;
-
-//            case [2, 0]: ; break;
-//            case [3, 0]: Demo(); break;
+            case 0: DisplayDateAndTime(); break;
+            case 1: SetTime(); break;
+            case 2: SetThresholds(); break;
+            case 3: Test(); break;
         }
 
         //         input = BTN_GetInput();
