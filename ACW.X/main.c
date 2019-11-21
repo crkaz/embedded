@@ -13,6 +13,8 @@
 #include "Utils.h"
 #include "lcd_driver.h"
 #include "thermometer_driver.h"
+#include "matrix.h"
+
 
 //#include "rtc_driver.h"
 //#include "thermometer_driver.h"
@@ -20,25 +22,26 @@
 #define psb RA2
 
 void init() {
-	ADCON1 = 0X07; //a port as ordinary i/o.
-	TRISA = 0X00; //a port as output.
-	TRISD = 0X00; //d port as output.
-	TRISC = 0x00;
-	psb = 1;
+    ADCON1 = 0X07; //a port as ordinary i/o.
+    TRISA = 0X00; //a port as output.
+    TRISD = 0X00; //d port as output.
+    TRISC = 0x00;
+    psb = 1;
 }
 
 void main(void) {
 
-	init();
+    init();
 
-	lcd_init();
-
-	delay(10000);
+    lcd_init();
+    matrix_Init();
+    writeString("Done Init");
     while (1) {
-		int temp = get_temp();
-		char* tempa = calculate_temp(temp);
-		writeIntArray(tempa);
-		writechar(' ');
-		delay(10000);
+        writecmd(0x02); //clr screen
+        matrix_Scan();
+        char inp = display();
+        if (inp != ' ') {
+            writechar(display());
+        }
     }
 }
