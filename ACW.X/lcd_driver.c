@@ -2,9 +2,6 @@
 #include "Utils.h"
 #include "lcd_driver.h"
 
-#define rs RA5
-#define rw RA4
-#define e RA3
 
 void lcd_WriteCmd(char command) {
     rs = 0; //is command not data
@@ -37,7 +34,19 @@ void lcd_SetCursorPos(int lineN, int pos) {
     const int ln3 = 0xC8; // Address of the start of line 3.
     const int ln4 = 0xD8; // Address of the start of line 4.
 
-    int addr;
+   
+void writeIntArray(char ints[]) {
+	for (int i = 0; i < strlen(ints); i++) {
+		writeInt(ints[i]);
+	}
+}
+
+int addr;
+void setCursorPos(int lineN, int pos) {
+	const int ln1 = 0xC0;
+	const int ln2 = 0xD0;
+	const int ln3 = 0xC8;
+	const int ln4 = 0xD8;
 
     switch (lineN) {
         case 1: addr = ln1 + pos; break;

@@ -7,10 +7,12 @@
 	void lcd_WriteCmd(char command);
 	void lcd_PrintChar(char character);
 	void writeInt(int i);
+	
 	void lcd_PrintString(char str[]);
 	void lcd_SetCursorPos(int lineN, int pos);
 	void lcd_Init(void);
     void lcd_Clear(void);
     void lcd_Home(void);
+
 #endif	/* XC_HEADER_TEMPLATE_H */
 
