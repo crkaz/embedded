@@ -14,9 +14,8 @@
 #include "lcd_driver.h"
 #include "rtc_driver.h"
 #include "thermometer_driver.h"
+#include "matrix.h"
 
-
-// ---
 
 const int DAYTIME[2] = {6, 30}; // 6:30am
 const int NIGHTTIME[2] = {19, 30}; // 7:30pm
@@ -46,6 +45,13 @@ void InitComponents() {
 void Init() {
     InitPorts();
     InitComponents();
+}
+
+void init() {
+    ADCON1 = 0X07; //a port as ordinary i/o.
+    TRISA = 0X00; //a port as output.
+    TRISD = 0X00; //d port as output.
+    TRISC = 0x00;
 }
 
 // Check temperature thresholds and sound alarm or turn heating/cooling on if appropriate.

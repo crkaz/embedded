@@ -9,6 +9,7 @@
       <itemPath>rtc_driver.h</itemPath>
       <itemPath>thermometer_driver.h</itemPath>
       <itemPath>Utils.h</itemPath>
+      <itemPath>matrix.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -23,6 +24,7 @@
       <itemPath>thermometer_driver.c</itemPath>
       <itemPath>rtc_driver.c</itemPath>
       <itemPath>Utils.c</itemPath>
+      <itemPath>matrix.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
