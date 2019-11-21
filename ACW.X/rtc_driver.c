@@ -18,12 +18,14 @@
 //mode, bit 5 is the second 10-hour bit (20 ? 23 hours).
 
 //define the time:       sec,  min,  hour, day, month, week, year, control word.
-const char defaults[] = {0x00, 0x37, 0x13, 0x8, 0x3, 0x06, 0x19, 0x00};
+const char defaults[] = {0x00, 0x37, 0x13, 0x8, 0x21, 0x11, 0x19, 0x00};
 unsigned char time_rx = 0x30; //define receive reg.
 char table1[7]; //define the read time and date save table.
 
-// Initialise required ports.
-void rtc_PortInit() {
+
+// Initialise DS1302 clock.
+
+void rtc_Init() {
     TRISA = 0x00; //a port all output
     TRISD = 0X00; //d port all output
     ADCON1 = 0X06; //a port all i/o
@@ -33,10 +35,7 @@ void rtc_PortInit() {
     //-------------
     PORTA = 0XFF;
     PORTD = 0XFF; //clear all display
-}
 
-// Initialise DS1302 clock.
-void rtc_Init() {
     sclk = 0; //pull low clock
     rst = 0; //reset DS1302
     rst = 1; //enable DS1302
@@ -46,6 +45,7 @@ void rtc_Init() {
 }
 
 // Set ALL components (sec, min, hour etc..) with BUST mode.
+
 void rtc_SetTime() {
     int i; //define the loop counter.
     rst = 1; //enable DS1302
@@ -59,6 +59,7 @@ void rtc_SetTime() {
 
 // SET INDIVIDUAL TIME COMPONENT
 // set_time_bit(SEC, 0x30); // EXAMPL: setting second bit to 30sec.
+
 void rtc_SetTimeComponent(char b, char t) {
     rst = 1; //enable DS1302
     rtc_WriteByte(b); // Write minute bit.
@@ -67,7 +68,8 @@ void rtc_SetTimeComponent(char b, char t) {
 }
 
 // Read ALL components (sec, min, hour etc..) with BURST mode.
-void rtc_GetTime() {
+
+char* rtc_GetTime() {
     int i; //set loop counter.
     rst = 1; //enable DS1302
     rtc_WriteByte(0xbf); // Read burst mode.
@@ -76,19 +78,23 @@ void rtc_GetTime() {
         table1[i] = rtc_ReadByte(); //
     }
     rst = 0; //reset DS1302
+
+    return table1;
 }
 
 // Get a component of time as a binary coded decimal.
-char rtc_GetTimeComponent(char b){
+
+char rtc_GetTimeComponent(char b) {
     rst = 1; //enable DS1302
     rtc_WriteByte(b + 1); // Read individual bit (+ 1 sets read bit).
     char t = rtc_ReadByte();
     rst = 0; //reset DS1302
-    
+
     return t;
 }
 
 // Write byte to active register.
+
 void rtc_WriteByte(unsigned char time_tx) {
     int j; //set the loop counter.
     for (j = 0; j < 8; j++) //continue to write 8bit
@@ -106,6 +112,7 @@ void rtc_WriteByte(unsigned char time_tx) {
 }
 
 // Read byte from active register.
+
 unsigned char rtc_ReadByte() {
     int j; //set the loop counter.  
     TRISB4 = 1; //continue to write 8bit 
@@ -120,4 +127,47 @@ unsigned char rtc_ReadByte() {
     TRISB4 = 0; //finished 1 byte,pull low clk  
     sclk = 0;
     return (time_rx);
+}
+
+char* rtc_GetTimeComponentAsString(char b) {
+    rst = 1; //enable DS1302
+    rtc_WriteByte(b + 1); // Read individual bit (+ 1 sets read bit).
+    char t = rtc_ReadByte();
+    rst = 0; //reset DS1302
+
+    return BcdToStr(t); // Convert binary coded decimal to str for ease of use.
+}
+
+// Collate hour/min/second components and return a string.
+char* rtc_GetTimeString() {
+    char t[] = {
+        rtc_GetTimeComponentAsString(HOUR)[0],
+        rtc_GetTimeComponentAsString(HOUR)[1],
+        ':',
+        rtc_GetTimeComponentAsString(MIN)[0],
+        rtc_GetTimeComponentAsString(MIN)[1],
+        ':',
+        rtc_GetTimeComponentAsString(SEC)[0],
+        rtc_GetTimeComponentAsString(SEC)[1],
+        '\0',
+    };
+    return t;
+}
+
+// Collate year/month/day components and return a string.
+char* rtc_GetDateString() {
+    char d[] = {
+        '2',
+        '0',
+        rtc_GetTimeComponentAsString(YEAR)[0],
+        rtc_GetTimeComponentAsString(YEAR)[1],
+        '-',
+        rtc_GetTimeComponentAsString(MONTH)[0],
+        rtc_GetTimeComponentAsString(MONTH)[1],
+        '-',
+        rtc_GetTimeComponentAsString(DAY)[0],
+        rtc_GetTimeComponentAsString(DAY)[1],
+        '\0',
+    };
+    return d;
 }

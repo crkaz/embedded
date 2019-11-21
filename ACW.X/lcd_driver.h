@@ -7,7 +7,7 @@
 	void lcd_WriteCmd(char command);
 	void lcd_PrintChar(char character);
 	void writeInt(int i);
-	
+	void lcd_Init(void);
 	void lcd_PrintString(char str[], int lineN, int pos);
 	void lcd_SetCursorPos(int lineN, int pos);
 	void lcd_Init(void);

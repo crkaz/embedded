@@ -26,25 +26,30 @@ float lowerThreshold[2] = {5.0, 2.5}; // Temperature heating[0] and alarm[1] thr
 float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] thresholds.
 
 // Initialise default ports.
+
 void InitPorts() {
-    //    ADCON1 = 0X07; //a port as ordinary i/o.
+//    lcd_Init();
+//    ADCON1 = 0X07; //a port as ordinary i/o.
 }
 
 // Initialise each component and set the rtc time.
+
 void InitComponents() {
     lcd_Init();
-    rtc_PortInit();
+//    rtc_PortInit();
     rtc_Init();
-    rtc_SetTime();
+//    rtc_SetTime();
 }
 
 // Ready the application.
+
 void Init() {
     InitPorts();
     InitComponents();
 }
 
 // Check temperature thresholds and sound alarm or turn heating/cooling on if appropriate.
+
 void CheckTemperature() {
     //    float temp = temp_GetTemp();
     //    if (temp > upperThreshold[1] || temp < lowerThreshold[1]) {
@@ -59,21 +64,23 @@ void CheckTemperature() {
 }
 
 // Display the time on the second row of the LCD.
+
 void DisplayDateAndTime() {
     lcd_Clear();
-    lcd_SetCursorPos(1, 1);
-   // lcd_PrintString(rtc_GetDateString(), 1, 1);
-    lcd_SetCursorPos(2, 1);
-   //lcd_PrintString(rtc_GetTimeString(), 2, 1);
+    lcd_PrintString(rtc_GetDateString(), 0, 0);
+    lcd_PrintString(rtc_GetTimeString(), 1, 0);
+    Delay(100); // Stop flicker.
 }
 
 // Check/set nighttime (0) or daytime (1) mode
+
 void CheckTime(int i) {
     //int time[4] = rtc_GetTime();
-    
+
 }
 
 // Main operation loop.
+
 void Loop() {
     int input;
 
@@ -81,11 +88,12 @@ void Loop() {
         CheckTemperature(); // Check alarms
         //CheckTime(); // Check daytime/nighttime mode.
 
-        switch(mode){
-            case 0: DisplayDateAndTime(); break;
-//            case 1: SetTime(); break;
-//            case 2: SetThresholds(); break;
-//            case 3: Test(); break;
+        switch (mode) {
+            case 0: DisplayDateAndTime();
+                break;
+                //            case 1: SetTime(); break;
+                //            case 2: SetThresholds(); break;
+                //            case 3: Test(); break;
         }
 
         //         input = BTN_GetInput();
@@ -117,5 +125,9 @@ void Loop() {
 
 void main(void) {
     Init(); // Initialise ports and components.
-    Loop(); // Main operations.
+    //    Loop(); // Main operations.
+    rtc_SetTime();
+    while(1){
+        DisplayDateAndTime();
+    }
 }
