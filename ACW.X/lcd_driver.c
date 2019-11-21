@@ -6,12 +6,22 @@
 #define rw RA4
 #define e RA3
 
+void lcd_Init(){
+    ADCON1 = 0X07; //a port as ordinary i/o.
+    TRISA = 0X00; //a port as output.
+    TRISD = 0X00; //d port as output.
+    
+    lcd_WriteCmd(0x0F); //display on,cursor on,blink on.
+    lcd_WriteCmd(0x01); //clr screen
+    lcd_WriteCmd(0x38); // 8 bits 2 lines 5*7 mode. / Set function
+}
+
 void lcd_WriteCmd(char command) {
     rs = 0; //is command not data
     rw = 0; //is write not read.
     PORTD = command;
     e = 0; //pull low enable signal.
-    Delay(60); //for a while.
+    Delay(30); //for a while.
     e = 1; //pull high to build the rising edge
 }
 
@@ -20,7 +30,7 @@ void lcd_PrintChar(char character) {
     rw = 0; //is write not read.
     PORTD = character; //data send to PORTD
     e = 0; //pull low enable signal.
-    Delay(30); //for a while.
+    Delay(20); //for a while.
     e = 1; //pull high to build the rising edge.
 }
 
@@ -39,10 +49,10 @@ void lcd_SetCursorPos(int lineN, int pos) {
 
     int addr;
     switch (lineN) {
-        case 1: addr = ln1 + pos; break;
-        case 2: addr = ln2 + pos; break;
-        case 3: addr = ln3 + pos; break;
-        case 4: addr = ln4 + pos; break;
+        case 0: addr = ln1 + pos; break;
+        case 1: addr = ln2 + pos; break;
+        case 2: addr = ln3 + pos; break;
+        case 3: addr = ln4 + pos; break;
         default: break;
     }
 
@@ -54,13 +64,6 @@ void writeIntArray(char ints[]) {
 	for (int i = 0; i < StrLen(ints); i++) {
 		writeInt(ints[i]);
 	}
-}
-
-void lcd_Init(void) {
-    lcd_WriteCmd(0x0F); //display on,cursor on,blink on.
-    lcd_WriteCmd(0x38); // 8 bits 2 lines 5*7 mode. / Set function
-    lcd_WriteCmd(0x01); //clr screen
-    //writecmd(0x02); // Home.
 }
 
 void lcd_Clear() {

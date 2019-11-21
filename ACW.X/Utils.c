@@ -1,6 +1,7 @@
 #include <xc.h>
 
 unsigned char table[] = { 0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90 }; // 7seg lcd nums 0-9
+char bcdToStr[2];
 
 // Delay for n instruction cycles.
 void Delay(int n) {
@@ -34,9 +35,10 @@ int StrLen(char a[]) {
 char* BcdToStr(char bcd) {
     int tens = ((bcd & 0xF0) >> 4) + 48;
     int ones = (bcd & 0x0F) + 48;
-    char num[2] = {tens, ones};
-
-    return num;
+    bcdToStr[0] =  tens;
+    bcdToStr[1] = ones;
+    
+    return bcdToStr;
 }
 
 // Convert an int to a char.
@@ -46,8 +48,8 @@ char IntToChar(int i) {
 }
 
 // Convert BCD (binary coded decimal) to decimal.
-char* BcdToDec(char bcd) {
-//    Multiply most significant bit and add least significant.
-            int dec = ((bcd & 0xF0) >> 4) * 10 + (bcd & 0x0F);
-    return dec;
-}
+//char* BcdToDec(char bcd) {
+////    Multiply most significant bit and add least significant.
+//            int dec = ((bcd & 0xF0) >> 4) * 10 + (bcd & 0x0F);
+//    return dec;
+//}
