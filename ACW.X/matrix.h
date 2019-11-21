@@ -6,6 +6,6 @@
 	    
 	void matrix_Init();
     char matrix_Scan(); //key scan function declare
-    int scan(int row);
+//    int scan(int row); // Privatised.
 #endif	/* XC_Matrix_H */
     

@@ -39,8 +39,8 @@ void rtc_Init() {
     sclk = 0; //pull low clock
     rst = 0; //reset DS1302
     rst = 1; //enable DS1302
-    rtc_WriteByte(0x8e); //send control command
-    rtc_WriteByte(0); //enable write DS1302
+    WriteByte(0x8e); //send control command
+    WriteByte(0); //enable write DS1302
     rst = 0; //reset
 }
 
@@ -49,10 +49,10 @@ void rtc_Init() {
 void rtc_SetTime() {
     int i; //define the loop counter.
     rst = 1; //enable DS1302
-    rtc_WriteByte(0xbe); // Write burst mode.
+    WriteByte(0xbe); // Write burst mode.
     for (i = 0; i < 8; i++) //continue to write 8 bytes.
     {
-        rtc_WriteByte(defaults[i]); //write one byte
+        WriteByte(defaults[i]); //write one byte
     }
     rst = 0; //reset
 }
@@ -62,8 +62,8 @@ void rtc_SetTime() {
 
 void rtc_SetTimeComponent(char b, char t) {
     rst = 1; //enable DS1302
-    rtc_WriteByte(b); // Write minute bit.
-    rtc_WriteByte(t); //write one byte
+    WriteByte(b); // Write minute bit.
+    WriteByte(t); //write one byte
     rst = 0; //reset
 }
 
@@ -72,10 +72,10 @@ void rtc_SetTimeComponent(char b, char t) {
 char* rtc_GetTime() {
     int i; //set loop counter.
     rst = 1; //enable DS1302
-    rtc_WriteByte(0xbf); // Read burst mode.
+    WriteByte(0xbf); // Read burst mode.
     for (i = 0; i < 7; i++) //continue to read 7 bytes.
     {
-        table1[i] = rtc_ReadByte(); //
+        table1[i] = ReadByte(); //
     }
     rst = 0; //reset DS1302
 
@@ -86,16 +86,16 @@ char* rtc_GetTime() {
 
 char rtc_GetTimeComponent(char b) {
     rst = 1; //enable DS1302
-    rtc_WriteByte(b + 1); // Read individual bit (+ 1 sets read bit).
-    char t = rtc_ReadByte();
+    WriteByte(b + 1); // Read individual bit (+ 1 sets read bit).
+    char t = ReadByte();
     rst = 0; //reset DS1302
 
     return t;
 }
 
 // Write byte to active register.
-
-void rtc_WriteByte(unsigned char time_tx) {
+void WriteByte(unsigned char time_tx); // Privatised.
+void WriteByte(unsigned char time_tx) {
     int j; //set the loop counter.
     for (j = 0; j < 8; j++) //continue to write 8bit
     {
@@ -112,8 +112,8 @@ void rtc_WriteByte(unsigned char time_tx) {
 }
 
 // Read byte from active register.
-
-unsigned char rtc_ReadByte() {
+unsigned char ReadByte() // Privatised.
+unsigned char ReadByte() {
     int j; //set the loop counter.  
     TRISB4 = 1; //continue to write 8bit 
     for (j = 0; j < 8; j++) {
@@ -131,8 +131,8 @@ unsigned char rtc_ReadByte() {
 
 char* rtc_GetTimeComponentAsString(char b) {
     rst = 1; //enable DS1302
-    rtc_WriteByte(b + 1); // Read individual bit (+ 1 sets read bit).
-    char t = rtc_ReadByte();
+    WriteByte(b + 1); // Read individual bit (+ 1 sets read bit).
+    char t = ReadByte();
     rst = 0; //reset DS1302
 
     return BcdToStr(t); // Convert binary coded decimal to str for ease of use.

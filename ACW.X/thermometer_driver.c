@@ -17,6 +17,7 @@ int t70us[2] = { 2, 8 };
 int t63us[2] = { 2, 7 };
 int tUKus[2] = { 1, 70 };
 
+void write_byte(unsigned char val); // Privatised.
 void write_byte(unsigned char val) {
 	unsigned char i;
 	unsigned char temp;
@@ -42,6 +43,7 @@ void write_byte(unsigned char val) {
 	}
 }
 
+unsigned char read_byte(); // Privatised.
 unsigned char read_byte() {
 	unsigned char i;
 	unsigned char value = 0; //read temperature         
@@ -93,6 +95,7 @@ int get_temp() {
 	return (TLV >> 4) | ((THV << 4) & 0X3f); //temperature value
 }
 
+void resetThermometer(void); // Privatised.
 void resetThermometer(void) {
 	char presence = 1;
 	while (presence) {

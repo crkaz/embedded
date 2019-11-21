@@ -16,12 +16,14 @@
     const char YEAR = 0x8C;
     const char CTRL = 0x8E;
     
+    // Privatised.
+    //    void WriteByte(unsigned char time_tx); //write one byte subroutine.
+    //    unsigned char ReadByte(); //read one byte subroutine.
+    
     void rtc_PortInit(); //port initilize subroutine.
     void rtc_Init(); //DS1302 initilize subroutine.
     void rtc_SetTime(); //set time subroutine.
     char* rtc_GetTime(); //get time subroutine.
-    void rtc_WriteByte(unsigned char time_tx); //write one byte subroutine.
-    unsigned char rtc_ReadByte(); //read one byte subroutine.
     char* rtc_GetTimeComponentAsString(char); // Get individual time/date component.
     char* rtc_GetTimeString(); // Get full time as string.
     char* rtc_GetDateString(); // Get full date as string.
