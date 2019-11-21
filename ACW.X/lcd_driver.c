@@ -30,7 +30,7 @@ void lcd_PrintChar(char character) {
     rw = 0; //is write not read.
     PORTD = character; //data send to PORTD
     e = 0; //pull low enable signal.
-    Delay(20); //for a while.
+    Delay(40); //for a while.
     e = 1; //pull high to build the rising edge.
 }
 

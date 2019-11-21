@@ -1,60 +1,17 @@
-#include<pic.h>              //include MCU head file
-int result;
+#include<pic.h>  //include MCU head file
 
 void matrix_Init() {
     TRISC = 0XF0; //C PORT high 4 bits INPUT,low 4 bits OUTPUT    
 }
+int result;
 
-void matrix_Scan() {
-    const int HALFMASK = 0xF0;
-    
-    PORTC = 0XF7; //C3 OUTPUT low,the other 3 bits OUTPUT high                      
-    NOP(); //delay                                                           
-    result = PORTC; //read C PORT                                                     
-    result &= HALFMASK; //clear low 4 bits                                                
-    if (result != HALFMASK) //judge if high 4 bits all 1(all 1 is no key press)               
-    {
-        result = result | 0x07; //no,add low 4 bits 0x07 as key scan result                       
-    } else //yes,change low 4 bits OUTPUT, judge if a key press again        
-    {
-        
-        PORTC = 0XFB; //C2 OUTPUT low,the other 3 bits OUTPUT high                      
-        NOP(); //delay                                                           
-        result = PORTC; //read C PORT                                                     
-        result &= HALFMASK; //clear low 4 bits                                                
-        if (result != HALFMASK) //judge if high 4 bits all 1(all 1 is no key press)               
-        {
-            result |= 0x0B; //no,add low 4 bits 0x0b as key scan result                       
-        } else //yes,change low 4 bits OUTPUT, judge if a key press again        
-        {
-            
-            PORTC = 0XFd; //C1 OUTPUT low,the other 3 bits OUTPUT high                      
-            NOP(); //delay                                                           
-            result = PORTC; //read C PORT                                                     
-            result &= HALFMASK; //clear low 4 bits                                                
-            if (result != HALFMASK) //judge if high 4 bits all 1(all 1 is no key press)               
-            {
-                result |= 0x0D; //no,add low 4 bits 0x0d as key scan result                       
-            } else //yes,change low 4 bits OUTPUT, judge if a key press again        
-            {
-                
-                PORTC = 0XFe; //C0 OUTPUT low,the other 3 bits OUTPUT high                      
-                NOP(); //delay                                                           
-                result = PORTC; //read C PORT                                                     
-                result &= HALFMASK; //clear low 4 bits                                                
-                if (result != HALFMASK) //judge if high 4 bits all 1(all 1 is no key press)               
-                {
-                    result |= 0x0E; //no,add low 4 bits 0x0e as key scan result                    
-                } else //yes,all key scan end,no key press,set no key press flag         
-                {
-                    result = 0xFF; //key scan result 0xff as no key press flag                       
-                }
-            }
-        }
-    }
-}
+char matrix_Scan() {
+    if (scan(0XF7) == 0)
+        if (scan(0XFB) == 0)
+            if (scan(0XFD) == 0)
+                if (scan(0XFE) == 0)
+                    result = 0xFF;
 
-char display() {
     switch (result) {
         case 0xe7: return '0';
         case 0xeb: return '1';
@@ -74,4 +31,19 @@ char display() {
         case 0x7e: return 'F';
     }
     return ' ';
+}
+
+int scan(int row) {
+    const int HALFMASK = 0xF0;
+
+    PORTC = row; //C3 OUTPUT low,the other 3 bits OUTPUT high                      
+    NOP(); //delay                                                           
+    result = PORTC; //read C PORT                                                     
+    result &= HALFMASK; //clear low 4 bits                                                
+
+    if (result != HALFMASK) { //judge if high 4 bits all 1(all 1 is no key press)               
+        result |= (row - 0xF0); //no,add low 4 bits 0x07 as key scan result
+        return 1;
+    }
+    return 0;
 }

@@ -5,7 +5,7 @@
 	#include <xc.h> // include processor files - each processor file is guarded.  
 	    
 	void matrix_Init();
-    void matrix_Scan(); //key scan function declare
-    char display(); //display function declare
+    char matrix_Scan(); //key scan function declare
+    int scan(int row);
 #endif	/* XC_Matrix_H */
     
