@@ -1,5 +1,6 @@
 #include <xc.h>
 #include "Utils.h"
+#include "thermometer_driver.h"
 
 #define dq RE0
 #define dq_dir TRISE0
@@ -33,7 +34,7 @@ void write_byte(unsigned char val) {
 		if (temp == 1) {
 			set_dq_high();
 		}
-		delay2(t63us);
+		DelayT(t63us);
 		set_dq_high();
 		NOP();
 		NOP();
@@ -63,7 +64,7 @@ unsigned char read_byte() {
 		NOP(); //4us               
 		j = dq;
 		if (j) value |= 0x80; // ????
-		delay2(t63us); //63us              
+		DelayT(t63us); //63us              
 	}
 	return (value);
 }
@@ -81,7 +82,7 @@ int get_temp() {
 	//        delay2(t503us);
 	//    }
 
-	delay(20000); //Might want to lower
+	Delay(20000); //Might want to lower
 
 	resetThermometer(); //reset again,wait for 18b20 response                                                                                                        
 	write_byte(0XCC); //ignore ROM matching                                                                                                                            
@@ -96,15 +97,15 @@ void resetThermometer(void) {
 	char presence = 1;
 	while (presence) {
 		set_dq_low(); // MCU pull low
-		delay2(t503us);
+		DelayT(t503us);
 		set_dq_high(); // release general line and wait for pull high
-		delay2(t70us);
+		DelayT(t70us);
 		if (dq == 1)
 			presence = 1; // Didn't receive response.
 		else
 			presence = 0; // Received response.
 
-		delay2(t430us);
+		DelayT(t430us);
 	}
 }
 

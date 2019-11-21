@@ -9,17 +9,43 @@
 // ---
 
 // Drivers
-#include "buzzer_driver.h"
 #include "Utils.h"
+#include "buzzer_driver.h"
 #include "lcd_driver.h"
+#include "rtc_driver.h"
 #include "thermometer_driver.h"
 #include "matrix.h"
 
 
-//#include "rtc_driver.h"
-//#include "thermometer_driver.h"
-// ---
-#define psb RA2
+const int DAYTIME[2] = {6, 30}; // 6:30am
+const int NIGHTTIME[2] = {19, 30}; // 7:30pm
+
+int mode = 0; // Store UI state
+float lowerThreshold[2] = {5.0, 2.5}; // Temperature heating[0] and alarm[1] thresholds.
+float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] thresholds.
+
+// Initialise default ports.
+
+void InitPorts() {
+//    lcd_Init();
+//    ADCON1 = 0X07; //a port as ordinary i/o.
+}
+
+// Initialise each component and set the rtc time.
+
+void InitComponents() {
+    lcd_Init();
+//    rtc_PortInit();
+    rtc_Init();
+//    rtc_SetTime();
+}
+
+// Ready the application.
+
+void Init() {
+    InitPorts();
+    InitComponents();
+}
 
 void init() {
     ADCON1 = 0X07; //a port as ordinary i/o.
@@ -29,20 +55,87 @@ void init() {
     psb = 1;
 }
 
-void main(void) {
+// Check temperature thresholds and sound alarm or turn heating/cooling on if appropriate.
 
-    init();
+void CheckTemperature() {
+    //    float temp = temp_GetTemp();
+    //    if (temp > upperThreshold[1] || temp < lowerThreshold[1]) {
+    //        buz_Sound(500, 500, 500);
+    //    }
+    //    if (temp > upperThreshold[0]
+    //        // Switch cooling on.
+    //    }
+    //    else if (temp < lowerThreshold[0]){
+    //        // Switch heating output on.
+    //    }
+}
 
-    lcd_init();
-    matrix_Init();
-    writeString("Done Init");
-    while (1) {
-        writecmd(0x02); //clr screen
-        matrix_Scan();
-        char inp = display();
-        if (inp != ' ') {
-            writechar(display());
+// Display the time on the second row of the LCD.
+
+void DisplayDateAndTime() {
+    lcd_PrintString("Date:", 0, 0);
+    lcd_PrintString(rtc_GetDateString(), 0, 3);
+    lcd_PrintString("Time:", 1, 0);
+    lcd_PrintString(rtc_GetTimeString(), 1, 3);
+    Delay(100); // Stop flicker.
+}
+
+// Check/set nighttime (0) or daytime (1) mode
+
+void CheckTime(int i) {
+    //int time[4] = rtc_GetTime();
+
+}
+
+// Main operation loop.
+
+void Loop() {
+    int input;
+
+    for (;;) {
+        CheckTemperature(); // Check alarms
+        //CheckTime(); // Check daytime/nighttime mode.
+
+        switch (mode) {
+            case 0: DisplayDateAndTime();
+                break;
+                //            case 1: SetTime(); break;
+                //            case 2: SetThresholds(); break;
+                //            case 3: Test(); break;
         }
-        delay(1000);
+
+        //         input = BTN_GetInput();
+        switch (input) {
+            case 0: break;
+                mode = 0;
+            case 1: break;
+                mode = 1;
+            case 2: break;
+                mode = 2;
+            case 3: break;
+                mode = 3;
+            case 4: break;
+            case 5: break;
+            case 6: break;
+            case 7: break;
+            case 8: break;
+            case 9: break;
+            case 10: break;
+            case 11: break;
+            case 12: break;
+            case 13: break;
+            case 14: break;
+            case 15: break;
+
+        }
+    }
+}
+
+void main(void) {
+    Init(); // Initialise ports and components.
+    //    Loop(); // Main operations.
+//    rtc_SetTime();
+    while(1){
+        DisplayDateAndTime();
     }
 }
