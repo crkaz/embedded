@@ -4,15 +4,14 @@
 	#define	XC_LCD_H
 	
 	#include <xc.h> // include processor files - each processor file is guarded.  
-	void lcd_WriteCmd(char command);
+//	void WriteCmd(char command); // Privatised.
+//	void SetCursorPos(int lineN, int pos); // Privatised.
+	void lcd_Init(void);
 	void lcd_PrintChar(char character);
-	void writeInt(int i);
-	void lcd_Init(void);
 	void lcd_PrintString(char str[], int lineN, int pos);
-	void lcd_SetCursorPos(int lineN, int pos);
-	void lcd_Init(void);
     void lcd_Clear(void);
     void lcd_Home(void);
+	void writeInt(int i);
 
 #endif	/* XC_HEADER_TEMPLATE_H */
 

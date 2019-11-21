@@ -33,6 +33,7 @@ char matrix_Scan() {
     return ' ';
 }
 
+int scan(int row); // Privatised.
 int scan(int row) {
     const int HALFMASK = 0xF0;
 

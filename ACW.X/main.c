@@ -132,9 +132,8 @@ void Loop() {
 
 void main(void) {
     Init(); // Initialise ports and components.
-    //    Loop(); // Main operations.
-//    rtc_SetTime();
     while(1){
-        DisplayDateAndTime();
+        // Cause a compile error because it is "private".
+        SetCursorPos(1,1);
     }
 }

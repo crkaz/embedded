@@ -3,10 +3,11 @@
 	#define	XC_Thermometer_H
 
 	#include <xc.h> // include processor files - each processor file is guarded.  
-	void write_byte(unsigned char val);
-	unsigned char read_byte();
+//	void write_byte(unsigned char val); // Privatised.
+//	unsigned char read_byte(); // Privatised.
+//	void resetThermometer(void); // Privatised.
+
 	int get_temp();
-	void resetThermometer(void);
 	char* calculate_temp(int TZ);
 #endif	/* XC_Thermometer_H */
 
