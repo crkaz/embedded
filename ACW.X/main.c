@@ -127,7 +127,7 @@ void Loop() {
 void main(void) {
     Init(); // Initialise ports and components.
     //    Loop(); // Main operations.
-    rtc_SetTime();
+//    rtc_SetTime();
     while(1){
         DisplayDateAndTime();
     }
