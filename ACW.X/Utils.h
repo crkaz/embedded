@@ -4,13 +4,10 @@
 	
 	#include <xc.h> // include processor files - each processor file is guarded.  
 	
-	void delay(int t);
-	void delay2(int t[]);
-	int strlen(char a[]);
-	int strlenPointer(unsigned char a[]);
-	void resetThermometer(void);
-
-    char* convert_bcd_to_string(char); // Convert BCD (binary coded decimal) to decimal.
+	void Delay(int t);
+	void DelayT(int t[]);
+    int StrLen(char*); // Get length of a string.
+    char* BcdToStr(char); // Convert BCD (binary coded decimal) to decimal.
     
 #endif	/* XC_Utils_H */
-    
+
