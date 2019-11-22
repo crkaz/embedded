@@ -7,6 +7,10 @@
 #define set_dq_high() dq_dir = 1
 #define set_dq_low() dq = 0; dq_dir = 0
 
+void resetThermometer(void); // Privatised.
+void write_byte(unsigned char val); // Privatised.
+unsigned char read_byte(); // Privatised.
+
 unsigned char TLV = 0; //temperature high byte                     
 unsigned char THV = 0; //temperature low byte   
 char temperature[8]; //Stores the temperature
@@ -17,7 +21,6 @@ int t70us[2] = { 2, 8 };
 int t63us[2] = { 2, 7 };
 int tUKus[2] = { 1, 70 };
 
-void write_byte(unsigned char val); // Privatised.
 void write_byte(unsigned char val) {
 	unsigned char i;
 	unsigned char temp;
@@ -43,7 +46,6 @@ void write_byte(unsigned char val) {
 	}
 }
 
-unsigned char read_byte(); // Privatised.
 unsigned char read_byte() {
 	unsigned char i;
 	unsigned char value = 0; //read temperature         
@@ -95,7 +97,6 @@ int get_temp() {
 	return (TLV >> 4) | ((THV << 4) & 0X3f); //temperature value
 }
 
-void resetThermometer(void); // Privatised.
 void resetThermometer(void) {
 	char presence = 1;
 	while (presence) {

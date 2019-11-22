@@ -5,6 +5,7 @@
 #define rs RA5
 #define rw RA4
 #define e RA3
+void WriteCmd(char command); // Privatise.
 
 void lcd_Init() {
     ADCON1 = 0X07; //a port as ordinary i/o.
@@ -16,7 +17,6 @@ void lcd_Init() {
     WriteCmd(0x38); // 8 bits 2 lines 5*7 mode. / Set function
 }
 
-void WriteCmd(char command); // Privatise.
 void WriteCmd(char command) {
     rs = 0; //is command not data
     rw = 0; //is write not read.
@@ -36,14 +36,13 @@ void lcd_PrintChar(char character) {
 }
 
 void lcd_PrintString(char str[], int lineN, int pos) {
-    SetCursorPos(lineN, pos);
+    lcd_SetCursorPos(lineN, pos);
     for (int i = 0; i < StrLen(str); ++i) {
         lcd_PrintChar(str[i]);
     }
 }
 
-void SetCursorPos(int lineN, int pos); // Privatised.
-void SetCursorPos(int lineN, int pos) {
+void lcd_SetCursorPos(int lineN, int pos) {
     const int ln1 = 0xC0; // Address of the start of line 1.
     const int ln2 = 0xD0; // Address of the start of line 2.
     const int ln3 = 0xC8; // Address of the start of line 3.

@@ -12,6 +12,9 @@
 #define sclk  RB0 //1302 clock        
 #define rst   RB5 //1302 enable bit   
 
+unsigned char ReadByte(); // Privatised.
+void WriteByte(unsigned char time_tx); // Privatised.
+
 //AM-PM/12-24 MODE
 //Bit 7 of the hours register is defined as the 12? or 24?hour mode select bit. When high, the 12?hour
 //mode is selected. In the 12?hour mode, bit 5 is the AM/PM bit with logic high being PM. In the 24?hour
@@ -94,7 +97,6 @@ char rtc_GetTimeComponent(char b) {
 }
 
 // Write byte to active register.
-void WriteByte(unsigned char time_tx); // Privatised.
 void WriteByte(unsigned char time_tx) {
     int j; //set the loop counter.
     for (j = 0; j < 8; j++) //continue to write 8bit
@@ -112,7 +114,6 @@ void WriteByte(unsigned char time_tx) {
 }
 
 // Read byte from active register.
-unsigned char ReadByte() // Privatised.
 unsigned char ReadByte() {
     int j; //set the loop counter.  
     TRISB4 = 1; //continue to write 8bit 

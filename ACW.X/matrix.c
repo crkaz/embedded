@@ -1,5 +1,7 @@
 #include<pic.h>  //include MCU head file
 
+int scan(int row); // Privatised.
+
 void matrix_Init() {
     TRISC = 0XF0; //C PORT high 4 bits INPUT,low 4 bits OUTPUT    
 }
@@ -33,7 +35,6 @@ char matrix_Scan() {
     return ' ';
 }
 
-int scan(int row); // Privatised.
 int scan(int row) {
     const int HALFMASK = 0xF0;
 

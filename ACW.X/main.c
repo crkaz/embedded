@@ -27,17 +27,17 @@ float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] t
 // Initialise default ports.
 
 void InitPorts() {
-//    lcd_Init();
-//    ADCON1 = 0X07; //a port as ordinary i/o.
+    //    lcd_Init();
+    //    ADCON1 = 0X07; //a port as ordinary i/o.
 }
 
 // Initialise each component and set the rtc time.
 
 void InitComponents() {
     lcd_Init();
-//    rtc_PortInit();
+    //    rtc_PortInit();
     rtc_Init();
-//    rtc_SetTime();
+    //    rtc_SetTime();
 }
 
 // Ready the application.
@@ -72,9 +72,29 @@ void CheckTemperature() {
 // Display the time on the second row of the LCD.
 
 void DisplayDateAndTime() {
+    lcd_Clear();
     lcd_PrintString("Date:", 0, 0);
     lcd_PrintString(rtc_GetDateString(), 0, 3);
     lcd_PrintString("Time:", 1, 0);
+    lcd_PrintString(rtc_GetTimeString(), 1, 3);
+    Delay(100); // Stop flicker.
+}
+
+void DisplaySettingsScreen() {
+    lcd_Clear();
+    lcd_PrintString("Settings:", 0, 0);
+    lcd_PrintString("1: Set date/time", 1, 0);
+    lcd_PrintString("2: Set thresholds", 2, 0);
+    lcd_PrintString("3: Set date and time", 3, 0);
+    Delay(100); // Stop flicker.
+}
+
+void DisplaySetTimeScreen(){
+    lcd_Clear();
+    lcd_PrintString("Set date and time:", 1, 0);
+    lcd_PrintString("Date:", 1, 0);
+    lcd_PrintString(rtc_GetDateString(), 0, 3);
+    lcd_PrintString("Time:", 2, 0);
     lcd_PrintString(rtc_GetTimeString(), 1, 3);
     Delay(100); // Stop flicker.
 }
@@ -92,48 +112,39 @@ void Loop() {
     int input;
 
     for (;;) {
-        CheckTemperature(); // Check alarms
+//        CheckTemperature(); // Check alarms
         //CheckTime(); // Check daytime/nighttime mode.
 
+        // Render LCD according to current UI state.
         switch (mode) {
-            case 0: DisplayDateAndTime();
+            case 'F': DisplayDateAndTime();
                 break;
-                //            case 1: SetTime(); break;
-                //            case 2: SetThresholds(); break;
-                //            case 3: Test(); break;
+            case 'E': DisplaySettingsScreen();
+            
+//            case 1: SetTime(); break;
+//            case 2: SetThresholds(); break;
+//            case 3: Test(); break;
         }
 
-        //         input = BTN_GetInput();
+        // Check for user input.
+        input = matrix_Scan();
         switch (input) {
-            case 0: break;
-                mode = 0;
-            case 1: break;
-                mode = 1;
-            case 2: break;
-                mode = 2;
-            case 3: break;
-                mode = 3;
-            case 4: break;
-            case 5: break;
-            case 6: break;
-            case 7: break;
-            case 8: break;
-            case 9: break;
-            case 10: break;
-            case 11: break;
-            case 12: break;
-            case 13: break;
-            case 14: break;
-            case 15: break;
-
+            case 'F': mode = 0; break;
+            case 'E': mode = 1; break;
+            
+            case '3': 
+                if (mode == 1){
+                    DisplaySetTimeScreen();
+                }
+                break;
+            case '7': mode = 3; break;
+            case '11': mode = 4; break;
         }
     }
 }
 
 void main(void) {
     Init(); // Initialise ports and components.
-    while(1){
-        // Cause a compile error because it is "private".
-        SetCursorPos(1,1);
-    }
+    rtc_SetTime(); // Set time to default values.
+    Loop();
 }
