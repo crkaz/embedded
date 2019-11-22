@@ -35,9 +35,9 @@ void InitPorts() {
 
 void InitComponents() {
     lcd_Init();
-    //    rtc_PortInit();
     rtc_Init();
-    //    rtc_SetTime();
+    matrix_Init();
+    rtc_SetTime();
 }
 
 // Ready the application.
@@ -72,7 +72,6 @@ void CheckTemperature() {
 // Display the time on the second row of the LCD.
 
 void DisplayDateAndTime() {
-    lcd_Clear();
     lcd_PrintString("Date:", 0, 0);
     lcd_PrintString(rtc_GetDateString(), 0, 3);
     lcd_PrintString("Time:", 1, 0);
@@ -81,22 +80,35 @@ void DisplayDateAndTime() {
 }
 
 void DisplaySettingsScreen() {
-    lcd_Clear();
     lcd_PrintString("Settings:", 0, 0);
-    lcd_PrintString("1: Set date/time", 1, 0);
-    lcd_PrintString("2: Set thresholds", 2, 0);
-    lcd_PrintString("3: Set date and time", 3, 0);
+    lcd_PrintString("1:Set date/time", 1, 0);
+    lcd_PrintString("2:Set thresholds", 2, 0);
     Delay(100); // Stop flicker.
 }
 
-void DisplaySetTimeScreen(){
+void DisplaySetTimeScreen() {
     lcd_Clear();
-    lcd_PrintString("Set date and time:", 1, 0);
-    lcd_PrintString("Date:", 1, 0);
-    lcd_PrintString(rtc_GetDateString(), 0, 3);
-    lcd_PrintString("Time:", 2, 0);
-    lcd_PrintString(rtc_GetTimeString(), 1, 3);
-    Delay(100); // Stop flicker.
+    while (matrix_Scan() != 'F') {
+        lcd_PrintString("Set date/time:", 0, 0);
+        lcd_PrintString("Date:", 1, 0);
+        lcd_PrintString(rtc_GetDateString(), 1, 3);
+        lcd_PrintString("Time:", 2, 0);
+        lcd_PrintString(rtc_GetTimeString(), 2, 3);
+        lcd_SetCursorPos(1, 0);
+        Delay(100); // Stop flicker.
+    }
+}
+
+
+void DisplaySetThresholdsScreen() {
+    lcd_Clear();
+    while (matrix_Scan() != 'F') {
+        lcd_PrintString("Set thresholds:", 0, 0);
+        lcd_PrintString("1:Cooling", 1, 0);
+        lcd_PrintString("2:Heating", 2, 0);
+        lcd_SetCursorPos(1, 0);
+        Delay(100); // Stop flicker.
+    }
 }
 
 // Check/set nighttime (0) or daytime (1) mode
@@ -109,42 +121,48 @@ void CheckTime(int i) {
 // Main operation loop.
 
 void Loop() {
-    int input;
+    char input;
 
     for (;;) {
-//        CheckTemperature(); // Check alarms
+        //        CheckTemperature(); // Check alarms
         //CheckTime(); // Check daytime/nighttime mode.
 
         // Render LCD according to current UI state.
         switch (mode) {
-            case 'F': DisplayDateAndTime();
+            case 0: DisplayDateAndTime();
                 break;
-            case 'E': DisplaySettingsScreen();
-            
-//            case 1: SetTime(); break;
-//            case 2: SetThresholds(); break;
-//            case 3: Test(); break;
+            case 1: DisplaySettingsScreen();
+                break;
         }
 
-        // Check for user input.
+        //        // Check for user input.
         input = matrix_Scan();
         switch (input) {
-            case 'F': mode = 0; break;
-            case 'E': mode = 1; break;
-            
-            case '3': 
-                if (mode == 1){
-                    DisplaySetTimeScreen();
-                }
+            case 'F':
+                if (mode != 0) lcd_Clear(); // If mode has changed, clear lcd.
+                mode = 0;
                 break;
-            case '7': mode = 3; break;
-            case '11': mode = 4; break;
+            case 'E':
+                if (mode != 1) lcd_Clear(); // If mode has changed, clear lcd.
+                mode = 1;
+                break;
+
+            case '3':
+                if (mode == 1) lcd_Clear();
+                DisplaySetTimeScreen();
+                break;
+            case '7':
+                DisplaySetThresholdsScreen();
+                break;
+//            case '11':
+//                if (mode == 1) lcd_Clear();
+//                lcd_PrintString("Other Screen", 0, 0);
+//                break;
         }
     }
 }
 
 void main(void) {
     Init(); // Initialise ports and components.
-    rtc_SetTime(); // Set time to default values.
     Loop();
 }
