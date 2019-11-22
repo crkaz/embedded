@@ -27,17 +27,19 @@ float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] t
 // Initialise default ports.
 
 void InitPorts() {
-//    lcd_Init();
-//    ADCON1 = 0X07; //a port as ordinary i/o.
+    //    lcd_Init();
+    //    ADCON1 = 0X07; //a port as ordinary i/o.
 }
 
 // Initialise each component and set the rtc time.
 
 void InitComponents() {
-    lcd_Init();
-//    rtc_PortInit();
     rtc_Init();
-//    rtc_SetTime();
+    matrix_Init();
+    //    rtc_SetTime();
+    //    rtc_SetTimeComponent(DATE, 0x22); 
+    lcd_Init();
+
 }
 
 // Ready the application.
@@ -45,13 +47,8 @@ void InitComponents() {
 void Init() {
     InitPorts();
     InitComponents();
-}
-
-void init() {
-    ADCON1 = 0X07; //a port as ordinary i/o.
-    TRISA = 0X00; //a port as output.
-    TRISD = 0X00; //d port as output.
-    TRISC = 0x00;
+    //    Delay(1000);
+    //    lcd_Init(); // Ensure lcd switches on at start.
 }
 
 // Check temperature thresholds and sound alarm or turn heating/cooling on if appropriate.
@@ -76,7 +73,34 @@ void DisplayDateAndTime() {
     lcd_PrintString(rtc_GetDateString(), 0, 3);
     lcd_PrintString("Time:", 1, 0);
     lcd_PrintString(rtc_GetTimeString(), 1, 3);
-    Delay(100); // Stop flicker.
+}
+
+void DisplaySettingsScreen() {
+    lcd_PrintString("Settings:", 0, 0);
+    lcd_PrintString("1:Set date/time", 1, 0);
+    lcd_PrintString("2:Set thresholds", 2, 0);
+}
+
+void DisplaySetTimeScreen() {
+    lcd_Clear();
+    while (matrix_Scan() != 'F') {
+        lcd_PrintString("Set date/time:", 0, 0);
+        lcd_PrintString("Date:", 1, 0);
+        lcd_PrintString(rtc_GetDateString(), 1, 3);
+        lcd_PrintString("Time:", 2, 0);
+        lcd_PrintString(rtc_GetTimeString(), 2, 3);
+        lcd_SetCursorPos(1, 0);
+    }
+}
+
+void DisplaySetThresholdsScreen() {
+    lcd_Clear();
+    while (matrix_Scan() != 'F') {
+        lcd_PrintString("Set thresholds:", 0, 0);
+        lcd_PrintString("1:Cooling", 1, 0);
+        lcd_PrintString("2:Heating", 2, 0);
+        lcd_SetCursorPos(1, 0);
+    }
 }
 
 // Check/set nighttime (0) or daytime (1) mode
@@ -89,51 +113,48 @@ void CheckTime(int i) {
 // Main operation loop.
 
 void Loop() {
-    int input;
+    char input;
 
     for (;;) {
-        CheckTemperature(); // Check alarms
+        //        CheckTemperature(); // Check alarms
         //CheckTime(); // Check daytime/nighttime mode.
 
+        // Render LCD according to current UI state.
         switch (mode) {
             case 0: DisplayDateAndTime();
                 break;
-                //            case 1: SetTime(); break;
-                //            case 2: SetThresholds(); break;
-                //            case 3: Test(); break;
+            case 1: DisplaySettingsScreen();
+                break;
         }
 
-        //         input = BTN_GetInput();
+        //        // Check for user input.
+        input = matrix_Scan();
         switch (input) {
-            case 0: break;
+            case 'F':
+                if (mode != 0) lcd_Clear(); // If mode has changed, clear lcd.
                 mode = 0;
-            case 1: break;
+                break;
+            case 'E':
+                if (mode != 1) lcd_Clear(); // If mode has changed, clear lcd.
                 mode = 1;
-            case 2: break;
-                mode = 2;
-            case 3: break;
-                mode = 3;
-            case 4: break;
-            case 5: break;
-            case 6: break;
-            case 7: break;
-            case 8: break;
-            case 9: break;
-            case 10: break;
-            case 11: break;
-            case 12: break;
-            case 13: break;
-            case 14: break;
-            case 15: break;
+                break;
 
+            case '3':
+                if (mode == 1) lcd_Clear();
+                DisplaySetTimeScreen();
+                break;
+            case '7':
+                DisplaySetThresholdsScreen();
+                break;
+                //            case '11':
+                //                if (mode == 1) lcd_Clear();
+                //                lcd_PrintString("Other Screen", 0, 0);
+                //                break;
         }
     }
 }
 
 void main(void) {
     Init(); // Initialise ports and components.
-    while(1){
-        // Cause a compile error because it is "private".
-        SetCursorPos(1,1);
-    }
+    Loop();
 }

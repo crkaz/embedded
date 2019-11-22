@@ -5,6 +5,7 @@
 #define rs RA5
 #define rw RA4
 #define e RA3
+void WriteCmd(char command); // Privatise.
 
 void lcd_Init() {
     ADCON1 = 0X07; //a port as ordinary i/o.
@@ -16,34 +17,38 @@ void lcd_Init() {
     WriteCmd(0x38); // 8 bits 2 lines 5*7 mode. / Set function
 }
 
-void WriteCmd(char command); // Privatise.
 void WriteCmd(char command) {
     rs = 0; //is command not data
     rw = 0; //is write not read.
+    e=0;
+    Delay(10); //for a while.
+    e=1;
     PORTD = command;
+    Delay(10); //for a while.
     e = 0; //pull low enable signal.
-    Delay(30); //for a while.
-    e = 1; //pull high to build the rising edge
+   
+  //  e = 1; //pull high to build the rising edge
 }
 
 void lcd_PrintChar(char character) {
     rs = 1; //is data not command.
-    rw = 0; //is write not read.
-    PORTD = character; //data send to PORTD
+        rw = 0; //is write not read.
+    e=0;
+    Delay(5); //for a while.
+    e=1;
+    PORTD = character;
+    Delay(5); //for a while.
     e = 0; //pull low enable signal.
-    Delay(40); //for a while.
-    e = 1; //pull high to build the rising edge.
 }
 
 void lcd_PrintString(char str[], int lineN, int pos) {
-    SetCursorPos(lineN, pos);
+    lcd_SetCursorPos(lineN, pos);
     for (int i = 0; i < StrLen(str); ++i) {
         lcd_PrintChar(str[i]);
     }
 }
 
-void SetCursorPos(int lineN, int pos); // Privatised.
-void SetCursorPos(int lineN, int pos) {
+void lcd_SetCursorPos(int lineN, int pos) {
     const int ln1 = 0xC0; // Address of the start of line 1.
     const int ln2 = 0xD0; // Address of the start of line 2.
     const int ln3 = 0xC8; // Address of the start of line 3.

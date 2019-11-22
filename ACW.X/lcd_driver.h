@@ -5,8 +5,9 @@
 	
 	#include <xc.h> // include processor files - each processor file is guarded.  
 //	void WriteCmd(char command); // Privatised.
-//	void SetCursorPos(int lineN, int pos); // Privatised.
-	void lcd_Init(void);
+
+    void lcd_SetCursorPos(int lineN, int pos);
+    void lcd_Init(void);
 	void lcd_PrintChar(char character);
 	void lcd_PrintString(char str[], int lineN, int pos);
     void lcd_Clear(void);
