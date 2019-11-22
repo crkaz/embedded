@@ -34,10 +34,12 @@ void InitPorts() {
 // Initialise each component and set the rtc time.
 
 void InitComponents() {
-    lcd_Init();
     rtc_Init();
     matrix_Init();
-//    rtc_SetTime();
+    //    rtc_SetTime();
+    //    rtc_SetTimeComponent(DATE, 0x22); 
+    lcd_Init();
+
 }
 
 // Ready the application.
@@ -45,13 +47,8 @@ void InitComponents() {
 void Init() {
     InitPorts();
     InitComponents();
-}
-
-void init() {
-    ADCON1 = 0X07; //a port as ordinary i/o.
-    TRISA = 0X00; //a port as output.
-    TRISD = 0X00; //d port as output.
-    TRISC = 0x00;
+    //    Delay(1000);
+    //    lcd_Init(); // Ensure lcd switches on at start.
 }
 
 // Check temperature thresholds and sound alarm or turn heating/cooling on if appropriate.
@@ -76,14 +73,12 @@ void DisplayDateAndTime() {
     lcd_PrintString(rtc_GetDateString(), 0, 3);
     lcd_PrintString("Time:", 1, 0);
     lcd_PrintString(rtc_GetTimeString(), 1, 3);
-    Delay(100); // Stop flicker.
 }
 
 void DisplaySettingsScreen() {
     lcd_PrintString("Settings:", 0, 0);
     lcd_PrintString("1:Set date/time", 1, 0);
     lcd_PrintString("2:Set thresholds", 2, 0);
-    Delay(100); // Stop flicker.
 }
 
 void DisplaySetTimeScreen() {
@@ -95,10 +90,8 @@ void DisplaySetTimeScreen() {
         lcd_PrintString("Time:", 2, 0);
         lcd_PrintString(rtc_GetTimeString(), 2, 3);
         lcd_SetCursorPos(1, 0);
-        Delay(100); // Stop flicker.
     }
 }
-
 
 void DisplaySetThresholdsScreen() {
     lcd_Clear();
@@ -107,7 +100,6 @@ void DisplaySetThresholdsScreen() {
         lcd_PrintString("1:Cooling", 1, 0);
         lcd_PrintString("2:Heating", 2, 0);
         lcd_SetCursorPos(1, 0);
-        Delay(100); // Stop flicker.
     }
 }
 
@@ -154,10 +146,10 @@ void Loop() {
             case '7':
                 DisplaySetThresholdsScreen();
                 break;
-//            case '11':
-//                if (mode == 1) lcd_Clear();
-//                lcd_PrintString("Other Screen", 0, 0);
-//                break;
+                //            case '11':
+                //                if (mode == 1) lcd_Clear();
+                //                lcd_PrintString("Other Screen", 0, 0);
+                //                break;
         }
     }
 }

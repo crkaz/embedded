@@ -166,8 +166,10 @@ char* rtc_GetDateString() {
         rtc_GetTimeComponentAsString(MONTH)[0],
         rtc_GetTimeComponentAsString(MONTH)[1],
         '-',
-        rtc_GetTimeComponentAsString(DAY)[0],
-        rtc_GetTimeComponentAsString(DAY)[1],
+//        rtc_GetTimeComponentAsString(DAY)[0],
+//        rtc_GetTimeComponentAsString(DAY)[1],
+        rtc_GetTimeComponentAsString(DATE)[0],
+        rtc_GetTimeComponentAsString(DATE)[1],
         '\0',
     };
     return d;

@@ -21,10 +21,10 @@ void WriteCmd(char command) {
     rs = 0; //is command not data
     rw = 0; //is write not read.
     e=0;
-    Delay(30); //for a while.
+    Delay(10); //for a while.
     e=1;
     PORTD = command;
-    Delay(30); //for a while.
+    Delay(10); //for a while.
     e = 0; //pull low enable signal.
    
   //  e = 1; //pull high to build the rising edge
@@ -34,10 +34,10 @@ void lcd_PrintChar(char character) {
     rs = 1; //is data not command.
         rw = 0; //is write not read.
     e=0;
-    Delay(30); //for a while.
+    Delay(5); //for a while.
     e=1;
     PORTD = character;
-    Delay(30); //for a while.
+    Delay(5); //for a while.
     e = 0; //pull low enable signal.
 }
 
