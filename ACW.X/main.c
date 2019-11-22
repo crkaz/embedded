@@ -36,10 +36,10 @@ void InitPorts() {
 void InitComponents() {
     rtc_Init();
     matrix_Init();
+    buzzer_init();
     //    rtc_SetTime();
     //    rtc_SetTimeComponent(DATE, 0x22); 
     lcd_Init();
-
 }
 
 // Ready the application.
@@ -145,6 +145,10 @@ void Loop() {
                 break;
             case '7':
                 DisplaySetThresholdsScreen();
+                break;
+                
+            case '0':
+                buzzer_sound(1000,12500,2);
                 break;
                 //            case '11':
                 //                if (mode == 1) lcd_Clear();
