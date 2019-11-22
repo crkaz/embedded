@@ -37,7 +37,7 @@ void InitComponents() {
     lcd_Init();
     rtc_Init();
     matrix_Init();
-    rtc_SetTime();
+//    rtc_SetTime();
 }
 
 // Ready the application.

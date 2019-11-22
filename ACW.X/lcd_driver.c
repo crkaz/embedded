@@ -20,19 +20,25 @@ void lcd_Init() {
 void WriteCmd(char command) {
     rs = 0; //is command not data
     rw = 0; //is write not read.
-    PORTD = command;
-    e = 0; //pull low enable signal.
+    e=0;
     Delay(30); //for a while.
-    e = 1; //pull high to build the rising edge
+    e=1;
+    PORTD = command;
+    Delay(30); //for a while.
+    e = 0; //pull low enable signal.
+   
+  //  e = 1; //pull high to build the rising edge
 }
 
 void lcd_PrintChar(char character) {
     rs = 1; //is data not command.
-    rw = 0; //is write not read.
-    PORTD = character; //data send to PORTD
+        rw = 0; //is write not read.
+    e=0;
+    Delay(30); //for a while.
+    e=1;
+    PORTD = character;
+    Delay(30); //for a while.
     e = 0; //pull low enable signal.
-    Delay(40); //for a while.
-    e = 1; //pull high to build the rising edge.
 }
 
 void lcd_PrintString(char str[], int lineN, int pos) {
