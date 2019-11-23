@@ -14,6 +14,7 @@
 	void DelayT(int t[]);
     int StrLen(char*); // Get length of a string.
     char* BcdToStr(char); // Convert BCD (binary coded decimal) to decimal.
-    
+    char IntToChar(int i);
+
 #endif	/* XC_Utils_H */
 

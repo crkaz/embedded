@@ -23,7 +23,7 @@ char dArr[11]; // Date array for returning date or time as string.
 //mode, bit 5 is the second 10-hour bit (20 ? 23 hours).
 
 //define the time:       sec,  min,  hour, day, month, week, year, control word.
-const char defaults[] = {0x00, 0x28, 0x15, 0x22, 0x11, 0x17, 0x19, 0x00};
+const char defaults[] = {0x00, 0x23, 0x21, 0x23, 0x11, 0x17, 0x19, 0x00};
 unsigned char time_rx = 0x30; //define receive reg.
 char table1[7]; //define the read time and date save table.
 
@@ -34,10 +34,8 @@ void rtc_Init() {
     TRISA = 0x00; //a port all output
     TRISD = 0X00; //d port all output
     ADCON1 = 0X06; //a port all i/o
-    //-------------
-    TRISB = 0X02; //rb1 input, others output // CAN REMOVE?
-    OPTION_REG = 0X00; //open b port internal pull high. // CAN REMOVE?
-    //-------------
+    TRISB = 0X02; //rb1 input, others output.
+    OPTION_REG = 0X00; //open b port internal pull high.
     PORTA = 0XFF;
     PORTD = 0XFF; //clear all display
 
@@ -99,6 +97,7 @@ char rtc_GetTimeComponent(char b) {
 }
 
 // Write byte to active register.
+
 void WriteByte(unsigned char time_tx) {
     int j; //set the loop counter.
     for (j = 0; j < 8; j++) //continue to write 8bit
@@ -116,6 +115,7 @@ void WriteByte(unsigned char time_tx) {
 }
 
 // Read byte from active register.
+
 unsigned char ReadByte() {
     int j; //set the loop counter.  
     TRISB4 = 1; //continue to write 8bit 
@@ -142,6 +142,7 @@ char* rtc_GetTimeComponentAsString(char b) {
 }
 
 // Collate hour/min/second components and return a string.
+
 char* rtc_GetTimeString() {
     tArr[0] = rtc_GetTimeComponentAsString(HOUR)[0];
     tArr[1] = rtc_GetTimeComponentAsString(HOUR)[1];
@@ -156,6 +157,7 @@ char* rtc_GetTimeString() {
 }
 
 // Collate year/month/day components and return a string.
+
 char* rtc_GetDateString() {
     dArr[0] = '2';
     dArr[1] = '0';

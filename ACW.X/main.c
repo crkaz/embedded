@@ -31,8 +31,7 @@ void Init() {
     rtc_Init();
     matrix_Init();
     buzzer_init();
-    //    rtc_SetTime();
-    //    rtc_SetTimeComponent(DATE, 0x22); 
+    //    rtc_SetTime(); // Remove after inital config.
     lcd_Init();
     //    Delay(1000);
     //    lcd_Init(); // Ensure lcd switches on at start.
@@ -79,23 +78,16 @@ void DisplayMenuScreen(char ln1[], char ln2[], char ln3[], char ln4[]) {
 }
 
 int ValidateUserInput(int nInputs, char inputs[], float min, float max) {
-    const float sigs[] = {10.0, 1.0, 0.0, 0.1};
-    int sum;
+    const float sigs[] = {10.0, 1.0, 0.0, 0.1}; // 10s 1s . 0.1s e.g. 00.0
+    float sum = 0.0;
 
-    lcd_Clear();
-    lcd_PrintString("VALIDATING...", 0, 0);
-    lcd_SetCursorPos(2, 0);
-    
     for (int i = 0; i < nInputs; ++i) {
-        sum = sum + (sigs[i] * (inputs[i] - 48));
-        lcd_PrintChar(inputs[i] - 48);
+        int val = inputs[i] - '0';
+        sum = sum + (val * sigs[i]);
     }
-    Delay(25000);
-    Delay(25000);
-    Delay(25000);
-    Delay(25000);
 
-    if (sum > max || sum < min) return 0;
+    if (sum < min || sum > max)
+        return 0;
 
     return 1;
 }
@@ -115,7 +107,7 @@ void CheckUserInput(float min, float max, int inpLimit) {
             if (ValidateUserInput(nInputs, inputs, min, max)) {
                 lcd_PrintString(lcd_EMPTY, 3, 0); // Clear line
                 lcd_PrintString("Success!", 3, 0);
-            } else {// Else print error to 4th line.
+            } else {
                 //            lcd_PrintString(lcd_EMPTY, 3, 0) // Clear line
                 lcd_PrintString("Err: invalid inp", 3, 0);
             }

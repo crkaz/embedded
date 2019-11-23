@@ -6,7 +6,7 @@
 #include <xc.h> // include processor files - each processor file is guarded.  
 //	void WriteCmd(char command); // Privatised.
 
-const char lcd_EMPTY[] = "                "; // Empty string for clearing a line.
+char lcd_EMPTY[] = "               \0"; // Empty string for clearing a line.
 
 void lcd_CursorStatus(int i); // Switch cursor on (1) or off (0);
 void lcd_SetCursorPos(int lineN, int pos);
