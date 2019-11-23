@@ -12,8 +12,10 @@
 #define sclk  RB0 //1302 clock        
 #define rst   RB5 //1302 enable bit   
 
-unsigned char ReadByte(); // Privatised.
+unsigned char ReadByte(void); // Privatised.
 void WriteByte(unsigned char time_tx); // Privatised.
+char tArr[9]; // Time array for returning date or time as string.
+char dArr[11]; // Date array for returning date or time as string.
 
 //AM-PM/12-24 MODE
 //Bit 7 of the hours register is defined as the 12? or 24?hour mode select bit. When high, the 12?hour
@@ -141,36 +143,30 @@ char* rtc_GetTimeComponentAsString(char b) {
 
 // Collate hour/min/second components and return a string.
 char* rtc_GetTimeString() {
-    char t[] = {
-        rtc_GetTimeComponentAsString(HOUR)[0],
-        rtc_GetTimeComponentAsString(HOUR)[1],
-        ':',
-        rtc_GetTimeComponentAsString(MIN)[0],
-        rtc_GetTimeComponentAsString(MIN)[1],
-        ':',
-        rtc_GetTimeComponentAsString(SEC)[0],
-        rtc_GetTimeComponentAsString(SEC)[1],
-        '\0',
-    };
-    return t;
+    tArr[0] = rtc_GetTimeComponentAsString(HOUR)[0];
+    tArr[1] = rtc_GetTimeComponentAsString(HOUR)[1];
+    tArr[2] = ':';
+    tArr[3] = rtc_GetTimeComponentAsString(MIN)[0];
+    tArr[4] = rtc_GetTimeComponentAsString(MIN)[1];
+    tArr[5] = ':';
+    tArr[6] = rtc_GetTimeComponentAsString(SEC)[0];
+    tArr[7] = rtc_GetTimeComponentAsString(SEC)[1];
+    tArr[8] = '\0';
+    return tArr;
 }
 
 // Collate year/month/day components and return a string.
 char* rtc_GetDateString() {
-    char d[] = {
-        '2',
-        '0',
-        rtc_GetTimeComponentAsString(YEAR)[0],
-        rtc_GetTimeComponentAsString(YEAR)[1],
-        '-',
-        rtc_GetTimeComponentAsString(MONTH)[0],
-        rtc_GetTimeComponentAsString(MONTH)[1],
-        '-',
-//        rtc_GetTimeComponentAsString(DAY)[0],
-//        rtc_GetTimeComponentAsString(DAY)[1],
-        rtc_GetTimeComponentAsString(DATE)[0],
-        rtc_GetTimeComponentAsString(DATE)[1],
-        '\0',
-    };
-    return d;
+    dArr[0] = '2';
+    dArr[1] = '0';
+    dArr[2] = rtc_GetTimeComponentAsString(YEAR)[0];
+    dArr[3] = rtc_GetTimeComponentAsString(YEAR)[1];
+    dArr[4] = '-';
+    dArr[5] = rtc_GetTimeComponentAsString(MONTH)[0];
+    dArr[6] = rtc_GetTimeComponentAsString(MONTH)[1];
+    dArr[7] = '-';
+    dArr[8] = rtc_GetTimeComponentAsString(DATE)[0];
+    dArr[9] = rtc_GetTimeComponentAsString(DATE)[1];
+    dArr[10] = '\0';
+    return dArr;
 }

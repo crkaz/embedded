@@ -6,7 +6,6 @@
 #pragma config PWRTE = ON // Power-up Timer Enable bit (PWRT disabled)
 #pragma config BOREN = OFF // Brown-out Reset Enable bit (BOR enabled)
 #pragma config LVP = OFF // Low-Voltage (Single-Supply) In-Circuit Serial Programming Enable bit (RB3 is digital I/O, HV on MCLR must be used for programming)
-// ---
 
 // Drivers
 #include "Utils.h"
@@ -16,37 +15,25 @@
 #include "thermometer_driver.h"
 #include "matrix.h"
 
+const int MAX_SCREEN_INDEX = 2; // 0 == default, 1 == settings, 2 == test.
+int mode = 0; // Store UI state.  // 0 == default, 1 == settings, 2 == test.
+int changedMode = 0; // For clearing screen on initial redraw.
 
 const int DAYTIME[2] = {6, 30}; // 6:30am
 const int NIGHTTIME[2] = {19, 30}; // 7:30pm
 
-int mode = 0; // Store UI state
 float lowerThreshold[2] = {5.0, 2.5}; // Temperature heating[0] and alarm[1] thresholds.
 float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] thresholds.
 
-// Initialise default ports.
+// Ready the application.
 
-void InitPorts() {
-    //    lcd_Init();
-    //    ADCON1 = 0X07; //a port as ordinary i/o.
-}
-
-// Initialise each component and set the rtc time.
-
-void InitComponents() {
+void Init() {
     rtc_Init();
     matrix_Init();
     buzzer_init();
     //    rtc_SetTime();
     //    rtc_SetTimeComponent(DATE, 0x22); 
     lcd_Init();
-}
-
-// Ready the application.
-
-void Init() {
-    InitPorts();
-    InitComponents();
     //    Delay(1000);
     //    lcd_Init(); // Ensure lcd switches on at start.
 }
@@ -66,43 +53,6 @@ void CheckTemperature() {
     //    }
 }
 
-// Display the time on the second row of the LCD.
-
-void DisplayDateAndTime() {
-    lcd_PrintString("Date:", 0, 0);
-    lcd_PrintString(rtc_GetDateString(), 0, 3);
-    lcd_PrintString("Time:", 1, 0);
-    lcd_PrintString(rtc_GetTimeString(), 1, 3);
-}
-
-void DisplaySettingsScreen() {
-    lcd_PrintString("Settings:", 0, 0);
-    lcd_PrintString("1:Set date/time", 1, 0);
-    lcd_PrintString("2:Set thresholds", 2, 0);
-}
-
-void DisplaySetTimeScreen() {
-    lcd_Clear();
-    while (matrix_Scan() != 'F') {
-        lcd_PrintString("Set date/time:", 0, 0);
-        lcd_PrintString("Date:", 1, 0);
-        lcd_PrintString(rtc_GetDateString(), 1, 3);
-        lcd_PrintString("Time:", 2, 0);
-        lcd_PrintString(rtc_GetTimeString(), 2, 3);
-        lcd_SetCursorPos(1, 0);
-    }
-}
-
-void DisplaySetThresholdsScreen() {
-    lcd_Clear();
-    while (matrix_Scan() != 'F') {
-        lcd_PrintString("Set thresholds:", 0, 0);
-        lcd_PrintString("1:Cooling", 1, 0);
-        lcd_PrintString("2:Heating", 2, 0);
-        lcd_SetCursorPos(1, 0);
-    }
-}
-
 // Check/set nighttime (0) or daytime (1) mode
 
 void CheckTime(int i) {
@@ -110,51 +60,194 @@ void CheckTime(int i) {
 
 }
 
+void DisplayMainScreen() {
+    lcd_PrintString("Date:", 0, 0);
+    lcd_PrintString(rtc_GetDateString(), 0, 3);
+    lcd_PrintString("Time:", 1, 0);
+    lcd_PrintString(rtc_GetTimeString(), 1, 3);
+    lcd_PrintString("Temp:", 2, 0);
+    lcd_PrintString(calculate_temp(get_temp()), 2, 3);
+    lcd_PrintString("Status:", 3, 0);
+    lcd_PrintString("OK", 3, 4);
+}
+
+void DisplayMenuScreen(char ln1[], char ln2[], char ln3[], char ln4[]) {
+    lcd_PrintString(ln1, 0, 0);
+    lcd_PrintString(ln2, 1, 0);
+    lcd_PrintString(ln3, 2, 0);
+    lcd_PrintString(ln4, 3, 0);
+}
+
+int ValidateUserInput(int nInputs, char inputs[], float min, float max) {
+    const float sigs[] = {10.0, 1.0, 0.0, 0.1};
+    int sum;
+
+    lcd_Clear();
+    lcd_PrintString("VALIDATING...", 0, 0);
+    lcd_SetCursorPos(2, 0);
+    
+    for (int i = 0; i < nInputs; ++i) {
+        sum = sum + (sigs[i] * (inputs[i] - 48));
+        lcd_PrintChar(inputs[i] - 48);
+    }
+    Delay(25000);
+    Delay(25000);
+    Delay(25000);
+    Delay(25000);
+
+    if (sum > max || sum < min) return 0;
+
+    return 1;
+}
+
+void CheckUserInput(float min, float max, int inpLimit) {
+    int busy = 1;
+    char input;
+    int nInputs = 0;
+    char inputs[4]; // Has to be compile-time constant; don't always need 4.
+
+    while (busy) { // Wait for user input.
+        Delay(6500); // Delay key presses.
+        input = matrix_Scan();
+
+        if (input == 's') { // Enter/submit.
+            // Validate input.
+            if (ValidateUserInput(nInputs, inputs, min, max)) {
+                lcd_PrintString(lcd_EMPTY, 3, 0); // Clear line
+                lcd_PrintString("Success!", 3, 0);
+            } else {// Else print error to 4th line.
+                //            lcd_PrintString(lcd_EMPTY, 3, 0) // Clear line
+                lcd_PrintString("Err: invalid inp", 3, 0);
+            }
+            Delay(25000); // Display message for while.
+            Delay(25000); // Display message for while.
+
+            input = 'x'; // Set input to 'x' to return to menu.
+        } else if ((input != '_' && input != 'x' && input != '<' && input != '>' && input != '.') && nInputs < inpLimit) {
+            lcd_PrintChar(input);
+            inputs[nInputs] = input; // Store for validation.
+            nInputs += 1;
+
+            if (nInputs == inpLimit)
+                lcd_PrintString("Press enter...", 3, 0);
+        }
+        if (input == 'x') { // Cancel/back.
+            busy = 0; // Break input loop.
+            mode /= 10; // Return to previous screen.
+        }
+    }
+}
+
+void DisplaySetScreen(char title[], char *currVal, float min, float max, int inpLimit) {
+    lcd_CursorStatus(1); // Switch cursor on.
+    lcd_PrintString(title, 0, 0);
+    lcd_PrintString("Curr:", 1, 0);
+    lcd_PrintString(currVal, 1, 3);
+    lcd_PrintString("New:", 2, 0);
+    lcd_SetCursorPos(2, 2);
+
+    // Wait for user to give valid value or cancel.
+    CheckUserInput(min, max, inpLimit);
+
+    lcd_CursorStatus(0);
+    lcd_Clear();
+    //    WriteCmd(0x38); // 8 bits 2 lines 5*7 mode. / Set function
+}
+
+void Render() {
+    switch (mode) {
+        case 0:
+            DisplayMainScreen();
+            break;
+
+        case 1:
+            DisplayMenuScreen("Settings:", "1.Date", "2.Time", "3.Thresholds");
+            break;
+        case 11:
+            //            DisplaySetScreen("#Date", rtc_GetDateString(), 0.0, 0.0);
+            DisplayMenuScreen("#Date:", "1.Year", "2.Month", "3.Day");
+            break;
+        case 111:
+            DisplaySetScreen("##Year", rtc_GetTimeComponentAsString(YEAR), 0.0, 99.0, 2);
+            break;
+        case 112:
+            DisplaySetScreen("##Month", rtc_GetTimeComponentAsString(MONTH), 1.0, 12.0, 2);
+            break;
+        case 113:
+            DisplaySetScreen("##Day", rtc_GetTimeComponentAsString(DATE), 1.0, 31.0, 2);
+            break;
+        case 12:
+            DisplaySetScreen("#Time", rtc_GetTimeString(), 0.0, 0.0, 2);
+            break;
+        case 13:
+            lcd_PrintString("NOT IMPLEMENTED", 0, 0);
+            break;
+
+        case 2:
+            DisplayMenuScreen("Test:", "1.Cooling", "2.Heating", "3.Alarm");
+            break;
+        case 21:
+            lcd_PrintString("NOT IMPLEMENTED", 0, 0);
+            break;
+        case 22:
+            lcd_PrintString("NOT IMPLEMENTED", 0, 0);
+            break;
+        case 23:
+            lcd_PrintString("NOT IMPLEMENTED", 0, 0);
+            break;
+    }
+}
+
+void Navigate() {
+    if (changedMode) {
+        Delay(8000); // Don't change screens too fast.
+        changedMode = 0;
+    }
+    char currMode = mode;
+    switch (matrix_Scan()) {
+        case 'x':
+            if (mode > MAX_SCREEN_INDEX) mode /= 10; // Escape setting screen.
+            else mode = 0; // Else return home.
+            break;
+        case '<':
+            if (mode < MAX_SCREEN_INDEX + 1) { // Check not in a sub menu.
+                mode -= 1; // Go back a screen.
+                if (mode == -1) mode = MAX_SCREEN_INDEX;
+            }
+            break;
+        case '>':
+            if (mode < MAX_SCREEN_INDEX + 1) { // Check not in a sub menu.
+                mode += 1; // Go forward a screen.
+                if (mode > MAX_SCREEN_INDEX) mode = 0;
+            }
+            break;
+        case '1':
+            if (mode <= MAX_SCREEN_INDEX) mode = mode * 10 + 1; // Step into sub menu.
+            else if (mode == 11) mode = mode * 10 + 1;
+            break;
+        case '2':
+            if (mode <= MAX_SCREEN_INDEX) mode = mode * 10 + 2;
+            else if (mode == 11) mode = mode * 10 + 2;
+            break;
+        case '3':
+            if (mode <= MAX_SCREEN_INDEX) mode = mode * 10 + 3;
+            else if (mode == 11) mode = mode * 10 + 3;
+            break;
+    }
+    if (currMode != mode) {
+        lcd_Clear(); // If loading a new screen, clear.
+        changedMode = 1;
+    }
+}
+
 // Main operation loop.
 
 void Loop() {
-    char input;
-
     for (;;) {
         //        CheckTemperature(); // Check alarms
         //CheckTime(); // Check daytime/nighttime mode.
-
-        // Render LCD according to current UI state.
-        switch (mode) {
-            case 0: DisplayDateAndTime();
-                break;
-            case 1: DisplaySettingsScreen();
-                break;
-        }
-
-        //        // Check for user input.
-        input = matrix_Scan();
-        switch (input) {
-            case 'F':
-                if (mode != 0) lcd_Clear(); // If mode has changed, clear lcd.
-                mode = 0;
-                break;
-            case 'E':
-                if (mode != 1) lcd_Clear(); // If mode has changed, clear lcd.
-                mode = 1;
-                break;
-
-            case '3':
-                if (mode == 1) lcd_Clear();
-                DisplaySetTimeScreen();
-                break;
-            case '7':
-                DisplaySetThresholdsScreen();
-                break;
-                
-            case '0':
-                buzzer_sound(1000,12500,2);
-                break;
-                //            case '11':
-                //                if (mode == 1) lcd_Clear();
-                //                lcd_PrintString("Other Screen", 0, 0);
-                //                break;
-        }
+        Render(); // Render LCD according to current UI state.
+        Navigate(); // Check for user input to change UI state.
     }
 }
 

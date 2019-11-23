@@ -7,7 +7,8 @@
 //	unsigned char read_byte(); // Privatised.
 //	void resetThermometer(void); // Privatised.
 
-	int get_temp();
+	int get_temp(void);
 	char* calculate_temp(int TZ);
+
 #endif	/* XC_Thermometer_H */
 

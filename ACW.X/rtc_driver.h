@@ -20,13 +20,13 @@
     //    void WriteByte(unsigned char time_tx); //write one byte subroutine.
     //    unsigned char ReadByte(); //read one byte subroutine.
     
-    void rtc_PortInit(); //port initilize subroutine.
-    void rtc_Init(); //DS1302 initilize subroutine.
-    void rtc_SetTime(); //set time subroutine.
-    char* rtc_GetTime(); //get time subroutine.
+    void rtc_PortInit(void); //port initilize subroutine.
+    void rtc_Init(void); //DS1302 initilize subroutine.
+    void rtc_SetTime(void); //set time subroutine.
+    char* rtc_GetTime(void); //get time subroutine.
     char* rtc_GetTimeComponentAsString(char); // Get individual time/date component.
-    char* rtc_GetTimeString(); // Get full time as string.
-    char* rtc_GetDateString(); // Get full date as string.
+    char* rtc_GetTimeString(void); // Get full time as string.
+    char* rtc_GetDateString(void); // Get full date as string.
     void rtc_SetTimeComponent(char, char); // Set individual time component.
 
 #endif	/* XC_RTC_H */
