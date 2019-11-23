@@ -43,11 +43,11 @@ char* BcdToStr(char bcd) {
     return bcdToStr;
 }
 
-// Convert an int to a char.
-char IntToChar(int i) {
-    char c = i + 48;
-    return c;
-}
+//// Convert an int to a char.
+//char IntToChar(int i) {
+//    char c = i + 48;
+//    return c;
+//}
 
 // Convert BCD (binary coded decimal) to decimal.
 //char* BcdToDec(char bcd) {

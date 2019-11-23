@@ -18,12 +18,12 @@
 const int MAX_SCREEN_INDEX = 2; // 0 == default, 1 == settings, 2 == test.
 int mode = 0; // Store UI state.  // 0 == default, 1 == settings, 2 == test.
 int changedMode = 0; // For clearing screen on initial redraw.
-
-const int DAYTIME[2] = {6, 30}; // 6:30am
-const int NIGHTTIME[2] = {19, 30}; // 7:30pm
-
-float lowerThreshold[2] = {5.0, 2.5}; // Temperature heating[0] and alarm[1] thresholds.
-float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] thresholds.
+//
+//const int DAYTIME[2] = {6, 30}; // 6:30am
+//const int NIGHTTIME[2] = {19, 30}; // 7:30pm
+//
+//float lowerThreshold[2] = {5.0, 2.5}; // Temperature heating[0] and alarm[1] thresholds.
+//float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] thresholds.
 
 // Ready the application.
 
@@ -38,26 +38,26 @@ void Init() {
 }
 
 // Check temperature thresholds and sound alarm or turn heating/cooling on if appropriate.
-
-void CheckTemperature() {
-    //    float temp = temp_GetTemp();
-    //    if (temp > upperThreshold[1] || temp < lowerThreshold[1]) {
-    //        buz_Sound(500, 500, 500);
-    //    }
-    //    if (temp > upperThreshold[0]
-    //        // Switch cooling on.
-    //    }
-    //    else if (temp < lowerThreshold[0]){
-    //        // Switch heating output on.
-    //    }
-}
+//
+//void CheckTemperature() {
+//    //    float temp = temp_GetTemp();
+//    //    if (temp > upperThreshold[1] || temp < lowerThreshold[1]) {
+//    //        buz_Sound(500, 500, 500);
+//    //    }
+//    //    if (temp > upperThreshold[0]
+//    //        // Switch cooling on.
+//    //    }
+//    //    else if (temp < lowerThreshold[0]){
+//    //        // Switch heating output on.
+//    //    }
+//}
 
 // Check/set nighttime (0) or daytime (1) mode
-
-void CheckTime(int i) {
-    //int time[4] = rtc_GetTime();
-
-}
+//
+//void CheckTime(int i) {
+//    //int time[4] = rtc_GetTime();
+//
+//}
 
 void DisplayMainScreen() {
     lcd_PrintString("Date:", 0, 0);
@@ -86,64 +86,89 @@ int ValidateUserInput(int nInputs, char inputs[], float min, float max) {
         sum = sum + (val * sigs[i]);
     }
 
-    if (sum < min || sum > max)
-        return 0;
+    int returnVal = 1;
+    if (sum < min || sum > max) {
+        lcd_PrintString("Err: invalid inp", 3, 0);
+        returnVal = 0; // Failed. Try again (redraw this setscreen).
+    } else
+        lcd_PrintString("Success!", 3, 0);
 
-    return 1;
+    // Show validation message for a while.
+    Delay(27000);
+    Delay(27000);
+
+    return returnVal; // Success. Return to previous menu.
 }
 
-void CheckUserInput(float min, float max, int inpLimit) {
+int CheckUserInput(float min, float max, int inpLimit) {
     int busy = 1;
     char input;
     int nInputs = 0;
     char inputs[4]; // Has to be compile-time constant; don't always need 4.
+    int inputsChanged = 0;
 
+    Delay(7000); // Delay key presses.
     while (busy) { // Wait for user input.
-        Delay(6500); // Delay key presses.
         input = matrix_Scan();
+        Delay(3500); // Delay key presses.
 
         if (input == 's') { // Enter/submit.
             // Validate input.
-            if (ValidateUserInput(nInputs, inputs, min, max)) {
-                lcd_PrintString(lcd_EMPTY, 3, 0); // Clear line
-                lcd_PrintString("Success!", 3, 0);
-            } else {
-                //            lcd_PrintString(lcd_EMPTY, 3, 0) // Clear line
-                lcd_PrintString("Err: invalid inp", 3, 0);
-            }
-            Delay(25000); // Display message for while.
-            Delay(25000); // Display message for while.
-
-            input = 'x'; // Set input to 'x' to return to menu.
-        } else if ((input != '_' && input != 'x' && input != '<' && input != '>' && input != '.') && nInputs < inpLimit) {
-            lcd_PrintChar(input);
+            if (ValidateUserInput(nInputs, inputs, min, max))
+                input = 'x'; // Set input to 'x' to return to menu.
+            else
+                return 1; // Try again.
+        } else if ((input != '_' && input != 'x' && input != '<' && input != '>' && input != '.' && input != 'b') && nInputs < inpLimit) {
+            // Record user input.
             inputs[nInputs] = input; // Store for validation.
             nInputs += 1;
+            inputsChanged = 1;
 
             if (nInputs == inpLimit)
                 lcd_PrintString("Press enter...", 3, 0);
+            else
+                lcd_PrintString(lcd_EMPTY_STRING, 3, 0); // Clear line 2.
+
+        } else if (input == 'b' && nInputs > 0) { // Backspace.
+            inputs[nInputs] = ' '; // Empty last input.
+            nInputs -= 1;
+            inputsChanged = 1;
+
+            if (nInputs == inpLimit)
+                lcd_PrintString("Press enter...", 3, 0);
+            else
+                lcd_PrintString(lcd_EMPTY_STRING, 3, 0); // Clear line 2.
         }
-        if (input == 'x') { // Cancel/back.
+
+        if (input == 'x') { // Cancel/back/success.
             busy = 0; // Break input loop.
             mode /= 10; // Return to previous screen.
         }
+
+        if (inputsChanged) {
+            lcd_PrintString(lcd_EMPTY_STRING, 2, 0); // Clear line 2.
+            lcd_PrintString("New:", 2, 0);
+            lcd_SetCursorPos(2, 2);
+            for (int i = 0; i < nInputs; ++i)
+                lcd_PrintChar(inputs[i]);
+            inputsChanged = 0;
+        }
     }
+    return 0; // Finish.
 }
 
-void DisplaySetScreen(char title[], char *currVal, float min, float max, int inpLimit) {
+int DisplaySetScreen(char title[], char *currVal, float min, float max, int inpLimit) {
     lcd_CursorStatus(1); // Switch cursor on.
     lcd_PrintString(title, 0, 0);
-    lcd_PrintString("Curr:", 1, 0);
+    lcd_PrintString("Current:", 1, 0);
     lcd_PrintString(currVal, 1, 3);
     lcd_PrintString("New:", 2, 0);
-    lcd_SetCursorPos(2, 2);
 
     // Wait for user to give valid value or cancel.
-    CheckUserInput(min, max, inpLimit);
-
+    int val = CheckUserInput(min, max, inpLimit);
     lcd_CursorStatus(0);
     lcd_Clear();
-    //    WriteCmd(0x38); // 8 bits 2 lines 5*7 mode. / Set function
+    return val;
 }
 
 void Render() {
@@ -160,7 +185,7 @@ void Render() {
             DisplayMenuScreen("#Date:", "1.Year", "2.Month", "3.Day");
             break;
         case 111:
-            DisplaySetScreen("##Year", rtc_GetTimeComponentAsString(YEAR), 0.0, 99.0, 2);
+            while (DisplaySetScreen("##Year", rtc_GetTimeComponentAsString(YEAR), 0.0, 99.0, 2));
             break;
         case 112:
             DisplaySetScreen("##Month", rtc_GetTimeComponentAsString(MONTH), 1.0, 12.0, 2);
@@ -185,7 +210,10 @@ void Render() {
             lcd_PrintString("NOT IMPLEMENTED", 0, 0);
             break;
         case 23:
-            lcd_PrintString("NOT IMPLEMENTED", 0, 0);
+            lcd_PrintString("Sounding...", 0, 0);
+            buzzer_sound(12500, 15000, 3);
+            lcd_PrintString("Completed...", 0, 0);
+            mode = 2;
             break;
     }
 }
@@ -232,18 +260,13 @@ void Navigate() {
     }
 }
 
-// Main operation loop.
+void main(void) {
+    Init(); // Initialise ports and components.
 
-void Loop() {
     for (;;) {
         //        CheckTemperature(); // Check alarms
         //CheckTime(); // Check daytime/nighttime mode.
         Render(); // Render LCD according to current UI state.
         Navigate(); // Check for user input to change UI state.
     }
-}
-
-void main(void) {
-    Init(); // Initialise ports and components.
-    Loop();
 }

@@ -21,7 +21,7 @@ char matrix_Scan() {
 
     switch (result) {
         case 0xe7: return 's'; // Select. //// Bottom right.
-        case 0xeb: return '_'; // Nothing.
+        case 0xeb: return 'b'; // Backspace.
         case 0xed: return '.'; 
         case 0xee: return '0';
         

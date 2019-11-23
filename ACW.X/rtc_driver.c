@@ -1,7 +1,3 @@
-// HARDWARE CONFIG:
-// Clock chip: DS1302
-// Switches ON: S9bX, S5bX, S6bX, S1b7 (all other switches off).
-
 #include<pic.h> //include MCU head file     
 #include <xc.h>
 #include "Utils.h"
@@ -48,17 +44,17 @@ void rtc_Init() {
 }
 
 // Set ALL components (sec, min, hour etc..) with BUST mode.
-
-void rtc_SetTime() {
-    int i; //define the loop counter.
-    rst = 1; //enable DS1302
-    WriteByte(0xbe); // Write burst mode.
-    for (i = 0; i < 8; i++) //continue to write 8 bytes.
-    {
-        WriteByte(defaults[i]); //write one byte
-    }
-    rst = 0; //reset
-}
+//
+//void rtc_SetTime() {
+//    int i; //define the loop counter.
+//    rst = 1; //enable DS1302
+//    WriteByte(0xbe); // Write burst mode.
+//    for (i = 0; i < 8; i++) //continue to write 8 bytes.
+//    {
+//        WriteByte(defaults[i]); //write one byte
+//    }
+//    rst = 0; //reset
+//}
 
 // SET INDIVIDUAL TIME COMPONENT
 // set_time_bit(SEC, 0x30); // EXAMPL: setting second bit to 30sec.
@@ -72,29 +68,29 @@ void rtc_SetTimeComponent(char b, char t) {
 
 // Read ALL components (sec, min, hour etc..) with BURST mode.
 
-char* rtc_GetTime() {
-    int i; //set loop counter.
-    rst = 1; //enable DS1302
-    WriteByte(0xbf); // Read burst mode.
-    for (i = 0; i < 7; i++) //continue to read 7 bytes.
-    {
-        table1[i] = ReadByte(); //
-    }
-    rst = 0; //reset DS1302
-
-    return table1;
-}
+//char* rtc_GetTime() {
+//    int i; //set loop counter.
+//    rst = 1; //enable DS1302
+//    WriteByte(0xbf); // Read burst mode.
+//    for (i = 0; i < 7; i++) //continue to read 7 bytes.
+//    {
+//        table1[i] = ReadByte(); //
+//    }
+//    rst = 0; //reset DS1302
+//
+//    return table1;
+//}
 
 // Get a component of time as a binary coded decimal.
 
-char rtc_GetTimeComponent(char b) {
-    rst = 1; //enable DS1302
-    WriteByte(b + 1); // Read individual bit (+ 1 sets read bit).
-    char t = ReadByte();
-    rst = 0; //reset DS1302
-
-    return t;
-}
+//char rtc_GetTimeComponent(char b) {
+//    rst = 1; //enable DS1302
+//    WriteByte(b + 1); // Read individual bit (+ 1 sets read bit).
+//    char t = ReadByte();
+//    rst = 0; //reset DS1302
+//
+//    return t;
+//}
 
 // Write byte to active register.
 

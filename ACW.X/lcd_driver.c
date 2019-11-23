@@ -70,19 +70,19 @@ void lcd_SetCursorPos(int lineN, int pos) {
     WriteCmd(addr);
 }
 
-void writeIntArray(char ints[]) {
-    for (int i = 0; i < StrLen(ints); i++) {
-        writeInt(ints[i]);
-    }
-}
+//void writeIntArray(char ints[]) {
+//    for (int i = 0; i < StrLen(ints); i++) {
+//        writeInt(ints[i]);
+//    }
+//}
 
 void lcd_Clear() {
     WriteCmd(0x01);
 }
 
-void lcd_Home() {
-    WriteCmd(0x02);
-}
+//void lcd_Home() {
+//    WriteCmd(0x02);
+//}
 
 void lcd_CursorStatus(int i) {
     if (i == 0) {
