@@ -1,11 +1,4 @@
-#include <xc.h>
-#include "Utils.h"
 #include "thermometer_driver.h"
-
-#define dq RE0
-#define dq_dir TRISE0
-#define set_dq_high() dq_dir = 1
-#define set_dq_low() dq = 0; dq_dir = 0
 
 void resetThermometer(void); // Privatised.
 void write_byte(unsigned char val); // Privatised.

@@ -4,7 +4,7 @@
 	#define	XC_BUZZER_H
 	
 	#include <xc.h> // include processor files - each processor file is guarded.  
-    
+
     void buzzer_init(void);
     void buzzer_sound(int bT, int pT, int reps);
 

@@ -1,6 +1,3 @@
-#include<pic.h>   
-#include <xc.h>
-#include "Utils.h"
 #include "buzzer_driver.h"
        
 // Buzzer pin config.

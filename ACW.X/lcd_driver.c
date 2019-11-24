@@ -1,11 +1,5 @@
-#include <xc.h>
-#include "Utils.h"
 #include "lcd_driver.h"
 
-#define rs RA5
-#define rw RA4
-#define e RA3
-#define psb RA2
 void WriteCmd(char command); // Privatise.
 
 void lcd_Init() {
@@ -52,7 +46,6 @@ const int LN1 = 0xC0; // Address of the start of line 1.
 const int LN2 = 0xD0; // Address of the start of line 2.
 const int LN3 = 0xC8; // Address of the start of line 3.
 const int LN4 = 0xD8; // Address of the start of line 4.
-
 void lcd_SetCursorPos(int lineN, int pos) {
     int addr;
     switch (lineN) {

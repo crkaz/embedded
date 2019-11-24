@@ -1,12 +1,4 @@
-#include<pic.h> //include MCU head file     
-#include <xc.h>
-#include "Utils.h"
 #include "rtc_driver.h"
-
-// DS1302 pin config.
-#define i_o   RB4 //1302I_O           
-#define sclk  RB0 //1302 clock        
-#define rst   RB5 //1302 enable bit   
 
 unsigned char ReadByte(void); // Privatised.
 void WriteByte(unsigned char time_tx); // Privatised.
@@ -19,9 +11,9 @@ char dArr[11]; // Date array for returning date or time as string.
 //mode, bit 5 is the second 10-hour bit (20 ? 23 hours).
 
 //define the time:       sec,  min,  hour, day, month, week, year, control word.
-const char defaults[] = {0x00, 0x23, 0x21, 0x23, 0x11, 0x17, 0x19, 0x00};
+//const char defaults[] = {0x00, 0x23, 0x21, 0x23, 0x11, 0x17, 0x19, 0x00};
 unsigned char time_rx = 0x30; //define receive reg.
-char table1[7]; //define the read time and date save table.
+//char table1[7]; //define the read time and date save table.
 
 
 // Initialise DS1302 clock.

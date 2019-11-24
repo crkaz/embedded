@@ -173,47 +173,47 @@ int DisplaySetScreen(char title[], char *currVal, float min, float max, int inpL
 
 void Render() {
     switch (mode) {
-        case 0:
-            DisplayMainScreen();
+        // Standby screen.
+        case 0: DisplayMainScreen(); break;
+                
+        // Settings screen.
+        case 1: DisplayMenuScreen("Settings:", "1.Date", "2.Time", "3.Thresholds"); break;
+        // Set DATE screens.
+        case 11: DisplayMenuScreen("#Date:", "1.Year", "2.Month", "3.Day"); break;
+        case 111: while (DisplaySetScreen("##Year", rtc_GetTimeComponentAsString(YEAR), 0.0, 99.0, 2)); break;
+        case 112: while (DisplaySetScreen("##Month", rtc_GetTimeComponentAsString(MONTH), 1.0, 12.0, 2)); break;
+        case 113: while (DisplaySetScreen("##Day", rtc_GetTimeComponentAsString(DATE), 1.0, 31.0, 2)); break;
+        // Set TIME screens.
+        case 12: DisplayMenuScreen("#Time:", "1.Hour", "2.Min", "3.Sec"); break;
+        case 121: while (DisplaySetScreen("##Hour", rtc_GetTimeComponentAsString(HOUR), 0.0, 24.0, 2)); break;
+        case 122: while (DisplaySetScreen("##Min", rtc_GetTimeComponentAsString(MIN), 0.0, 60.0, 2)); break;
+        case 123: while (DisplaySetScreen("##Sec", rtc_GetTimeComponentAsString(SEC), 0.0, 60.0, 2)); break;
+        // Set THRESHOLDS screens.
+        case 13: DisplayMenuScreen("#Thresholds:", "1.Cooling", "2.Heating", "3.Alarm"); break;
+        case 131:
+            while (DisplaySetScreen("##Cool. (DAY)", "NI", 0.0, 24.0, 2)); // Set day thresholds.
+            while (DisplaySetScreen("##Cool. (NIGHT)", "NI", 0.0, 24.0, 2)); 
+            break; // Then set night thresholds.
+        case 132:
+            while (DisplaySetScreen("##Heat. (DAY)" , "NI", 0.0, 60.0, 2));
+            while (DisplaySetScreen("##Heat.  (NIGHT)" , "NI", 0.0, 60.0, 2));
             break;
-
-        case 1:
-            DisplayMenuScreen("Settings:", "1.Date", "2.Time", "3.Thresholds");
+        case 133: 
+            while (DisplaySetScreen("##Alarm% (DAY)", "NI", 0.0, 60.0, 2));
+            while (DisplaySetScreen("##Alarm% (NIGHT)", "NI", 0.0, 60.0, 2));
             break;
-        case 11:
-            //            DisplaySetScreen("#Date", rtc_GetDateString(), 0.0, 0.0);
-            DisplayMenuScreen("#Date:", "1.Year", "2.Month", "3.Day");
-            break;
-        case 111:
-            while (DisplaySetScreen("##Year", rtc_GetTimeComponentAsString(YEAR), 0.0, 99.0, 2));
-            break;
-        case 112:
-            DisplaySetScreen("##Month", rtc_GetTimeComponentAsString(MONTH), 1.0, 12.0, 2);
-            break;
-        case 113:
-            DisplaySetScreen("##Day", rtc_GetTimeComponentAsString(DATE), 1.0, 31.0, 2);
-            break;
-        case 12:
-            DisplaySetScreen("#Time", rtc_GetTimeString(), 0.0, 0.0, 2);
-            break;
-        case 13:
-            lcd_PrintString("NOT IMPLEMENTED", 0, 0);
-            break;
-
+        
+        // Test screen.
         case 2:
-            DisplayMenuScreen("Test:", "1.Cooling", "2.Heating", "3.Alarm");
-            break;
-        case 21:
-            lcd_PrintString("NOT IMPLEMENTED", 0, 0);
-            break;
-        case 22:
-            lcd_PrintString("NOT IMPLEMENTED", 0, 0);
-            break;
+            DisplayMenuScreen("Test:", "1.Cooling", "2.Heating", "3.Alarm"); break;
+        case 21: lcd_PrintString("NOT IMPLEMENTED", 0, 0); break;
+        case 22: lcd_PrintString("NOT IMPLEMENTED", 0, 0); break;
         case 23:
-            lcd_PrintString("Sounding...", 0, 0);
-            buzzer_sound(12500, 15000, 3);
-            lcd_PrintString("Completed...", 0, 0);
-            mode = 2;
+            //            lcd_PrintString("Sounding...", 0, 0);
+            //            buzzer_sound(12500, 10000, 3);
+            //            lcd_PrintString("Completed...", 0, 0);
+            //            lcd_Clear();
+            //            mode = 2;
             break;
     }
 }
