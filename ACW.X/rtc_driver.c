@@ -75,14 +75,14 @@ void rtc_SetTimeComponent(char b, char t) {
 
 // Get a component of time as a binary coded decimal.
 
-//char rtc_GetTimeComponent(char b) {
-//    rst = 1; //enable DS1302
-//    WriteByte(b + 1); // Read individual bit (+ 1 sets read bit).
-//    char t = ReadByte();
-//    rst = 0; //reset DS1302
-//
-//    return t;
-//}
+char rtc_GetTimeComponent(char b) {
+    rst = 1; //enable DS1302
+    WriteByte(b + 1); // Read individual bit (+ 1 sets read bit).
+    char t = ReadByte();
+    rst = 0; //reset DS1302
+
+    return t;
+}
 
 // Write byte to active register.
 
@@ -119,28 +119,29 @@ unsigned char ReadByte() {
     sclk = 0;
     return (time_rx);
 }
-
-char* rtc_GetTimeComponentAsString(char b) {
-    rst = 1; //enable DS1302
-    WriteByte(b + 1); // Read individual bit (+ 1 sets read bit).
-    char t = ReadByte();
-    rst = 0; //reset DS1302
-
-    return BcdToStr(t); // Convert binary coded decimal to str for ease of use.
-}
+//
+//char* rtc_GetTimeComponentAsString(char b) {
+//    rst = 1; //enable DS1302
+//    WriteByte(b + 1); // Read individual bit (+ 1 sets read bit).
+//    char t = ReadByte();
+//    rst = 0; //reset DS1302
+//
+//    return BcdToStr(t); // Convert binary coded decimal to str for ease of use.
+//}
 
 // Collate hour/min/second components and return a string.
 
 char* rtc_GetTimeString() {
-    tArr[0] = rtc_GetTimeComponentAsString(HOUR)[0];
-    tArr[1] = rtc_GetTimeComponentAsString(HOUR)[1];
+    tArr[0] = BcdToStr(rtc_GetTimeComponent(HOUR))[0];
+    tArr[1] = BcdToStr(rtc_GetTimeComponent(HOUR))[1];
     tArr[2] = ':';
-    tArr[3] = rtc_GetTimeComponentAsString(MIN)[0];
-    tArr[4] = rtc_GetTimeComponentAsString(MIN)[1];
+    tArr[3] = BcdToStr(rtc_GetTimeComponent(MIN))[0];
+    tArr[4] = BcdToStr(rtc_GetTimeComponent(MIN))[1];
     tArr[5] = ':';
-    tArr[6] = rtc_GetTimeComponentAsString(SEC)[0];
-    tArr[7] = rtc_GetTimeComponentAsString(SEC)[1];
+    tArr[6] = BcdToStr(rtc_GetTimeComponent(SEC))[0];
+    tArr[7] = BcdToStr(rtc_GetTimeComponent(SEC))[1];
     tArr[8] = '\0';
+
     return tArr;
 }
 
@@ -149,14 +150,14 @@ char* rtc_GetTimeString() {
 char* rtc_GetDateString() {
     dArr[0] = '2';
     dArr[1] = '0';
-    dArr[2] = rtc_GetTimeComponentAsString(YEAR)[0];
-    dArr[3] = rtc_GetTimeComponentAsString(YEAR)[1];
+    dArr[2] = BcdToStr(rtc_GetTimeComponent(YEAR))[0];
+    dArr[3] = BcdToStr(rtc_GetTimeComponent(YEAR))[1];
     dArr[4] = '-';
-    dArr[5] = rtc_GetTimeComponentAsString(MONTH)[0];
-    dArr[6] = rtc_GetTimeComponentAsString(MONTH)[1];
+    dArr[5] = BcdToStr(rtc_GetTimeComponent(MONTH))[0];
+    dArr[6] = BcdToStr(rtc_GetTimeComponent(MONTH))[1];
     dArr[7] = '-';
-    dArr[8] = rtc_GetTimeComponentAsString(DATE)[0];
-    dArr[9] = rtc_GetTimeComponentAsString(DATE)[1];
+    dArr[8] = BcdToStr(rtc_GetTimeComponent(DATE))[0];
+    dArr[9] = BcdToStr(rtc_GetTimeComponent(DATE))[1];
     dArr[10] = '\0';
     return dArr;
 }

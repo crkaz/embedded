@@ -52,8 +52,27 @@ char* BcdToStr(char bcd) {
 //}
 
 // Convert BCD (binary coded decimal) to decimal.
-//char* BcdToDec(char bcd) {
-////    Multiply most significant bit and add least significant.
-//            int dec = ((bcd & 0xF0) >> 4) * 10 + (bcd & 0x0F);
-//    return dec;
-//}
+
+int BcdToDec(char bcd) {
+    //    Multiply most significant bit and add least significant.
+    int dec = ((bcd & 0xF0) >> 4) * 10 + (bcd & 0x0F);
+    return dec;
+}
+
+int IsLeapYear(int yr) {
+    yr = yr + 2000;
+
+    if (yr % 4 == 0) {
+        if (yr % 100 == 0) {
+            if (yr % 400 == 0) {
+                return 1;
+            } else {
+                return 0;
+            }
+            return 1;
+        }
+        return 1;
+    }
+
+    return 0;
+}

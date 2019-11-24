@@ -29,7 +29,8 @@
     void rtc_Init(void); //DS1302 initilize subroutine.
 //    void rtc_SetTime(void); //set time subroutine.
 //    char* rtc_GetTime(void); //get time subroutine.
-    char* rtc_GetTimeComponentAsString(char); // Get individual time/date component.
+    char rtc_GetTimeComponent(char); // Get individual time/date component.
+//    char* rtc_GetTimeComponentAsString(char); // Get individual time/date component.
     char* rtc_GetTimeString(void); // Get full time as string.
     char* rtc_GetDateString(void); // Get full date as string.
 //    void rtc_SetTimeComponent(char, char); // Set individual time component.

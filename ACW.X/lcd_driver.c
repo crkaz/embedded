@@ -71,6 +71,7 @@ void lcd_SetCursorPos(int lineN, int pos) {
 
 void lcd_Clear() {
     WriteCmd(0x01);
+    Delay(50);
 }
 
 //void lcd_Home() {
