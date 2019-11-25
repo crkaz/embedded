@@ -57,7 +57,6 @@ void lcd_SetCursorPos(int lineN, int pos) {
             break;
         case 3: addr = LN4 + pos;
             break;
-        default: break;
     }
 
     WriteCmd(addr);

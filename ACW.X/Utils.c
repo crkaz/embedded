@@ -73,6 +73,5 @@ int IsLeapYear(int yr) {
         }
         return 1;
     }
-
     return 0;
 }

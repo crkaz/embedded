@@ -105,7 +105,7 @@ char* calculate_temp(int TZ) {
     temperature[0] = TZ / 10 + 48; //integer ten bit	
     temperature[1] = TZ % 10 + 48; //integer Entries bit                                                                                                                            
     temperature[2] = '.';
-
+    
     if (TX & 0x80) {
         wd = wd + 5000;
     }
