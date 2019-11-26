@@ -37,7 +37,7 @@ void lcd_PrintChar(char character) {
 
 void lcd_PrintString(char str[], int lineN, int pos) {
     lcd_SetCursorPos(lineN, pos);
-    for (int i = 0; i < StrLen(str); ++i) {
+    for (unsigned char i = 0; i < StrLen(str); ++i) {
         lcd_PrintChar(str[i]);
     }
 }
@@ -57,7 +57,6 @@ void lcd_SetCursorPos(int lineN, int pos) {
             break;
         case 3: addr = LN4 + pos;
             break;
-        default: break;
     }
 
     WriteCmd(addr);
@@ -78,7 +77,7 @@ void lcd_Clear() {
 //    WriteCmd(0x02);
 //}
 
-void lcd_CursorStatus(int i) {
+void lcd_CursorStatus(char i) {
     if (i == 0) {
         WriteCmd(0x0C);
     } else if (i == 1) {

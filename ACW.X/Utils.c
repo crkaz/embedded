@@ -60,7 +60,7 @@ int BcdToDec(char bcd) {
 }
 
 int IsLeapYear(int yr) {
-    yr = yr + 2000;
+    yr += 2000;
 
     if (yr % 4 == 0) {
         if (yr % 100 == 0) {
@@ -73,6 +73,22 @@ int IsLeapYear(int yr) {
         }
         return 1;
     }
-
     return 0;
+}
+
+float strFloat(char str[], int length) {
+    float f = 0.0;
+    char decimalFound = '0';
+    
+    int i;
+    for (i = 0; i < length; i++) {
+        if (str[i] == '.') {
+            decimalFound = i;
+            break;
+        }
+
+        f += (decimalFound == 0) ? (int)str[i] *  (i*10) : (int)str[i] *  ((i - (int)decimalFound) / 10);     
+    }
+
+    return f;
 }

@@ -14,50 +14,69 @@
 #include "rtc_driver.h"
 #include "thermometer_driver.h"
 #include "matrix.h"
+#include "EEP_Driver.h"
 
 const int MAX_SCREEN_INDEX = 2; // 0 == default, 1 == settings, 2 == test.
 int mode = 0; // Store UI state.  // 0 == default, 1 == settings, 2 == test.
 int changedMode = 0; // For clearing screen on initial redraw.
 //
-//const int DAYTIME[2] = {6, 30}; // 6:30am
-//const int NIGHTTIME[2] = {19, 30}; // 7:30pm
+const int DAYTIME[2] = {6, 30}; // 6:30am
+const int NIGHTTIME[2] = {19, 30}; // 7:30pm
 //
-//float lowerThreshold[2] = {5.0, 2.5}; // Temperature heating[0] and alarm[1] thresholds.
-//float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] thresholds.
+const char DAY_UPPER_THRESH_TEMP = 0x30;
+const char DAY_LOWER_THRESH_TEMP = 0x48;
+const char DAY_THRESH_ALARM = 0x66;
+const char NIGHT_UPPER_THRESH_TEMP = 0x84;
+const char NIGHT_LOWER_THRESH_TEMP = 0xA2;
+const char NIGHT_THRESH_ALARM = 0xC0;
+const char NO_EEP = 0x00;
 
-// Ready the application.
-
-void Init() {
-    rtc_Init();
-    matrix_Init();
-    buzzer_init();
-    //    rtc_SetTime(); // Remove after inital config.
-    lcd_Init();
-    //    Delay(1000);
-    //    lcd_Init(); // Ensure lcd switches on at start.
-}
+float lowerThreshold[2] = {5.0, 2.5}; // Temperature heating[0] and alarm[1] thresholds.
+float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] thresholds.
 
 // Check temperature thresholds and sound alarm or turn heating/cooling on if appropriate.
 //
-//void CheckTemperature() {
-//    //    float temp = temp_GetTemp();
-//    //    if (temp > upperThreshold[1] || temp < lowerThreshold[1]) {
-//    //        buz_Sound(500, 500, 500);
-//    //    }
-//    //    if (temp > upperThreshold[0]
-//    //        // Switch cooling on.
-//    //    }
-//    //    else if (temp < lowerThreshold[0]){
-//    //        // Switch heating output on.
-//    //    }
-//}
+
+void CheckTemperature() {
+    const float sigs[] = {10.0, 1.0, 0.0, 0.1}; // 10s 1s . 0.1s e.g. 00.0
+    char *temp = calculate_temp(get_temp());
+
+    float temperature = 0.0;
+
+    // Convert temperature to float for comparison.
+    for (int i = 0; i < 4; ++i) {
+        int val = temp[i] - '0';
+        temperature = temperature + (val * sigs[i]);
+    }
+    //    int temp = get_temp();
+    if (temperature > upperThreshold[1] || temperature < lowerThreshold[1]) {
+        buzzer_sound(500, 500, 500);
+    }
+    //    if (temperature > upperThreshold[0]) {
+    //        // Switch cooling on.
+    //    } else if (temperature < lowerThreshold[0]) {
+    //        // Switch heating output on.
+    //    }
+}
 
 // Check/set nighttime (0) or daytime (1) mode
 //
-//void CheckTime(int i) {
-//    //int time[4] = rtc_GetTime();
-//
-//}
+
+void CheckTime() {
+    int hours = (((int) rtc_GetTimeString()[0] * 10) + (int) rtc_GetTimeString()[0]);
+    int minutes = (((int) rtc_GetTimeString()[3] * 10) + (int) rtc_GetTimeString()[4]);
+
+    if (hours > DAYTIME[0] && minutes > DAYTIME[1]) {
+
+        //NIGHT
+        lowerThreshold[0] = strFloat(EEP_Read_String(NIGHT_LOWER_THRESH_TEMP), 3);
+        upperThreshold[0] = strFloat(EEP_Read_String(NIGHT_UPPER_THRESH_TEMP), 3);
+    } else {
+        //DAY
+        lowerThreshold[0] = strFloat(EEP_Read_String(DAY_LOWER_THRESH_TEMP), 3);
+        upperThreshold[0] = strFloat(EEP_Read_String(DAY_UPPER_THRESH_TEMP), 3);
+    }
+}
 
 void DisplayMainScreen() {
     lcd_PrintString("Date:", 0, 0);
@@ -86,20 +105,6 @@ int ValidateUserInput(int nInputs, char inputs[], float min, float max) {
         sum = sum + (val * sigs[i]);
     }
 
-    if (mode == 113) { // Variable max input if setting day.
-        int month = BcdToDec(rtc_GetTimeComponent(MONTH)); // Float to int.
-        if (month == 2) { // Handle feb and leap years.
-            int year = BcdToDec(rtc_GetTimeComponent(YEAR)); // Float to int.
-            if (IsLeapYear(year))
-                max = 29.0;
-            else
-                max = 28.0;
-        } else {
-            if (month > 6) month += 1; // From Aug, pattern changes.
-            max = 30.0 + (month % 2); // Calc max number of days for month. 
-        }
-    }
-
     int returnVal = 1;
     lcd_Clear();
     if (sum < min || sum > max) {
@@ -113,16 +118,14 @@ int ValidateUserInput(int nInputs, char inputs[], float min, float max) {
         lcd_PrintString("Success!", 0, 0);
 
     // Show validation message for a while.
-    Delay(27000);
-    Delay(27000);
+    Delay(25000);
+    Delay(25000);
 
-    lcd_CursorStatus(0);
-    lcd_Clear();
 
     return returnVal; // Success. Return to previous menu.
 }
 
-int CheckUserInput(float min, float max, int inpLimit) {
+int CheckUserInput(float min, float max, int inpLimit, char addr) {
     int busy = 1;
     char input;
     int nInputs = 0;
@@ -146,6 +149,7 @@ int CheckUserInput(float min, float max, int inpLimit) {
                 break;
             case '0': case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '8': case '9':
+            case '.':
             {
                 // Record user input.
                 if (nInputs < inpLimit) {
@@ -164,7 +168,7 @@ int CheckUserInput(float min, float max, int inpLimit) {
             case 'b': // Backspace.
                 if (nInputs > 0) {
                     inputs[nInputs] = ' '; // Clear last input.
-                    nInputs -= 1;
+                    nInputs--;
                     inputsChanged = 1;
 
                     // Optional UX.
@@ -218,15 +222,20 @@ int CheckUserInput(float min, float max, int inpLimit) {
             lcd_PrintString(lcd_EMPTY_STRING, 2, 0); // Clear line 2.
             lcd_PrintString("New:", 2, 0);
             lcd_SetCursorPos(2, 2);
-            for (int i = 0; i < nInputs; ++i)
+
+            for (unsigned char i = 0; i < nInputs; ++i)
                 lcd_PrintChar(inputs[i]);
+            if (addr != 0x00) {
+                EEP_Write_String(addr, inputs);
+            }
+
             inputsChanged = 0;
         }
     }
     return 0; // Finish.
 }
 
-int DisplaySetScreen(char title[], char *currVal, float min, float max, int inpLimit) {
+int DisplaySetScreen(char title[], char *currVal, float min, float max, int inpLimit, char addr) {
     lcd_CursorStatus(1); // Switch cursor on.
     lcd_PrintString(title, 0, 0);
     lcd_PrintString("Current:", 1, 0);
@@ -234,7 +243,7 @@ int DisplaySetScreen(char title[], char *currVal, float min, float max, int inpL
     lcd_PrintString("New:", 2, 0);
 
     // Wait for user to give valid value or cancel.
-    return CheckUserInput(min, max, inpLimit);
+    return CheckUserInput(min, max, inpLimit, addr);
 }
 
 void Render() {
@@ -249,51 +258,35 @@ void Render() {
             // Set DATE screens.
         case 11: DisplayMenuScreen("#Date:", "1.Year", "2.Month", "3.Day");
             break;
-        case 111: while (DisplaySetScreen("##Year", BcdToStr(rtc_GetTimeComponent(YEAR)), 0.0, 99.0, 2));
+        case 111: while (DisplaySetScreen("##Year", BcdToStr(rtc_GetTimeComponent(YEAR)), 0.0, 99.0, 2, NO_EEP));
             break;
-        case 112: while (DisplaySetScreen("##Month", BcdToStr(rtc_GetTimeComponent(MONTH)), 1.0, 12.0, 2));
+        case 112: while (DisplaySetScreen("##Month", BcdToStr(rtc_GetTimeComponent(MONTH)), 1.0, 12.0, 2, NO_EEP));
             break;
-        case 113: while (DisplaySetScreen("##Day", BcdToStr(rtc_GetTimeComponent(DATE)), 1.0, 31.0, 2));
+        case 113: while (DisplaySetScreen("##Day", BcdToStr(rtc_GetTimeComponent(DATE)), 1.0, 31.0, 2, NO_EEP));
             break;
             // Set TIME screens.
         case 12: DisplayMenuScreen("#Time:", "1.Hour", "2.Min", "3.Sec");
             break;
-        case 121: while (DisplaySetScreen("##Hour", BcdToStr(rtc_GetTimeComponent(HOUR)), 0.0, 24.0, 2));
+        case 121: while (DisplaySetScreen("##Hour", BcdToStr(rtc_GetTimeComponent(HOUR)), 0.0, 24.0, 2, NO_EEP));
             break;
-        case 122: while (DisplaySetScreen("##Min", BcdToStr(rtc_GetTimeComponent(MIN)), 0.0, 60.0, 2));
+        case 122: while (DisplaySetScreen("##Min", BcdToStr(rtc_GetTimeComponent(MIN)), 0.0, 60.0, 2, NO_EEP));
             break;
-        case 123: while (DisplaySetScreen("##Sec", BcdToStr(rtc_GetTimeComponent(SEC)), 0.0, 60.0, 2));
+        case 123: while (DisplaySetScreen("##Sec", BcdToStr(rtc_GetTimeComponent(SEC)), 0.0, 60.0, 2, NO_EEP));
             break;
             // Set THRESHOLDS screens.
         case 13: DisplayMenuScreen("#Thresholds:", "1.Cooling", "2.Heating", "3.Alarm");
             break;
         case 131:
-            while (DisplaySetScreen("##Cool. (DAY)", "NI", 0.0, 24.0, 2)); // Set day thresholds.
-            while (DisplaySetScreen("##Cool. (NIGHT)", "NI", 0.0, 24.0, 2)); // Then set night thresholds.
+            while (DisplaySetScreen("##Cool. (DAY)", EEP_Read_String(DAY_LOWER_THRESH_TEMP), 0.0, 24.0, 4, DAY_LOWER_THRESH_TEMP)); // Set day thresholds.
+            while (DisplaySetScreen("##Cool. (NIGHT)", EEP_Read_String(NIGHT_LOWER_THRESH_TEMP), 0.0, 24.0, 4, NIGHT_LOWER_THRESH_TEMP)); // Then set night thresholds.
             break;
         case 132:
-            while (DisplaySetScreen("##Heat. (DAY)", "NI", 0.0, 60.0, 2));
-            while (DisplaySetScreen("##Heat.  (NIGHT)", "NI", 0.0, 60.0, 2));
+            while (DisplaySetScreen("##Heat. (DAY)", "NI", 0.0, 60.0, 2, DAY_UPPER_THRESH_TEMP));
+            while (DisplaySetScreen("##Heat.  (NIGHT)", "NI", 0.0, 60.0, 2, NIGHT_UPPER_THRESH_TEMP));
             break;
         case 133:
-            while (DisplaySetScreen("##Alarm% (DAY)", "NI", 0.0, 60.0, 2));
-            while (DisplaySetScreen("##Alarm% (NIGHT)", "NI", 0.0, 60.0, 2));
-            break;
-
-            // Test screen.
-        case 2:
-            DisplayMenuScreen("Test:", "1.Cooling", "2.Heating", "3.Alarm");
-            break;
-        case 21: lcd_PrintString("NOT IMPLEMENTED", 0, 0);
-            break;
-        case 22: lcd_PrintString("NOT IMPLEMENTED", 0, 0);
-            break;
-        case 23:
-            //            lcd_PrintString("Sounding...", 0, 0);
-            //            buzzer_sound(12500, 10000, 3);
-            //            lcd_PrintString("Completed...", 0, 0);
-            //            lcd_Clear();
-            //            mode = 2;
+            while (DisplaySetScreen("##Alarm% (DAY)", "NI", 0.0, 60.0, 2, DAY_THRESH_ALARM));
+            while (DisplaySetScreen("##Alarm% (NIGHT)", "NI", 0.0, 60.0, 2, NIGHT_THRESH_ALARM));
             break;
     }
 }
@@ -327,7 +320,7 @@ void Navigate() {
         case '3':
         {
             int i = input - 48;
-            if (mode <= MAX_SCREEN_INDEX || mode == 11 || mode == 12) mode = mode * 10 + i; // Step into sub menu.
+            if (mode <= MAX_SCREEN_INDEX || mode == 11 || mode == 12 || mode == 13) mode = mode * 10 + i; // Step into sub menu.
             break;
         }
     }
@@ -338,11 +331,17 @@ void Navigate() {
 }
 
 void main(void) {
-    Init(); // Initialise ports and components.
+    // Ready the application.
+    rtc_Init();
+    matrix_Init();
+    buzzer_init();
+    //    rtc_SetTime(); // Remove after inital config.
+    lcd_Init();
 
+    //Loop
     for (;;) {
-        //CheckTemperature(); // Check alarms
-        //CheckTime(); // Check daytime/nighttime mode.
+        CheckTime(); // Check daytime/nighttime mode.
+        CheckTemperature(); // Check alarms
         Render(); // Render LCD according to current UI state.
         Navigate(); // Check for user input to change UI state.
     }

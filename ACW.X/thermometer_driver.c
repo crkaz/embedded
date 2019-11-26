@@ -65,6 +65,7 @@ int get_temp() {
     //The sequence has to be
     // followed by each transaction: 1 Initialisation -> 2 ROM Function Command -> 3Memory
     // Function Command -> 4 Transaction/Data
+    ADCON1 = 0X07; //a port all i/o
 
     set_dq_high();
     resetThermometer(); //reset,wait for  18b20 response.                                                                                                              
@@ -105,7 +106,7 @@ char* calculate_temp(int TZ) {
     temperature[0] = TZ / 10 + 48; //integer ten bit	
     temperature[1] = TZ % 10 + 48; //integer Entries bit                                                                                                                            
     temperature[2] = '.';
-
+    
     if (TX & 0x80) {
         wd = wd + 5000;
     }
