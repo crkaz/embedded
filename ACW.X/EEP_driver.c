@@ -1,9 +1,9 @@
 #include"EEP_Driver.h"
 
-int EEP_Read(int add) {
+float EEP_Read(char add) {
    return _EEREG_EEPROM_READ(add);
 }
 
-void EEP_Write(int add, int value) {
+void EEP_Write(char add, float value) {
     _EEREG_EEPROM_WRITE(add, value);
 }

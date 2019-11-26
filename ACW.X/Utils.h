@@ -17,6 +17,7 @@
     //    char IntToChar(int i);
     int BcdToDec(char bcd);
     int IsLeapYear(int yr);
+    float strFloat(char str[], int length);
 
 #endif	/* XC_Utils_H */
 

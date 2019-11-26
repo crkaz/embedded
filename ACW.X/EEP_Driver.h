@@ -3,7 +3,7 @@
 	#define	XC_EEP_H
 
 	#include <xc.h> // include processor files - each processor file is guarded.  
-    int EEP_Read(int add);
-    void EEP_Write(int add, int value);
+    float EEP_Read(char add);
+    void EEP_Write(char add, float value);
 #endif	/* XC_EEP_H */
     

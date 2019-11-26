@@ -20,11 +20,19 @@ const int MAX_SCREEN_INDEX = 2; // 0 == default, 1 == settings, 2 == test.
 int mode = 0; // Store UI state.  // 0 == default, 1 == settings, 2 == test.
 int changedMode = 0; // For clearing screen on initial redraw.
 //
-//const int DAYTIME[2] = {6, 30}; // 6:30am
-//const int NIGHTTIME[2] = {19, 30}; // 7:30pm
+const int DAYTIME[2] = {6, 30}; // 6:30am
+const int NIGHTTIME[2] = {19, 30}; // 7:30pm
 //
-//float lowerThreshold[2] = {5.0, 2.5}; // Temperature heating[0] and alarm[1] thresholds.
-//float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] thresholds.
+const char DAY_UPPER_THRESH_TEMP = 0x65;
+const char DAY_LOWER_THRESH_TEMP = 0x66;
+const char DAY_THRESH_ALARM = 0x67;
+const char NIGHT_UPPER_THRESH_TEMP = 0x68;
+const char NIGHT_LOWER_THRESH_TEMP = 0x69;
+const char NIGHT_THRESH_ALARM = 0x70;
+const char NO_EEP = 0x00;
+
+float lowerThreshold[2] = {5.0, 2.5}; // Temperature heating[0] and alarm[1] thresholds.
+float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] thresholds.
 
 // Ready the application.
 
@@ -40,25 +48,35 @@ void Init() {
 
 // Check temperature thresholds and sound alarm or turn heating/cooling on if appropriate.
 //
-//void CheckTemperature() {
-//    //    float temp = temp_GetTemp();
-//    //    if (temp > upperThreshold[1] || temp < lowerThreshold[1]) {
-//    //        buz_Sound(500, 500, 500);
-//    //    }
-//    //    if (temp > upperThreshold[0]
-//    //        // Switch cooling on.
-//    //    }
-//    //    else if (temp < lowerThreshold[0]){
-//    //        // Switch heating output on.
-//    //    }
-//}
+void CheckTemperature() {
+        float temp = get_temp();
+        if (temp > upperThreshold[1] || temp < lowerThreshold[1]) {
+            buzzer_sound(500, 500, 500);
+        }
+        if (temp > upperThreshold[0]) {
+            // Switch cooling on.
+        }
+        else if (temp < lowerThreshold[0]){
+            // Switch heating output on.
+        }
+}
 
 // Check/set nighttime (0) or daytime (1) mode
 //
-//void CheckTime(int i) {
-//    //int time[4] = rtc_GetTime();
-//
-//}
+void CheckTime() {
+    int hours = (((int)rtc_GetTimeString()[0] * 10) + (int)rtc_GetTimeString()[0]);
+    int minutes = (((int)rtc_GetTimeString()[3] * 10) + (int)rtc_GetTimeString()[4]);
+    
+    if (hours > DAYTIME[0] && minutes > DAYTIME[1]) {
+        //NIGHT
+        lowerThreshold[0] = EEP_Read(NIGHT_LOWER_THRESH_TEMP);
+        upperThreshold[0] = EEP_Read(NIGHT_UPPER_THRESH_TEMP);
+    } else {
+        //DAY
+        lowerThreshold[0] = EEP_Read(DAY_LOWER_THRESH_TEMP);
+        upperThreshold[0] = EEP_Read(DAY_UPPER_THRESH_TEMP);
+    }
+}
 
 void DisplayMainScreen() {
     lcd_PrintString("Date:", 0, 0);
@@ -123,7 +141,7 @@ int ValidateUserInput(int nInputs, char inputs[], float min, float max) {
     return returnVal; // Success. Return to previous menu.
 }
 
-int CheckUserInput(float min, float max, int inpLimit) {
+int CheckUserInput(float min, float max, int inpLimit, char addr) {
     int busy = 1;
     char input;
     int nInputs = 0;
@@ -147,6 +165,7 @@ int CheckUserInput(float min, float max, int inpLimit) {
                 break;
             case '0': case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '8': case '9':
+            case '.':
             {
                 // Record user input.
                 if (nInputs < inpLimit) {
@@ -219,15 +238,20 @@ int CheckUserInput(float min, float max, int inpLimit) {
             lcd_PrintString(lcd_EMPTY_STRING, 2, 0); // Clear line 2.
             lcd_PrintString("New:", 2, 0);
             lcd_SetCursorPos(2, 2);
+            
+
+            
             for (int i = 0; i < nInputs; ++i)
                 lcd_PrintChar(inputs[i]);
+            if (addr != 0x00)
+                EEP_Write(addr,strFloat(inputs,nInputs));
             inputsChanged = 0;
         }
     }
     return 0; // Finish.
 }
 
-int DisplaySetScreen(char title[], char *currVal, float min, float max, int inpLimit) {
+int DisplaySetScreen(char title[], char *currVal, float min, float max, int inpLimit, char addr) {
     lcd_CursorStatus(1); // Switch cursor on.
     lcd_PrintString(title, 0, 0);
     lcd_PrintString("Current:", 1, 0);
@@ -235,7 +259,7 @@ int DisplaySetScreen(char title[], char *currVal, float min, float max, int inpL
     lcd_PrintString("New:", 2, 0);
 
     // Wait for user to give valid value or cancel.
-    return CheckUserInput(min, max, inpLimit);
+    return CheckUserInput(min, max, inpLimit, addr);
 }
 
 void Render() {
@@ -250,35 +274,35 @@ void Render() {
             // Set DATE screens.
         case 11: DisplayMenuScreen("#Date:", "1.Year", "2.Month", "3.Day");
             break;
-        case 111: while (DisplaySetScreen("##Year", BcdToStr(rtc_GetTimeComponent(YEAR)), 0.0, 99.0, 2));
+        case 111: while (DisplaySetScreen("##Year", BcdToStr(rtc_GetTimeComponent(YEAR)), 0.0, 99.0, 2,NO_EEP ));
             break;
-        case 112: while (DisplaySetScreen("##Month", BcdToStr(rtc_GetTimeComponent(MONTH)), 1.0, 12.0, 2));
+        case 112: while (DisplaySetScreen("##Month", BcdToStr(rtc_GetTimeComponent(MONTH)), 1.0, 12.0, 2, NO_EEP));
             break;
-        case 113: while (DisplaySetScreen("##Day", BcdToStr(rtc_GetTimeComponent(DATE)), 1.0, 31.0, 2));
+        case 113: while (DisplaySetScreen("##Day", BcdToStr(rtc_GetTimeComponent(DATE)), 1.0, 31.0, 2, NO_EEP));
             break;
             // Set TIME screens.
         case 12: DisplayMenuScreen("#Time:", "1.Hour", "2.Min", "3.Sec");
             break;
-        case 121: while (DisplaySetScreen("##Hour", BcdToStr(rtc_GetTimeComponent(HOUR)), 0.0, 24.0, 2));
+        case 121: while (DisplaySetScreen("##Hour", BcdToStr(rtc_GetTimeComponent(HOUR)), 0.0, 24.0, 2, NO_EEP));
             break;
-        case 122: while (DisplaySetScreen("##Min", BcdToStr(rtc_GetTimeComponent(MIN)), 0.0, 60.0, 2));
+        case 122: while (DisplaySetScreen("##Min", BcdToStr(rtc_GetTimeComponent(MIN)), 0.0, 60.0, 2, NO_EEP));
             break;
-        case 123: while (DisplaySetScreen("##Sec", BcdToStr(rtc_GetTimeComponent(SEC)), 0.0, 60.0, 2));
+        case 123: while (DisplaySetScreen("##Sec", BcdToStr(rtc_GetTimeComponent(SEC)), 0.0, 60.0, 2, NO_EEP));
             break;
             // Set THRESHOLDS screens.
         case 13: DisplayMenuScreen("#Thresholds:", "1.Cooling", "2.Heating", "3.Alarm");
             break;
         case 131:
-            while (DisplaySetScreen("##Cool. (DAY)", "NI", 0.0, 24.0, 2)); // Set day thresholds.
-            while (DisplaySetScreen("##Cool. (NIGHT)", "NI", 0.0, 24.0, 2)); // Then set night thresholds.
+            while (DisplaySetScreen("##Cool. (DAY)", "NI", 0.0, 24.0, 2, DAY_LOWER_THRESH_TEMP)); // Set day thresholds.
+            while (DisplaySetScreen("##Cool. (NIGHT)", "NI", 0.0, 24.0, 2, NIGHT_LOWER_THRESH_TEMP)); // Then set night thresholds.
             break;
         case 132:
-            while (DisplaySetScreen("##Heat. (DAY)", "NI", 0.0, 60.0, 2));
-            while (DisplaySetScreen("##Heat.  (NIGHT)", "NI", 0.0, 60.0, 2));
+            while (DisplaySetScreen("##Heat. (DAY)", "NI", 0.0, 60.0, 2, DAY_UPPER_THRESH_TEMP));
+            while (DisplaySetScreen("##Heat.  (NIGHT)", "NI", 0.0, 60.0, 2, NIGHT_UPPER_THRESH_TEMP));
             break;
         case 133:
-            while (DisplaySetScreen("##Alarm% (DAY)", "NI", 0.0, 60.0, 2));
-            while (DisplaySetScreen("##Alarm% (NIGHT)", "NI", 0.0, 60.0, 2));
+            while (DisplaySetScreen("##Alarm% (DAY)", "NI", 0.0, 60.0, 2, DAY_THRESH_ALARM));
+            while (DisplaySetScreen("##Alarm% (NIGHT)", "NI", 0.0, 60.0, 2, NIGHT_THRESH_ALARM));
             break;
 
             // Test screen.
@@ -342,8 +366,8 @@ void main(void) {
     Init(); // Initialise ports and components.
         
     for (;;) {
-        //CheckTemperature(); // Check alarms
-        //CheckTime(); // Check daytime/nighttime mode.
+        CheckTime(); // Check daytime/nighttime mode.
+        CheckTemperature(); // Check alarms
         Render(); // Render LCD according to current UI state.
         Navigate(); // Check for user input to change UI state.
     }
