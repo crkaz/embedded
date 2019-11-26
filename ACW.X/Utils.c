@@ -83,15 +83,11 @@ float strFloat(char str[], int length) {
     int i;
     for (i = 0; i < length; i++) {
         if (str[i] == '.') {
-            //decimalFound = i;
+            decimalFound = i;
             break;
         }
 
-        if (decimalFound == 0) {
-            f += (int)str[i] *  (i*10);
-        } else {
-            f += (int)str[i] *  ((i - (int)decimalFound) / 10);
-        }        
+        f += (decimalFound == 0) ? (int)str[i] *  (i*10) : (int)str[i] *  ((i - (int)decimalFound) / 10);     
     }
 
     return f;

@@ -87,6 +87,8 @@ char rtc_GetTimeComponent(char b) {
 // Write byte to active register.
 
 void WriteByte(unsigned char time_tx) {
+    ADCON1 = 0X06; //a port all i/o
+
     int j; //set the loop counter.
     for (j = 0; j < 8; j++) //continue to write 8bit
     {
@@ -105,6 +107,8 @@ void WriteByte(unsigned char time_tx) {
 // Read byte from active register.
 
 unsigned char ReadByte() {
+    ADCON1 = 0X06; //a port all i/o
+
     int j; //set the loop counter.  
     TRISB4 = 1; //continue to write 8bit 
     for (j = 0; j < 8; j++) {
