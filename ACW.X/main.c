@@ -23,28 +23,16 @@ int changedMode = 0; // For clearing screen on initial redraw.
 const int DAYTIME[2] = {6, 30}; // 6:30am
 const int NIGHTTIME[2] = {19, 30}; // 7:30pm
 //
-const char DAY_UPPER_THRESH_TEMP = 0x65;
-const char DAY_LOWER_THRESH_TEMP = 0x66;
-const char DAY_THRESH_ALARM = 0x67;
-const char NIGHT_UPPER_THRESH_TEMP = 0x68;
-const char NIGHT_LOWER_THRESH_TEMP = 0x69;
-const char NIGHT_THRESH_ALARM = 0x70;
+const char DAY_UPPER_THRESH_TEMP = 0x30;
+const char DAY_LOWER_THRESH_TEMP = 0x35;
+const char DAY_THRESH_ALARM = 0x40;
+const char NIGHT_UPPER_THRESH_TEMP = 0x45;
+const char NIGHT_LOWER_THRESH_TEMP = 0x50;
+const char NIGHT_THRESH_ALARM = 0x55;
 const char NO_EEP = 0x00;
 
 float lowerThreshold[2] = {5.0, 2.5}; // Temperature heating[0] and alarm[1] thresholds.
 float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] thresholds.
-
-// Ready the application.
-
-void Init() {
-    rtc_Init();
-    matrix_Init();
-    buzzer_init();
-    //    rtc_SetTime(); // Remove after inital config.
-    lcd_Init();
-    //    Delay(1000);
-    //    lcd_Init(); // Ensure lcd switches on at start.
-}
 
 // Check temperature thresholds and sound alarm or turn heating/cooling on if appropriate.
 //
@@ -102,8 +90,8 @@ int ValidateUserInput(int nInputs, char inputs[], float min, float max) {
     float sum = 0.0;
 
     for (int i = 0; i < nInputs; ++i) {
-        int val = inputs[i] - '0';
-        sum = sum + (val * sigs[i]);
+        int val = (int)inputs[i];
+        sum += (val * sigs[i]);
     }
 
     if (mode == 113) { // Variable max input if setting day.
@@ -185,7 +173,7 @@ int CheckUserInput(float min, float max, int inpLimit, char addr) {
             case 'b': // Backspace.
                 if (nInputs > 0) {
                     inputs[nInputs] = ' '; // Clear last input.
-                    nInputs -= 1;
+                    nInputs--;
                     inputsChanged = 1;
 
                     // Optional UX.
@@ -239,8 +227,6 @@ int CheckUserInput(float min, float max, int inpLimit, char addr) {
             lcd_PrintString(lcd_EMPTY_STRING, 2, 0); // Clear line 2.
             lcd_PrintString("New:", 2, 0);
             lcd_SetCursorPos(2, 2);
-            
-
             
             for (unsigned char i = 0; i < nInputs; ++i)
                 lcd_PrintChar(inputs[i]);
@@ -350,8 +336,14 @@ void Navigate() {
 }
 
 void main(void) {
-    Init(); // Initialise ports and components.
-        
+    // Ready the application.
+    rtc_Init();
+    matrix_Init();
+    buzzer_init();
+    //    rtc_SetTime(); // Remove after inital config.
+    lcd_Init();
+
+    //Loop
     for (;;) {
         CheckTime(); // Check daytime/nighttime mode.
         CheckTemperature(); // Check alarms
