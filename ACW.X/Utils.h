@@ -4,10 +4,10 @@
 	#include <xc.h>
 
     // Timings for delay2 args. Cannot be const.
-    int t503us[2] = { 2, 70 };
-    int t430us[2] = { 2, 60 };
-    int t70us[2] = { 2, 8 };
-    int t63us[2] = { 2, 7 };
+    const int t503us[2] = { 2, 70 };
+    const int t430us[2] = { 2, 60 };
+    const int t70us[2] = { 2, 8 };
+    const int t63us[2] = { 2, 7 };
 //    int tUKus[2] = { 10, 10 };
     
 	void Delay(int t);

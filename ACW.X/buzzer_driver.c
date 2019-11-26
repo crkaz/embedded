@@ -1,7 +1,7 @@
 #include "buzzer_driver.h"
        
 // Buzzer pin config.
-#define buz  RE1 // Use pin RE1.                                      
+#define buz RE1 // Use pin RE1.                                      
 #define buz_on() buz = 1 // Set RE1 high.
 #define buz_off() buz = 0; // Set RE1 low.
 
@@ -16,10 +16,10 @@ void buzzer_sound(int bT, int pT, int reps) {
     // pT = pause time. Use for breaks in continuous buzzing (e.g. alarm).
     // reps = repetitions. Use to repeat tone (e.g. alarm).
     
-    for (int i = 0; i < reps; ++i) {
+    for (unsigned char i = 0; i < reps; ++i) {
         buz_on();
-        for (int j = 0; j < bT; ++j);
+        for (unsigned char j = 0; j < bT; ++j);
         buz_off();
-        for (int j = 0; j < pT; ++j);
+        for (unsigned char j = 0; j < pT; ++j);
     }
 }

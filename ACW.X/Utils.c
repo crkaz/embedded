@@ -60,7 +60,7 @@ int BcdToDec(char bcd) {
 }
 
 int IsLeapYear(int yr) {
-    yr = yr + 2000;
+    yr += 2000;
 
     if (yr % 4 == 0) {
         if (yr % 100 == 0) {
