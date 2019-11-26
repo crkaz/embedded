@@ -14,6 +14,7 @@
 #include "rtc_driver.h"
 #include "thermometer_driver.h"
 #include "matrix.h"
+#include "EEP_Driver.h"
 
 const int MAX_SCREEN_INDEX = 2; // 0 == default, 1 == settings, 2 == test.
 int mode = 0; // Store UI state.  // 0 == default, 1 == settings, 2 == test.
@@ -245,7 +246,6 @@ void Render() {
 
             // Settings screen.
         case 1: DisplayMenuScreen("Settings", "1.Date", "2.Time", "3.Thresholds");
-        _EEREG_EEPROM_WRITE(0x65,0x02);
             break;
             // Set DATE screens.
         case 11: DisplayMenuScreen("#Date:", "1.Year", "2.Month", "3.Day");
@@ -340,8 +340,7 @@ void Navigate() {
 
 void main(void) {
     Init(); // Initialise ports and components.
-    //
-    mode = _EEREG_EEPROM_READ(0x65);
+        
     for (;;) {
         //CheckTemperature(); // Check alarms
         //CheckTime(); // Check daytime/nighttime mode.

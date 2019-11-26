@@ -10,6 +10,7 @@
       <itemPath>thermometer_driver.h</itemPath>
       <itemPath>Utils.h</itemPath>
       <itemPath>matrix.h</itemPath>
+      <itemPath>EEP_Driver.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -25,6 +26,7 @@
       <itemPath>rtc_driver.c</itemPath>
       <itemPath>Utils.c</itemPath>
       <itemPath>matrix.c</itemPath>
+      <itemPath>EEP_driver.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -45,8 +47,8 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC8</languageToolchain>
-        <languageToolchainVersion>2.05</languageToolchainVersion>
-        <platform>3</platform>
+        <languageToolchainVersion>2.10</languageToolchainVersion>
+        <platform>2</platform>
       </toolsSet>
       <packs>
         <pack name="PIC16Fxxx_DFP" vendor="Microchip" version="1.0.9"/>
@@ -154,6 +156,9 @@
         <property key="program-the-device-with-default-config-words" value="true"/>
         <property key="remove-unused-sections" value="true"/>
       </HI-TECH-LINK>
+      <XC8-CO>
+        <property key="coverage-enable" value=""/>
+      </XC8-CO>
       <XC8-config-global>
         <property key="advanced-elf" value="true"/>
         <property key="gcc-opt-driver-new" value="true"/>
