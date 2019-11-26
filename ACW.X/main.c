@@ -68,13 +68,14 @@ void CheckTime() {
     int minutes = (((int)rtc_GetTimeString()[3] * 10) + (int)rtc_GetTimeString()[4]);
     
     if (hours > DAYTIME[0] && minutes > DAYTIME[1]) {
+        
         //NIGHT
-        lowerThreshold[0] = EEP_Read(NIGHT_LOWER_THRESH_TEMP);
-        upperThreshold[0] = EEP_Read(NIGHT_UPPER_THRESH_TEMP);
+        lowerThreshold[0] = strFloat(EEP_Read_String(NIGHT_LOWER_THRESH_TEMP),3 );
+        upperThreshold[0] = strFloat(EEP_Read_String(NIGHT_UPPER_THRESH_TEMP),3);
     } else {
         //DAY
-        lowerThreshold[0] = EEP_Read(DAY_LOWER_THRESH_TEMP);
-        upperThreshold[0] = EEP_Read(DAY_UPPER_THRESH_TEMP);
+        lowerThreshold[0] = strFloat(EEP_Read_String(DAY_LOWER_THRESH_TEMP), 3);
+        upperThreshold[0] = strFloat(EEP_Read_String(DAY_UPPER_THRESH_TEMP), 3);
     }
 }
 
@@ -241,10 +242,12 @@ int CheckUserInput(float min, float max, int inpLimit, char addr) {
             
 
             
-            for (int i = 0; i < nInputs; ++i)
+            for (unsigned char i = 0; i < nInputs; ++i)
                 lcd_PrintChar(inputs[i]);
-            if (addr != 0x00)
-                EEP_Write(addr,strFloat(inputs,nInputs));
+            if (addr != 0x00) {
+                EEP_Write_String(addr, inputs);
+            }
+                
             inputsChanged = 0;
         }
     }
@@ -274,7 +277,7 @@ void Render() {
             // Set DATE screens.
         case 11: DisplayMenuScreen("#Date:", "1.Year", "2.Month", "3.Day");
             break;
-        case 111: while (DisplaySetScreen("##Year", BcdToStr(rtc_GetTimeComponent(YEAR)), 0.0, 99.0, 2,NO_EEP ));
+        case 111: while (DisplaySetScreen("##Year", BcdToStr(rtc_GetTimeComponent(YEAR)), 0.0, 99.0, 2, NO_EEP));
             break;
         case 112: while (DisplaySetScreen("##Month", BcdToStr(rtc_GetTimeComponent(MONTH)), 1.0, 12.0, 2, NO_EEP));
             break;
@@ -303,22 +306,6 @@ void Render() {
         case 133:
             while (DisplaySetScreen("##Alarm% (DAY)", "NI", 0.0, 60.0, 2, DAY_THRESH_ALARM));
             while (DisplaySetScreen("##Alarm% (NIGHT)", "NI", 0.0, 60.0, 2, NIGHT_THRESH_ALARM));
-            break;
-
-            // Test screen.
-        case 2:
-            DisplayMenuScreen("Test:", "1.Cooling", "2.Heating", "3.Alarm");
-            break;
-        case 21: lcd_PrintString("NOT IMPLEMENTED", 0, 0);
-            break;
-        case 22: lcd_PrintString("NOT IMPLEMENTED", 0, 0);
-            break;
-        case 23:
-            //            lcd_PrintString("Sounding...", 0, 0);
-            //            buzzer_sound(12500, 10000, 3);
-            //            lcd_PrintString("Completed...", 0, 0);
-            //            lcd_Clear();
-            //            mode = 2;
             break;
     }
 }

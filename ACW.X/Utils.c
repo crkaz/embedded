@@ -78,15 +78,20 @@ int IsLeapYear(int yr) {
 
 float strFloat(char str[], int length) {
     float f = 0.0;
-    char decimalFound = 0;
+    char decimalFound = '0';
+    
     int i;
     for (i = 0; i < length; i++) {
         if (str[i] == '.') {
-            decimalFound = 1;
+            //decimalFound = i;
             break;
         }
-            
-        f += (int)str[i] * ((decimalFound == 0) ? (i*10) : (i/10));
+
+        if (decimalFound == 0) {
+            f += (int)str[i] *  (i*10);
+        } else {
+            f += (int)str[i] *  ((i - (int)decimalFound) / 10);
+        }        
     }
 
     return f;
