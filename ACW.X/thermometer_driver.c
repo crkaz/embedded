@@ -90,8 +90,12 @@ void resetThermometer(void) {
         DelayT(t503us);
         set_dq_high(); // release general line and wait for pull high
         DelayT(t70us);
-        presence = (dq == 1) ? 1 : 0; // Didn't receive response : Did Receive response.
+        //        presence = (dq == 1) ? 1 : 0; // Didn't receive response : Did Receive response.
 
+        if (dq == 1)
+            presence = 1; // Didn't receive response.
+        else
+            presence = 0; // Received response.
         DelayT(t430us);
     }
 }
@@ -103,7 +107,7 @@ char* calculate_temp(int TZ) {
     temperature[0] = TZ / 10 + 48; //integer ten bit	
     temperature[1] = TZ % 10 + 48; //integer Entries bit                                                                                                                            
     temperature[2] = '.';
-    
+
     if (TX & 0x80) {
         wd += 5000;
     }

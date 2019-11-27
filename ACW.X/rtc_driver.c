@@ -1,4 +1,5 @@
 #include "rtc_driver.h"
+#include "buzzer_driver.h"
 
 unsigned char ReadByte(void); // Privatised.
 void WriteByte(unsigned char time_tx); // Privatised.
@@ -52,10 +53,12 @@ void rtc_Init() {
 // rtc_SetTimeComponent(SEC, 0x30); // EXAMPL: setting second bit to 30sec.
 
 void rtc_SetTimeComponent(char b, char t) {
+//    buzzer_sound(1500, 1500, 5);
     rst = 1; //enable DS1302
     WriteByte(b); // Write minute bit.
     WriteByte(t); //write one byte
     rst = 0; //reset
+//    buzzer_sound(1500, 1500, 5);
 }
 
 // Read ALL components (sec, min, hour etc..) with BURST mode.
