@@ -45,6 +45,13 @@ char* BcdToStr(char bcd) {
     return bcdToStr;
 }
 
+char StrToBcd(char str[]) {
+    //The last 4 bits of an ascii char for [0-9] are BCD encoded
+    //Use a Mask to remove the first four bits for both
+    //Shift the tens to the left 4 and then AND on the units
+    return (str[0] & 0xF0) << 4 + (str[1] & 0xF0);
+}
+
 //// Convert an int to a char.
 //char IntToChar(int i) {
 //    char c = i + 48;

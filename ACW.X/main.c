@@ -30,8 +30,7 @@ const char DAY_THRESH_ALARM = 0x66;
 const char NIGHT_UPPER_THRESH_TEMP = 0x84;
 const char NIGHT_LOWER_THRESH_TEMP = 0xA2;
 const char NIGHT_THRESH_ALARM = 0xC0;
-const char NO_EEP = 0x00;
-
+//
 float lowerThreshold[2] = {5.0, 2.5}; // Temperature heating[0] and alarm[1] thresholds.
 float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] thresholds.
 float peak = 0.0;
@@ -260,8 +259,12 @@ int CheckUserInput(float min, float max, int inpLimit, char addr) {
 
             for (unsigned char i = 0; i < nInputs; ++i)
                 lcd_PrintChar(inputs[i]);
-            if (addr != 0x00) {
+            
+            if (addr > (YEAR - 0x80)) { //Check if we are doing time or temp
                 EEP_Write_String(addr, inputs);
+            } else {
+                
+                rtc_SetTimeComponent(addr + 0x80, StrToBcd(inputs));
             }
 
             inputsChanged = 0;
@@ -293,20 +296,20 @@ void Render() {
             // Set DATE screens.
         case 11: DisplayMenuScreen("#Date:", "1.Year", "2.Month", "3.Day");
             break;
-        case 111: while (DisplaySetScreen("##Year", BcdToStr(rtc_GetTimeComponent(YEAR)), 0.0, 99.0, 2, NO_EEP));
+        case 111: while (DisplaySetScreen("##Year", BcdToStr(rtc_GetTimeComponent(YEAR)), 0.0, 99.0, 2, YEAR - 0x80));
             break;
-        case 112: while (DisplaySetScreen("##Month", BcdToStr(rtc_GetTimeComponent(MONTH)), 1.0, 12.0, 2, NO_EEP));
+        case 112: while (DisplaySetScreen("##Month", BcdToStr(rtc_GetTimeComponent(MONTH)), 1.0, 12.0, 2, MONTH - 0x80));
             break;
-        case 113: while (DisplaySetScreen("##Day", BcdToStr(rtc_GetTimeComponent(DATE)), 1.0, 31.0, 2, NO_EEP));
+        case 113: while (DisplaySetScreen("##Day", BcdToStr(rtc_GetTimeComponent(DATE)), 1.0, 31.0, 2, DATE - 0x80));
             break;
             // Set TIME screens.
         case 12: DisplayMenuScreen("#Time:", "1.Hour", "2.Min", "3.Sec");
             break;
-        case 121: while (DisplaySetScreen("##Hour", BcdToStr(rtc_GetTimeComponent(HOUR)), 0.0, 24.0, 2, NO_EEP));
+        case 121: while (DisplaySetScreen("##Hour", BcdToStr(rtc_GetTimeComponent(HOUR)), 0.0, 24.0, 2, HOUR - 0x80));
             break;
-        case 122: while (DisplaySetScreen("##Min", BcdToStr(rtc_GetTimeComponent(MIN)), 0.0, 60.0, 2, NO_EEP));
+        case 122: while (DisplaySetScreen("##Min", BcdToStr(rtc_GetTimeComponent(MIN)), 0.0, 60.0, 2, MIN - 0x80));
             break;
-        case 123: while (DisplaySetScreen("##Sec", BcdToStr(rtc_GetTimeComponent(SEC)), 0.0, 60.0, 2, NO_EEP));
+        case 123: while (DisplaySetScreen("##Sec", BcdToStr(rtc_GetTimeComponent(SEC)), 0.0, 60.0, 2, SEC - 0x80));
             break;
             // Set THRESHOLDS screens.
         case 13: DisplayMenuScreen("#Thresholds:", "1.Cooling", "2.Heating", "3.Alarm");

@@ -49,7 +49,7 @@ void rtc_Init() {
 //}
 
 // SET INDIVIDUAL TIME COMPONENT
-// set_time_bit(SEC, 0x30); // EXAMPL: setting second bit to 30sec.
+// rtc_SetTimeComponent(SEC, 0x30); // EXAMPL: setting second bit to 30sec.
 
 void rtc_SetTimeComponent(char b, char t) {
     rst = 1; //enable DS1302
@@ -90,15 +90,13 @@ void WriteByte(unsigned char time_tx) {
     ADCON1 = 0X06; //a port all i/o
 
     int j; //set the loop counter.
-    for (j = 0; j < 8; j++) //continue to write 8bit
-    {
+    for (j = 0; j < 8; j++) { //continue to write 8bit
         i_o = 0; //
         sclk = 0; //pull low clk
-        if (time_tx & 0x01) //judge the send bit is 0 or 1.
-        {
+        if (time_tx & 0x01) { //judge the send bit is 0 or 1.
             i_o = 1; //is 1
         }
-        time_tx = time_tx >> 1; //rotate right 1 bit.
+        time_tx >>= 1; //rotate right 1 bit.
         sclk = 1; //pull high clk
     }
     sclk = 0; //finished 1 byte,pull low clk
@@ -113,7 +111,7 @@ unsigned char ReadByte() {
     TRISB4 = 1; //continue to write 8bit 
     for (j = 0; j < 8; j++) {
         sclk = 0; //pull low clk                   
-        time_rx = time_rx >> 1; //judge the send bit is 0 or 1.  
+        time_rx >>= 1; //judge the send bit is 0 or 1.  
         if (i_o) {
             time_rx |= 0x80; // Sets 128th bit ?
         }
