@@ -11,6 +11,7 @@
       <itemPath>Utils.h</itemPath>
       <itemPath>matrix.h</itemPath>
       <itemPath>EEP_Driver.h</itemPath>
+      <itemPath>IO_driver.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -27,6 +28,7 @@
       <itemPath>Utils.c</itemPath>
       <itemPath>matrix.c</itemPath>
       <itemPath>EEP_driver.c</itemPath>
+      <itemPath>IO_driver.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

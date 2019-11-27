@@ -15,6 +15,7 @@
 #include "thermometer_driver.h"
 #include "matrix.h"
 #include "EEP_Driver.h"
+#include "IO_driver.h"
 
 const int MAX_SCREEN_INDEX = 2; // 0 == default, 1 == settings, 2 == test.
 int mode = 0; // Store UI state.  // 0 == default, 1 == settings, 2 == test.
@@ -33,30 +34,60 @@ const char NO_EEP = 0x00;
 
 float lowerThreshold[2] = {5.0, 2.5}; // Temperature heating[0] and alarm[1] thresholds.
 float upperThreshold[2] = {25.0, 27.5}; // Temperature cooling[0] and alarm[1] thresholds.
+float peak = 0.0;
+char tooHot = 0;
+int alarmChecks = 0;
 
 // Check temperature thresholds and sound alarm or turn heating/cooling on if appropriate.
 //
 
 void CheckTemperature() {
-    const float sigs[] = {10.0, 1.0, 0.0, 0.1}; // 10s 1s . 0.1s e.g. 00.0
-    char *temp = calculate_temp(get_temp());
-
-    float temperature = 0.0;
-
-    // Convert temperature to float for comparison.
-    for (int i = 0; i < 4; ++i) {
-        int val = temp[i] - '0';
-        temperature = temperature + (val * sigs[i]);
+//    const float sigs[] = {10.0, 1.0, 0.0, 0.1}; // 10s 1s . 0.1s e.g. 00.0
+//    char *temp = calculate_temp(get_temp());
+//
+//    float temperature = 0.0;
+//
+//    // Convert temperature to float for comparison.
+//    for (int i = 0; i < 4; ++i) {
+//        int val = temp[i] - '0';
+//        temperature = temperature + (val * sigs[i]);
+//    }
+//    //    int temp = get_temp();
+//    if (temperature > upperThreshold[1] || temperature < lowerThreshold[1]) {
+//        buzzer_sound(500, 500, 500);
+//    }
+    float temperature = strFloat(calculate_temp(get_temp()), 4);
+    
+    if (tooHot != 0 && alarmChecks == 0) {
+        if(tooHot == 'Y' && peak < temperature) {
+            buzzer_sound(500, 500, 500);
+            alarmChecks = upperThreshold[1];
+        } else if(tooHot == 'N' && peak > temperature) {
+            buzzer_sound(500, 500, 500);
+            alarmChecks = lowerThreshold[1];
+        }
     }
-    //    int temp = get_temp();
-    if (temperature > upperThreshold[1] || temperature < lowerThreshold[1]) {
-        buzzer_sound(500, 500, 500);
+    
+    
+    if (temperature > upperThreshold[0]) { //Too Hot?
+        peak = temperature;
+        tooHot = 'Y';
+        alarmChecks = upperThreshold[1];
+        // Switch cooling on.
+    } else if (temperature < lowerThreshold[0]) { //Too Cold?
+        peak = temperature;
+        tooHot = 'N';
+        alarmChecks = lowerThreshold[1];
+        // Switch heating output on.
     }
-    //    if (temperature > upperThreshold[0]) {
-    //        // Switch cooling on.
-    //    } else if (temperature < lowerThreshold[0]) {
-    //        // Switch heating output on.
-    //    }
+    
+    if (alarmChecks == 0) {
+        peak = 0;
+        tooHot = 0;
+    } else {
+        alarmChecks--;    
+    }
+    
 }
 
 // Check/set nighttime (0) or daytime (1) mode
