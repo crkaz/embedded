@@ -75,16 +75,19 @@ void CheckTemperature() {
         tooHot = 'Y';
         alarmChecks = upperThreshold[1];
         // Switch cooling on.
+        coolerOn();
     } else if (temperature < lowerThreshold[0]) { //Too Cold?
         peak = temperature;
         tooHot = 'N';
         alarmChecks = lowerThreshold[1];
         // Switch heating output on.
+        heaterOn();
     }
     
     if (alarmChecks == 0) {
         peak = 0;
         tooHot = 0;
+        systemsOff();
     } else {
         alarmChecks--;    
     }
