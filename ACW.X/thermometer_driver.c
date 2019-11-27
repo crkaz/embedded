@@ -30,7 +30,7 @@ void write_byte(unsigned char val) {
         set_dq_high();
         NOP();
         NOP();
-        val = val >> 1; // right shift bit.
+        val >>= 1; // right shift bit.
     }
 }
 
@@ -90,10 +90,7 @@ void resetThermometer(void) {
         DelayT(t503us);
         set_dq_high(); // release general line and wait for pull high
         DelayT(t70us);
-        if (dq == 1)
-            presence = 1; // Didn't receive response.
-        else
-            presence = 0; // Received response.
+        presence = (dq == 1) ? 1 : 0; // Didn't receive response : Did Receive response.
 
         DelayT(t430us);
     }
@@ -108,16 +105,16 @@ char* calculate_temp(int TZ) {
     temperature[2] = '.';
     
     if (TX & 0x80) {
-        wd = wd + 5000;
+        wd += 5000;
     }
     if (TX & 0x40) {
-        wd = wd + 2500;
+        wd += 2500;
     }
     if (TX & 0x20) {
-        wd = wd + 1250;
+        wd += 1250;
     }
     if (TX & 0x10) {
-        wd = wd + 625; //hereinbefore four instructions are turn  decimal into BCD code        
+        wd += 625; //hereinbefore four instructions are turn  decimal into BCD code        
     }
 
     temperature[3] = wd / 1000 + 48; //ten cent bit                                                                           

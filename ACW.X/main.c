@@ -56,6 +56,8 @@ void CheckTemperature() {
 //    if (temperature > upperThreshold[1] || temperature < lowerThreshold[1]) {
 //        buzzer_sound(500, 500, 500);
 //    }
+    
+    
     float temperature = strFloat(calculate_temp(get_temp()), 4);
     
     if (tooHot != 0 && alarmChecks == 0) {
@@ -128,14 +130,16 @@ void DisplayMenuScreen(char ln1[], char ln2[], char ln3[], char ln4[]) {
 }
 
 int ValidateUserInput(int nInputs, char inputs[], float min, float max) {
-    const float sigs[] = {10.0, 1.0, 0.0, 0.1}; // 10s 1s . 0.1s e.g. 00.0
-    float sum = 0.0;
+//    const float sigs[] = {10.0, 1.0, 0.0, 0.1}; // 10s 1s . 0.1s e.g. 00.0
+//    float sum = 0.0;
+//
+//    for (int i = 0; i < nInputs; ++i) {
+//        int val = inputs[i] - '0';
+//        sum = sum + (val * sigs[i]);
+//    }
 
-    for (int i = 0; i < nInputs; ++i) {
-        int val = inputs[i] - '0';
-        sum = sum + (val * sigs[i]);
-    }
-
+    float sum = strFloat(inputs, nInputs);
+    
     int returnVal = 1;
     lcd_Clear();
     if (sum < min || sum > max) {

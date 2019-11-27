@@ -56,6 +56,7 @@ char* BcdToStr(char bcd) {
 int BcdToDec(char bcd) {
     //    Multiply most significant bit and add least significant.
     int dec = ((bcd & 0xF0) >> 4) * 10 + (bcd & 0x0F);
+    
     return dec;
 }
 
@@ -80,7 +81,7 @@ float strFloat(char str[], int length) {
     float f = 0.0;
     char decimalFound = '0';
     
-    int i;
+    unsigned char i;
     for (i = 0; i < length; i++) {
         if (str[i] == '.') {
             decimalFound = i;
