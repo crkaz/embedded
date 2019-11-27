@@ -1,8 +1,8 @@
 #include <xc.h>
 
 // Buzzer pin config.
-#define heater RE0 // Use pin RE0.                                      
-#define cooler RE2 // Use pin RE2.
+#define heater RB6 // Use pin RE0.                                      
+#define cooler RB7 // Use pin RE2.
 
 void heaterOn() {
     cooler = 0;
