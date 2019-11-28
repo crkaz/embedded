@@ -108,6 +108,14 @@ void DisplayMainScreen() {
     
     lcd_PrintString(calculate_temp(get_temp()), 2, 3);
     lcd_PrintString("Status:", 3, 0);
+    if (IsTooHot == 0) {
+        lcd_PrintString("OK/0", 3, 3, 4);    
+    } else if (IsTooHot == 'Y') {
+        lcd_PrintString("COOLING/0", 3, 3, 4);    
+    } else if (IsTooHot == 'N') {
+        lcd_PrintString("HEATING/0", 3, 3, 4);    
+    }
+    
     lcd_PrintString(getStatus(strFloat(calculate_temp(get_temp()), 3)), 3, 4);
 //    lcd_PrintString("OK", 3, 4);
 }
