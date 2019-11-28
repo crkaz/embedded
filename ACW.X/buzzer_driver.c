@@ -18,8 +18,12 @@ void buzzer_sound(int bT, int pT, int reps) {
     
     for (unsigned char i = 0; i < reps; ++i) {
         buz_on();
-        for (unsigned char j = 0; j < bT; ++j);
+        for (int j = 0; j < bT; ++j)  {
+           
+        }
         buz_off();
-        for (unsigned char j = 0; j < pT; ++j);
+        for (int j = 0; j < pT; ++j) {
+            
+        }
     }
 }

@@ -1,5 +1,4 @@
-#include <xc.h>
-
+#include "IO_driver.h"
 // Buzzer pin config.
 #define heater RB6 // Use pin RE0.                                      
 #define cooler RB7 // Use pin RE2.
@@ -17,4 +16,11 @@ void coolerOn() {
 void systemsOff() {
     heater = 0;
     cooler = 0;
+}
+
+char* getStatus(float temp) {
+    if (temp > 20.0){
+         return "hello\0";
+    } else 
+        return "Bye\0";
 }

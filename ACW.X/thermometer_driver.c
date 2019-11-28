@@ -101,6 +101,7 @@ void resetThermometer(void) {
 }
 
 char* calculate_temp(int TZ) {
+    
     unsigned int wd = 0; //temperature BCD code  after convert
     unsigned char TX = TLV << 4; //temperature decimal
 

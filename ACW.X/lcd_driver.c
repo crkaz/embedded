@@ -25,6 +25,9 @@ void WriteCmd(char command) {
 }
 
 void lcd_PrintChar(char character) {
+    if (character > '~') { //Stops the Chinese
+        character = ' ';
+    }
     rs = 1; //is data not command.
     rw = 0; //is write not read.
     e = 0;

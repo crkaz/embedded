@@ -1,7 +1,7 @@
 #include"EEP_Driver.h"
 
 char* EEP_Read_String(char add) {
-   static char str[5];   
+   static char str[5];   //Needs to be static or 't'
    str[0] = EEP_Read_Char(add);
    str[1] = EEP_Read_Char(add + 1);
    str[2] = EEP_Read_Char(add + 2);

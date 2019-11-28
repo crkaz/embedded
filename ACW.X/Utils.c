@@ -86,19 +86,42 @@ int IsLeapYear(int yr) {
     return 0;
 }
 
-float strFloat(char str[], int length) {
-    float f = 0.0;
-    char decimalFound = '0';
+//float strFloat(char str[], int length) {
+//    float f = 0.0;
+//    char decimalFound = '0';
+//    
+//    int i;
+//    for (i = 0; i < length; i++) {
+//        if (str[i] == '.') {
+//            decimalFound = i;
+//            break;
+//        }
+//        
+//        if (decimalFound == '0') {
+//            f = 11.0;
+//            //f += (str[i] - '0') * (10^i);
+//        } else {
+//            f = 12.0;
+//            //f += (int)str[i] *  ((i - (int)decimalFound) / 10);   
+//        }
+//
+////        f += (decimalFound == 0) ? (int)str[i] *  (i*10) : (int)str[i] *  ((i - (int)decimalFound) / 10);     
+//    }
+//    
+//    
+//    return f;
+//}
+
+float strFloat(char str[], int length){
+    //const float sigs[] = {10.0, 1.0, 0.0, 0.1}; // 10s 1s . 0.1s e.g. 00.0
+    float sum = 0.0;
+    sum += (str[0] - '0') * 10;
+    sum += (str[1] - '0');
+    sum += (str[3] - '0') * 0.1;
     
-    unsigned char i;
-    for (i = 0; i < length; i++) {
-        if (str[i] == '.') {
-            decimalFound = i;
-            break;
-        }
-
-        f += (decimalFound == 0) ? (int)str[i] *  (i*10) : (int)str[i] *  ((i - (int)decimalFound) / 10);     
-    }
-
-    return f;
+//    for (unsigned char i = 0; i < length; ++i) {
+//        int val = str[i] - '0';
+//        sum += (val * sigs[i]);
+//    }
+    return sum;
 }
