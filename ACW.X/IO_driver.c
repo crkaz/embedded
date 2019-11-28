@@ -19,8 +19,5 @@ void systemsOff() {
 }
 
 char* getStatus(float temp) {
-    if (temp > 20.0){
-         return "hello\0";
-    } else 
-        return "Bye\0";
+    return "\0";
 }

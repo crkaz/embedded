@@ -31,9 +31,9 @@ const char NIGHT_UPPER_THRESH_TEMP = 0x84;
 const char NIGHT_LOWER_THRESH_TEMP = 0xA2;
 const char NIGHT_THRESH_ALARM = 0xC0;
 //
-float lowerThreshold = 2.5; // Temperature heating
-float upperThreshold = 20.0; // Temperature cooling
-float peak = 0.0;
+float lowerThreshold = 0.0; // Temperature heating
+float upperThreshold = 60.0; // Temperature cooling
+float lastTemp = 0.0;
 char IsTooHot = 0;
 int alarmChecks = 0;
 
@@ -51,14 +51,16 @@ void CheckTemperature() {
         while (matrix_Scan() == '_') {
             buzzer_sound(5000,10000, 1);
         }
+        Delay(5000);
         IsTooHot = 0;
     }
     
-    if (IsTooHot != 0 && (temperature >= peak || temperature <= peak)) {
+    if ((IsTooHot == 'Y' && temperature >= lastTemp) || (IsTooHot == 'N' && temperature <= lastTemp)) {
         alarmChecks--;
-        peak = temperature;
     }
-        
+    
+    lastTemp = temperature;
+
     if (IsTooHot == 0) {
         if (temperature <= lowerThreshold) {
              IsTooHot = 'N';
@@ -68,9 +70,8 @@ void CheckTemperature() {
             return;
         }
         buzzer_sound(1000, 1, 1);
-        peak = temperature;
         alarmChecks = alarmValue;
-    }
+    }  
 }
 
 // Check/set nighttime (0) or daytime (1) mode
@@ -109,15 +110,16 @@ void DisplayMainScreen() {
     lcd_PrintString(calculate_temp(get_temp()), 2, 3);
     lcd_PrintString("Status:", 3, 0);
     if (IsTooHot == 0) {
-        lcd_PrintString("OK/0", 3, 3, 4);    
+        lcd_PrintString("OK", 3, 4);    
     } else if (IsTooHot == 'Y') {
-        lcd_PrintString("COOLING/0", 3, 3, 4);    
+        lcd_PrintString("COOLING", 3, 4);    
     } else if (IsTooHot == 'N') {
-        lcd_PrintString("HEATING/0", 3, 3, 4);    
+        lcd_PrintString("HEATING", 3, 4);    
     }
+    //getStatus(strFloat(calculate_temp(get_temp()), 3));
+    //lcd_PrintString("hello\0", 3, 4);
     
     lcd_PrintString(getStatus(strFloat(calculate_temp(get_temp()), 3)), 3, 4);
-//    lcd_PrintString("OK", 3, 4);
 }
 
 void DisplayMenuScreen(char ln1[], char ln2[], char ln3[], char ln4[]) {
@@ -270,15 +272,15 @@ void Render() {
         case 123: while (DisplaySetScreen("##Sec", BcdToStr(rtc_GetTimeComponent(SEC)), 0.0, 60.0, 2, SEC - 0x80));
             break;
             // Set THRESHOLDS screens.
-        case 13: DisplayMenuScreen("#Thresholds:", "1.Cooling", "2.Heating", "");
+        case 13: DisplayMenuScreen("#Thresholds:", "1.Heating", "2.Cooling", "");
             break;
         case 131:
-            while (DisplaySetScreen("##Cool. (DAY)", EEP_Read_String(DAY_LOWER_THRESH_TEMP), 0.0, 24.0, 4, DAY_LOWER_THRESH_TEMP)); // Set day thresholds.
-            while (DisplaySetScreen("##Cool. (NIGHT)", EEP_Read_String(NIGHT_LOWER_THRESH_TEMP), 0.0, 24.0, 4, NIGHT_LOWER_THRESH_TEMP)); // Then set night thresholds.
+            while (DisplaySetScreen("##Heat. (DAY)", EEP_Read_String(DAY_LOWER_THRESH_TEMP), 0.0, 24.0, 4, DAY_LOWER_THRESH_TEMP)); // Set day thresholds.
+            while (DisplaySetScreen("##Heat. (NIGHT)", EEP_Read_String(NIGHT_LOWER_THRESH_TEMP), 0.0, 24.0, 4, NIGHT_LOWER_THRESH_TEMP)); // Then set night thresholds.
             break;
         case 132:
-            while (DisplaySetScreen("##Heat. (DAY)", EEP_Read_String(DAY_UPPER_THRESH_TEMP), 0.0, 60.0, 4, DAY_UPPER_THRESH_TEMP));
-            while (DisplaySetScreen("##Heat.  (NIGHT)", EEP_Read_String(NIGHT_UPPER_THRESH_TEMP), 0.0, 60.0, 4, NIGHT_UPPER_THRESH_TEMP));
+            while (DisplaySetScreen("##Cool. (DAY)", EEP_Read_String(DAY_UPPER_THRESH_TEMP), 0.0, 60.0, 4, DAY_UPPER_THRESH_TEMP));
+            while (DisplaySetScreen("##Cool.  (NIGHT)", EEP_Read_String(NIGHT_UPPER_THRESH_TEMP), 0.0, 60.0, 4, NIGHT_UPPER_THRESH_TEMP));
             break;
     }
 }
@@ -330,16 +332,17 @@ void main(void) {
     //    rtc_SetTime(); // Remove after inital config.
     lcd_Init();
     //systemsOff();
-    
+      
     CheckTime(); // Check daytime/nighttime mode.
-    CheckTemperature(); // Check alarms
+    CheckTemperature(); // Check alarms   
     
     //Loop
     for (;;) {
         if (mode == 0) {
             CheckTime(); // Check daytime/nighttime mode.
-            CheckTemperature(); // Check alarms
-        }        
+            CheckTemperature(); // Check alarms   
+        }
+        
         Render(); // Render LCD according to current UI state.
         Navigate(); // Check for user input to change UI state.
     }
