@@ -67,14 +67,11 @@ void CheckTemperature() {
 // Check/set nighttime (0) or daytime (1) mode
 //
 
-void CheckTime() {
-        lcd_PrintString("HELLOOOOO",1,0);
-        Delay(10000);
+void CheckTime() {    
     char* eval = EEP_Read_String(NIGHT_LOWER_THRESH_TEMP, 0x00);
-    lcd_PrintString(eval,0,0);
     char EMPTYMEM[2] = {0xFF, 0xFF};
     if (eval[0] == EMPTYMEM[0] && eval[1] == EMPTYMEM[1]) {
-        ui_Mode = 13;
+        ui_Mode = 1;
         return; // Force user into settings screen on first boot.
     }
 
@@ -107,7 +104,9 @@ void main(void) {
     //    rtc_SetTime(); // Remove after inital config.
     lcd_Init();
     systemsOff();
-
+    
+    Delay(1000);
+    
     // Perform initial check.
     CheckTime(); // Check daytime/nighttime mode.
     //    
@@ -117,8 +116,8 @@ void main(void) {
             CheckTime(); // Check daytime/nighttime mode.
             CheckTemperature(); // Check alarms   
         }
-        //rtc_Update();
-        //ui_Render(); // Render LCD according to current UI state.
-        //ui_Navigate(); // Check for user input to change UI state.
+        rtc_Update();
+        ui_Render(); // Render LCD according to current UI state.
+        ui_Navigate(); // Check for user input to change UI state.
     }
 }

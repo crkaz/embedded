@@ -30,7 +30,7 @@ void ui_DisplaySetDateTime(char isTime) {
     //    lcd_CursorStatus(0x01); // Switch cursor on.
 
     char seperator = (0x0D * isTime) + 0x2D; // 58':' for time or 45'-' for date.
-    char *title = "#Date";
+    char *title = "#Date YY-MM-DD";
     if (isTime)
         title = "#Time";
 
