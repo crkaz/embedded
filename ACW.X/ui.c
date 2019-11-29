@@ -218,7 +218,7 @@ int ui_ValidateInput(char inputs[]) {
         case 13: // Daytime.
         case 21: // Thresholds (day).
         case 22: // Thresholds (night).
-            if (ui_Mode == 13 && (hrsYrs > 23 || minsMnths > 60) &&(nightHrs > 23 || nightMins > 60)) returnVal = 0;
+            if (ui_Mode == 13 && (hrsYrs > 23 || minsMnths > 59 || nightHrs > 23 || nightMins > 59)) returnVal = 0;
             if (hrsYrs > high) returnVal = 0; // Start time/low thresh must be lower.
             else if (hrsYrs == high && (inputs[2] - '0' >= inputs[5] - '0')) returnVal = 0; // Check minutes/decimal point.
             break;
