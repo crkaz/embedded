@@ -25,6 +25,6 @@ void ui_DisplaySetDaytime(void);
 void ui_DisplaySetThresholds(char isNight);
 void ui_Navigate(void);
 void ui_Render(void);
-int ui_ValidateInput(char nInputs, char inputs[]);
+int ui_ValidateInput(char inputs[]);
 char ui_GetInput(char seperator, char addr);
 #endif	/* XC_UI_H */

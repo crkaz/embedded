@@ -175,7 +175,7 @@ void ui_Render() {
     }
 }
 
-int ui_ValidateInput(char nInputs, char inputs[]) {
+int ui_ValidateInput(char inputs[]) {
     int returnVal = 1; // Valid.
     int hrsYrs = ((inputs[0] - '0') * 10) + (inputs[1] - '0');
     int minsMnths = ((inputs[2] - '0') * 10) + (inputs[3] - '0');
@@ -245,7 +245,7 @@ char ui_GetInput(char separator, char addr) {
             case 's': // Enter/select.
                 if (nInputs == 0x06) { // Only validate when expected n inputs given.
                     // Validate input.
-                    if (ui_ValidateInput(nInputs, inputs)) {
+                    if (ui_ValidateInput(inputs)) {
                         // Set values.
                         if (mode == 21 || mode == 22 || mode == 13) { // Set thresholds.
                             // Set lower thresholds (heating). // OR Day start.
