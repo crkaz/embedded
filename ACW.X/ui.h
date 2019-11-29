@@ -19,7 +19,7 @@ const char DAY_START_TIME = 0x40;
 const char DAY_END_TIME = 0x50;
 int ui_Mode = 0;
 char IsTooHot = 0;
-
+char IsDay = 'Y';
 void ui_DisplayStandby(void);
 void ui_DisplayMenu(char ln1[], char ln2[], char ln3[], char ln4[]);
 void ui_DisplaySetDateTime(char isDate);

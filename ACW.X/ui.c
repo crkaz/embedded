@@ -16,7 +16,15 @@ void ui_DisplayStandby() {
     lcd_PrintString("Status:", 3, 0);
     
     if (IsTooHot == 0) {
-        lcd_PrintString("OK     ", 3, 4);    
+        lcd_PrintString("OK-     ", 3, 4);
+        
+        if (IsDay == 'Y') {
+            lcd_PrintString("DAY", 3, 7);    
+        }
+        else {
+            lcd_PrintString("NIGHT", 3, 7);    
+        }
+        
     } else if (IsTooHot == 'Y') {
         lcd_PrintString("Cooling", 3, 4);
     } else if (IsTooHot == 'N') {
@@ -183,6 +191,8 @@ int ui_ValidateInput(char inputs[]) {
     int returnVal = 1; // Valid.
     int hrsYrs = ((inputs[0] - '0') * 10) + (inputs[1] - '0');
     int minsMnths = ((inputs[2] - '0') * 10) + (inputs[3] - '0');
+    int nightHrs = ((inputs[3] - '0') * 10) + (inputs[4] - '0');
+    int nightMins = ((inputs[5] - '0') * 10);
     int secDays = ((inputs[4] - '0') * 10) + (inputs[5] - '0');
     int high = ((inputs[3] - '0') * 10) + (inputs[4] - '0');
     int maxDays = 0;
@@ -203,12 +213,12 @@ int ui_ValidateInput(char inputs[]) {
             if (secDays > maxDays) returnVal = 0;
             break;
         case 12: // Time.
-            if (hrsYrs > 24 || minsMnths > 60 || secDays > 60) returnVal = 0;
+            if (hrsYrs > 23 || minsMnths > 60 || secDays > 60) returnVal = 0;
             break;
         case 13: // Daytime.
         case 21: // Thresholds (day).
         case 22: // Thresholds (night).
-            if (ui_Mode == 13 && (hrsYrs > 23 || minsMnths > 60)) returnVal = 0;
+            if (ui_Mode == 13 && (hrsYrs > 23 || minsMnths > 60) &&(nightHrs > 23 || nightMins > 60)) returnVal = 0;
             if (hrsYrs > high) returnVal = 0; // Start time/low thresh must be lower.
             else if (hrsYrs == high && (inputs[2] - '0' >= inputs[5] - '0')) returnVal = 0; // Check minutes/decimal point.
             break;

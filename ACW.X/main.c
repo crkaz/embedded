@@ -111,6 +111,7 @@ void CheckTime() {
         if ((hours == DAYTIME[0] && minutes > DAYTIME[1]) || (hours == NIGHTTIME[0] && minutes < NIGHTTIME[1])) {
             lowerThreshold = strFloat(EEP_Read_String(DAY_LOWER_THRESH_TEMP, 0x00));
             upperThreshold = strFloat(EEP_Read_String(DAY_UPPER_THRESH_TEMP, 0x01));    
+            IsDay = 'Y';
             return;
         }
     }
@@ -118,7 +119,7 @@ void CheckTime() {
     //Night
     lowerThreshold = strFloat(EEP_Read_String(NIGHT_LOWER_THRESH_TEMP, 0x00));
     upperThreshold = strFloat(EEP_Read_String(NIGHT_UPPER_THRESH_TEMP, 0x01));
-
+    IsDay = 'N';
 }
 
 void main(void) {
