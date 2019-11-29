@@ -19,8 +19,8 @@
 #include "ui.h"
 
 
-const int DAYTIME[2] = {6, 30}; // 6:30am
-const int NIGHTTIME[2] = {19, 30}; // 7:30pm
+int DAYTIME[2] = {6, 30}; // 6:30am
+int NIGHTTIME[2] = {19, 30}; // 7:30pm
 //
 float lowerThreshold = 0.0; // Temperature heating
 float upperThreshold = 60.0; // Temperature cooling
@@ -34,60 +34,70 @@ const int alarmValue = 25; //5 per second
 
 void CheckTemperature() {
     float temperature = strFloat(calculate_temp(get_temp()), 4);
-    
+
     if (alarmChecks == 0 && IsTooHot != 0) {
         while (matrix_Scan() == '_') {
-            buzzer_sound(5000,10000, 1);
+            buzzer_sound(5000, 10000, 1);
         }
         Delay(5000);
         IsTooHot = 0;
     }
-    
+
     if ((IsTooHot == 'Y' && temperature >= lastTemp) || (IsTooHot == 'N' && temperature <= lastTemp)) {
         alarmChecks--;
     }
-    
+
     lastTemp = temperature;
 
     if (IsTooHot == 0) {
         if (temperature <= lowerThreshold) {
-             IsTooHot = 'N';
+            IsTooHot = 'N';
+            coolerOn();
         } else if (temperature >= upperThreshold) {
-             IsTooHot = 'Y';
+            IsTooHot = 'Y';
+            heaterOn();
         } else {
             return;
         }
         buzzer_sound(1000, 1, 1);
         alarmChecks = alarmValue;
-    }  
+    }
 }
 
 // Check/set nighttime (0) or daytime (1) mode
 //
-//
-//void CheckTime() {
-//    int hours = (((int) rtc_GetTimeString()[0] * 10) + (int) rtc_GetTimeString()[0]);
-//    int minutes = (((int) rtc_GetTimeString()[3] * 10) + (int) rtc_GetTimeString()[4]);
-//
-//    
-//    char* Eval = EEP_Read_String(NIGHT_LOWER_THRESH_TEMP);
-//    char EMPTYMEM[2] = {0xFF, 0xFF};
-//    if (Eval[0] == EMPTYMEM[0] && Eval[1] == EMPTYMEM[1]) {
-//        mode = 13;
-//        return;
-//    }
-//    
-//    if (hours > DAYTIME[0] && minutes > DAYTIME[1]) {
-//        //NIGHT
-//        lowerThreshold = strFloat(EEP_Read_String(NIGHT_LOWER_THRESH_TEMP), 4);
-//        upperThreshold = strFloat(EEP_Read_String(NIGHT_UPPER_THRESH_TEMP), 4);
-//    } else {
-//        //DAY
-//        lowerThreshold = strFloat(EEP_Read_String(DAY_LOWER_THRESH_TEMP), 4);
-//        upperThreshold = strFloat(EEP_Read_String(DAY_UPPER_THRESH_TEMP), 4);
-//    }
-//}
 
+void CheckTime() {
+        lcd_PrintString("HELLOOOOO",1,0);
+        Delay(10000);
+    char* eval = EEP_Read_String(NIGHT_LOWER_THRESH_TEMP, 0x00);
+    lcd_PrintString(eval,0,0);
+    char EMPTYMEM[2] = {0xFF, 0xFF};
+    if (eval[0] == EMPTYMEM[0] && eval[1] == EMPTYMEM[1]) {
+        ui_Mode = 13;
+        return; // Force user into settings screen on first boot.
+    }
+
+    int hours = (((int) rtc_GetString(0x00)[0] * 10) + (int) rtc_GetString(0x00)[0]);
+    int minutes = (((int) rtc_GetString(0x00)[3] * 10) + (int) rtc_GetString(0x00)[4]);
+
+    DAYTIME[0] = (EEP_Read_String(DAY_START_TIME, 0x00)[0] - '0' * 10) + EEP_Read_String(DAY_START_TIME, 0x00)[1] - '0';
+    DAYTIME[1] = (EEP_Read_String(DAY_START_TIME, 0x00)[3] - '0' * 10) + EEP_Read_String(DAY_START_TIME, 0x00)[4] - '0';
+
+    NIGHTTIME[0] = (EEP_Read_String(DAY_END_TIME, 0x01)[0] - '0' * 10) + EEP_Read_String(DAY_END_TIME, 0x01)[1] - '0';
+    NIGHTTIME[1] = (EEP_Read_String(DAY_END_TIME, 0x01)[3] - '0' * 10) + EEP_Read_String(DAY_END_TIME, 0x01)[4] - '0';
+
+
+    if (hours > DAYTIME[0] && minutes > DAYTIME[1]) {
+        //NIGHT
+        lowerThreshold = strFloat(EEP_Read_String(NIGHT_LOWER_THRESH_TEMP, 0x00), 4);
+        upperThreshold = strFloat(EEP_Read_String(NIGHT_UPPER_THRESH_TEMP, 0x01), 4);
+    } else {
+        //DAY
+        lowerThreshold = strFloat(EEP_Read_String(DAY_LOWER_THRESH_TEMP, 0x00), 4);
+        upperThreshold = strFloat(EEP_Read_String(DAY_UPPER_THRESH_TEMP, 0x00), 4);
+    }
+}
 
 void main(void) {
     // Ready the application.
@@ -96,19 +106,19 @@ void main(void) {
     buzzer_init();
     //    rtc_SetTime(); // Remove after inital config.
     lcd_Init();
-    //systemsOff();
-      
-//    CheckTime(); // Check daytime/nighttime mode.
-//    CheckTemperature(); // Check alarms   
-//    
+    systemsOff();
+
+    // Perform initial check.
+    CheckTime(); // Check daytime/nighttime mode.
+    //    
     //Loop
     for (;;) {
-//        if (mode == 0) {
-//            CheckTime(); // Check daytime/nighttime mode.
-//            CheckTemperature(); // Check alarms   
-//        }
-        rtc_Update();
-        ui_Render(); // Render LCD according to current UI state.
-        ui_Navigate(); // Check for user input to change UI state.
+        if (ui_Mode == 0) { // Only perform checks when not setting.
+            CheckTime(); // Check daytime/nighttime mode.
+            CheckTemperature(); // Check alarms   
+        }
+        //rtc_Update();
+        //ui_Render(); // Render LCD according to current UI state.
+        //ui_Navigate(); // Check for user input to change UI state.
     }
 }

@@ -1,7 +1,6 @@
 #include "ui.h"
 
 const int MAX_SCREEN_INDEX = 2; // 0 == default, 1 == settings, 2 == settings...
-int mode = 0;
 char changedMode = 0x00;
 
 void ui_DisplayStandby() {
@@ -114,22 +113,22 @@ void ui_Navigate() {
         Delay(8000); // Don't change screens too fast.
         changedMode = 0;
     }
-    char currMode = mode;
+    char currMode = ui_Mode;
     char input = matrix_Scan();
     switch (input) {
         case 'x':
-            if (mode > MAX_SCREEN_INDEX) mode /= 10; // Go back.
-            else mode = 0; // Else return home.
+            if (ui_Mode > MAX_SCREEN_INDEX) ui_Mode /= 10; // Go back.
+            else ui_Mode = 0; // Else return home.
             break;
         case '<':
-            if (mode < MAX_SCREEN_INDEX + 1 && mode != 0) { // Check not in a sub menu.
-                mode -= 1; // Go back a screen.
+            if (ui_Mode < MAX_SCREEN_INDEX + 1 && ui_Mode != 0) { // Check not in a sub menu.
+                ui_Mode -= 1; // Go back a screen.
                 //                if (mode == -1) mode = MAX_SCREEN_INDEX; // Cycle to last menu item.
             }
             break;
         case '>':
-            if (mode < MAX_SCREEN_INDEX) { // Check not in a sub menu.
-                mode += 1; // Go forward a screen.
+            if (ui_Mode < MAX_SCREEN_INDEX) { // Check not in a sub menu.
+                ui_Mode += 1; // Go forward a screen.
                 //                if (mode > MAX_SCREEN_INDEX) mode = 0; // Cycle to first menu item.
             }
             break;
@@ -138,18 +137,18 @@ void ui_Navigate() {
         case '3':
         {
             int i = input - '0'; // Get 1/2/3 as an int.
-            if (mode != 0 && mode <= MAX_SCREEN_INDEX) mode = mode * 10 + i; // Step into sub menu.
+            if (ui_Mode != 0 && ui_Mode <= MAX_SCREEN_INDEX) ui_Mode = ui_Mode * 10 + i; // Step into sub menu.
             break;
         }
     }
-    if (currMode != mode) { // Check if mode has changed i.e. user has navigated.
+    if (currMode != ui_Mode) { // Check if mode has changed i.e. user has navigated.
         lcd_Clear(); // If loading a new screen, clear previous one.
         changedMode = 1; // Set has-changed flag to trigger delay.
     }
 }
 
 void ui_Render() {
-    switch (mode) {
+    switch (ui_Mode) {
             // Standby screen.
         case 0: ui_DisplayStandby();
             break;
@@ -183,7 +182,7 @@ int ui_ValidateInput(char inputs[]) {
     int high = ((inputs[3] - '0') * 10) + (inputs[4] - '0');
     int maxDays = 0;
 
-    switch (mode) {
+    switch (ui_Mode) {
         case 11: // Date.
             if (minsMnths > 12 || minsMnths == 0 || secDays == 0) returnVal = 0;
                 // Check days and leapyear.
@@ -204,7 +203,7 @@ int ui_ValidateInput(char inputs[]) {
         case 13: // Daytime.
         case 21: // Thresholds (day).
         case 22: // Thresholds (night).
-            if (mode == 13 && (hrsYrs > 23 || minsMnths > 60)) returnVal = 0;
+            if (ui_Mode == 13 && (hrsYrs > 23 || minsMnths > 60)) returnVal = 0;
             if (hrsYrs > high) returnVal = 0; // Start time/low thresh must be lower.
             else if (hrsYrs == high && (inputs[2] - '0' >= inputs[5] - '0')) returnVal = 0; // Check minutes/decimal point.
             break;
@@ -231,7 +230,7 @@ char ui_GetInput(char separator, char addr) {
     char inputs[6]; // Has to be compile-time constant; don't always need 4.
     char inputsChanged = 0x00;
     char lastChar = 'C';
-    if (mode == 13) lastChar = '0';
+    if (ui_Mode == 13) lastChar = '0';
 
     Delay(7000); // Delay initial key press so it isn't carried from menu selection.
     while (busy) { // Wait for user input.
@@ -247,7 +246,7 @@ char ui_GetInput(char separator, char addr) {
                     // Validate input.
                     if (ui_ValidateInput(inputs)) {
                         // Set values.
-                        if (mode == 21 || mode == 22 || mode == 13) { // Set thresholds.
+                        if (ui_Mode == 21 || ui_Mode == 22 || ui_Mode == 13) { // Set thresholds.
                             // Set lower thresholds (heating). // OR Day start.
                             char lowerOrStart[5] = {inputs[0x00], inputs[0x01], separator, inputs[0x02], lastChar};
                             EEP_Write_String(addr, lowerOrStart); // Set lower thresh.
@@ -259,7 +258,7 @@ char ui_GetInput(char separator, char addr) {
                             char writingYear;
                             for (char i = 0x00; i < 0x06; ++i) {
                                 char str[2] = {inputs[i], inputs[i + 0x01]};
-                                if (mode == 11 && i == 0x00) // If date mode and first iteration; year is offset more than other time components.
+                                if (ui_Mode == 11 && i == 0x00) // If date mode and first iteration; year is offset more than other time components.
                                     writingYear = 0x01; // True.
                                 else
                                     writingYear = 0x00; // False.
@@ -302,7 +301,7 @@ char ui_GetInput(char separator, char addr) {
 
         if (input == 'x') { // Cancel/back.
             busy = 0; // Break input loop.
-            mode /= 10; // Return to previous screen.
+            ui_Mode /= 10; // Return to previous screen.
         }
 
         if (inputsChanged) {
@@ -316,7 +315,7 @@ char ui_GetInput(char separator, char addr) {
                     lcd_PrintChar(separator);
                     lcd_PrintChar(inputs[i]);
 
-                    if (mode == 21 || mode == 22 || mode == 13) { // Add "C " when setting low/high threshold and '0' when setting daytime.
+                    if (ui_Mode == 21 || ui_Mode == 22 || ui_Mode == 13) { // Add "C " when setting low/high threshold and '0' when setting daytime.
                         lcd_PrintChar(lastChar);
                         lcd_PrintChar(' ');
                         mod = 0x05; // Adjust modulus to position decimal point for upper thresh.
