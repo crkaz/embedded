@@ -107,7 +107,7 @@ char *rtc_GetString(char isDate) {
     char year = isDate * 0x01; // == 0 if not setting date.
     isDate *= 0x03; // Array offset.
     char j = 0x02; // Array indexer.
-    for (char i = 0x00; i < 0x09; i += 0x03) {
+    for (unsigned char i = 0x00; i < 0x09; i += 0x03) {
         if (i > 0x00) year = 0x00;
 
         // HRS MIN SEC YRS MNT DAT

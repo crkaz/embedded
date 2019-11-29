@@ -1,6 +1,6 @@
 #include "ui.h"
 
-const int MAX_SCREEN_INDEX = 2; // 0 == default, 1 == settings, 2 == settings...
+int MAX_SCREEN_INDEX = 2; // 0 == default, 1 == settings, 2 == settings...
 char changedMode = 0x00;
 
 void ui_DisplayStandby() {
@@ -13,22 +13,19 @@ void ui_DisplayStandby() {
     lcd_PrintString("Temp:", 2, 0);
     lcd_PrintString(calculate_temp(get_temp()), 2, 3);
 
-    lcd_PrintString("Status:", 3, 0);
+    lcd_PrintString("Stat:", 3, 0);
     
     if (IsTooHot == 0) {
-        lcd_PrintString("OK-     ", 3, 4);
-        
-        if (IsDay == 'Y') {
-            lcd_PrintString("DAY", 3, 7);    
-        }
-        else {
-            lcd_PrintString("NIGHT", 3, 7);    
+        if (IsDay) {
+            lcd_PrintString(":OK-DAY  ", 3, 3);    
+        } else  {
+            lcd_PrintString(":OK-NIGHT", 3, 3);    
         }
         
     } else if (IsTooHot == 'Y') {
-        lcd_PrintString("Cooling", 3, 4);
+        lcd_PrintString(":Cooling ", 3, 3);
     } else if (IsTooHot == 'N') {
-        lcd_PrintString("Heating", 3, 4);
+        lcd_PrintString(":Heating", 3, 3);
     }
 }
 
@@ -45,7 +42,7 @@ void ui_DisplaySetDateTime(char isTime) {
     //    lcd_CursorStatus(0x01); // Switch cursor on.
 
     char seperator = (0x0D * isTime) + 0x2D; // 58':' for time or 45'-' for date.
-    char *title = "#Date YY-MM-DD";
+    char *title = "#Date";
     if (isTime)
         title = "#Time";
 
@@ -86,7 +83,8 @@ void ui_DisplaySetDaytime() {
 
 
     // Wait for user to give valid value or cancel.
-    /*return */ ui_GetInput(seperator, DAY_START_TIME);
+    
+    ui_GetInput(seperator, DAY_START_TIME);
     lcd_Clear();
 }
 
@@ -115,10 +113,9 @@ void ui_DisplaySetThresholds(char isNight) {
 
     // Wait for user to give valid value or cancel.
     if (isNight)
-        /*return */ ui_GetInput(seperator, NIGHT_LOWER_THRESH_TEMP);
-
+        ui_GetInput(seperator, NIGHT_LOWER_THRESH_TEMP);
     else
-        /*return */ ui_GetInput(seperator, DAY_LOWER_THRESH_TEMP);
+        ui_GetInput(seperator, DAY_LOWER_THRESH_TEMP);
     //    lcd_CursorStatus(0x00);
     lcd_Clear();
 }
@@ -187,8 +184,8 @@ void ui_Render() {
     }
 }
 
-int ui_ValidateInput(char inputs[]) {
-    int returnVal = 1; // Valid.
+char ui_ValidateInput(char inputs[]) {
+    char returnVal = 1; // Valid.
     int hrsYrs = ((inputs[0] - '0') * 10) + (inputs[1] - '0');
     int minsMnths = ((inputs[2] - '0') * 10) + (inputs[3] - '0');
     int nightHrs = ((inputs[3] - '0') * 10) + (inputs[4] - '0');

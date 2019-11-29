@@ -19,16 +19,16 @@
 #include "ui.h"
 
 
-int DAYTIME[2] = {6, 30}; // 6:30am
-int NIGHTTIME[2] = {19, 30}; // 7:30pm
+int dayStart[2] = {6, 30}; // 6:30am
+int dayEnd[2] = {19, 30}; // 7:30pm
 //
 float lowerThreshold = 0.0; // Temperature heating
 float upperThreshold = 60.0; // Temperature cooling
 float lastTemp = 0.0;
 
-int alarmChecks = 0;
+char alarmChecks = 0;
 
-const int alarmValue = 25; //5 per second
+char alarmValue = 25; //5 per second
 // Check temperature thresholds and sound alarm or turn heating/cooling on if appropriate.
 //
 
@@ -79,6 +79,7 @@ void CheckTime() {
     char EMPTYMEM = 0xFF;
     
     char* eval = EEP_Read_String(NIGHT_LOWER_THRESH_TEMP, 0x00);
+    
     if (eval[0] == EMPTYMEM && eval[1] == EMPTYMEM) {
         ui_Mode = 1;
         return; // Force user into settings screen on first boot.
@@ -95,31 +96,33 @@ void CheckTime() {
         ui_Mode = 1;
         return; // Force user into settings screen on first boot.
     }
+    int hours = (((rtc_GetString(0x00)[0] - '0') * 10) + (rtc_GetString(0x00)[1] - '0'));
+    int minutes = (((rtc_GetString(0x00)[3] - '0') * 10) + (rtc_GetString(0x00)[4] - '0'));
 
-    int hours = (((int) rtc_GetString(0x00)[0] * 10) + (int) rtc_GetString(0x00)[0]);
-    int minutes = (((int) rtc_GetString(0x00)[3] * 10) + (int) rtc_GetString(0x00)[4]);
+    dayStart[0] = ((EEP_Read_String(DAY_START_TIME, 0x00)[0x00] - '0') * 0x0A) + (EEP_Read_String(DAY_START_TIME, 0x00)[0x01] - '0'); // Hours.
+    dayStart[1] = ((EEP_Read_String(DAY_START_TIME, 0x00)[0x03] - '0') * 0x0A); // Mins.
 
-    DAYTIME[0] = (EEP_Read_String(DAY_START_TIME, 0x00)[0] - '0' * 10) + EEP_Read_String(DAY_START_TIME, 0x00)[1] - '0';
-    DAYTIME[1] = (EEP_Read_String(DAY_START_TIME, 0x00)[3] - '0' * 10) + EEP_Read_String(DAY_START_TIME, 0x00)[4] - '0';
-
-    NIGHTTIME[0] = (EEP_Read_String(DAY_END_TIME, 0x01)[0] - '0' * 10) + EEP_Read_String(DAY_END_TIME, 0x01)[1] - '0';
-    NIGHTTIME[1] = (EEP_Read_String(DAY_END_TIME, 0x01)[3] - '0' * 10) + EEP_Read_String(DAY_END_TIME, 0x01)[4] - '0';
+    dayEnd[0] = ((EEP_Read_String(DAY_END_TIME, 0x01)[0x00] - '0') * 0xA) + (EEP_Read_String(DAY_END_TIME, 0x01)[0x01] - '0'); // Hours.
+    dayEnd[1] = ((EEP_Read_String(DAY_END_TIME, 0x01)[0x03] - '0') * 0xA); // Mins.
 
     
-    
-    if ((hours >= DAYTIME[0]) && (hours <= NIGHTTIME[0])) { 
-        if ((hours == DAYTIME[0] && minutes > DAYTIME[1]) || (hours == NIGHTTIME[0] && minutes < NIGHTTIME[1])) {
-            lowerThreshold = strFloat(EEP_Read_String(DAY_LOWER_THRESH_TEMP, 0x00));
-            upperThreshold = strFloat(EEP_Read_String(DAY_UPPER_THRESH_TEMP, 0x01));    
-            IsDay = 'Y';
-            return;
-        }
+    if (hours > dayStart[0] && hours < dayEnd[0]) { 
+        IsDay = 0x01;
+    } else if ((hours == dayStart[0] && minutes > dayStart[1]) || (hours == dayEnd[0] && minutes < dayEnd[1])) {
+        IsDay = 0x01;
+    }
+    else {
+        IsDay = 0x00;
     }
         
-    //Night
-    lowerThreshold = strFloat(EEP_Read_String(NIGHT_LOWER_THRESH_TEMP, 0x00));
-    upperThreshold = strFloat(EEP_Read_String(NIGHT_UPPER_THRESH_TEMP, 0x01));
-    IsDay = 'N';
+        
+    if (IsDay) {
+        lowerThreshold = strFloat(EEP_Read_String(DAY_LOWER_THRESH_TEMP, 0x00));
+        upperThreshold = strFloat(EEP_Read_String(DAY_UPPER_THRESH_TEMP, 0x01));    
+    } else {
+        lowerThreshold = strFloat(EEP_Read_String(NIGHT_LOWER_THRESH_TEMP, 0x00));
+        upperThreshold = strFloat(EEP_Read_String(NIGHT_UPPER_THRESH_TEMP, 0x01));    
+    }
 }
 
 void main(void) {

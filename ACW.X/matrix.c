@@ -1,6 +1,6 @@
 #include"matrix.h"
 
-int scan(int row); // Privatised.
+char scan(unsigned char row); // Privatised.
 
 void matrix_Init() {
     TRISC = 0XF0; //C PORT high 4 bits INPUT,low 4 bits OUTPUT    
@@ -38,8 +38,8 @@ char matrix_Scan() {
     return '_'; // Nothing.
 }
 
-int scan(int row) {
-    const int HALFMASK = 0xF0;
+char scan(unsigned char row) {
+    char HALFMASK = 0xF0;
 
     PORTC = row; //C3 OUTPUT low,the other 3 bits OUTPUT high                      
     NOP(); //delay                                                           

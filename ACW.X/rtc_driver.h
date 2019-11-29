@@ -12,17 +12,6 @@ char rtc_StrVals[9]; //define the read time and date save table.
 #define sclk  RB0 //1302 clock        
 #define rst   RB5 //1302 enable bit   
 
-// Args for get/set_time_bit()
-// NB: Write mode by default; +1 to set to read).
-//const char SEC = 0x80; 0
-//const char MIN = 0x82; 1
-//const char HOUR = 0x84; 2
-//const char DATE = 0x86; 3
-//const char MONTH = 0x88; 4
-//const char DAY = 0x8A; 5
-//const char YEAR = 0x8C; 6
-//    const char CTRL = 0x8E; 7
-
 // Privatised.
 //    void WriteByte(unsigned char time_tx); //write one byte subroutine.
 //    unsigned char ReadByte(); //read one byte subroutine.

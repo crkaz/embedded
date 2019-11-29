@@ -69,7 +69,7 @@ int BcdToDec(char bcd) {
     return dec;
 }
 
-int IsLeapYear(int yr) {
+char IsLeapYear(char yr) {
     if (yr % 4 == 0) {
         return 1;
     }

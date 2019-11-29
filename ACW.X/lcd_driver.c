@@ -45,40 +45,26 @@ void lcd_PrintString(char str[], char lineN, char pos) {
     }
 }
 
-const int LN1 = 0xC0; // Address of the start of line 1.
-const int LN2 = 0xD0; // Address of the start of line 2.
-const int LN3 = 0xC8; // Address of the start of line 3.
-const int LN4 = 0xD8; // Address of the start of line 4.
 void lcd_SetCursorPos(char lineN, char pos) {
     int addr;
     switch (lineN) {
-        case 0: addr = LN1 + pos;
+        case 0: addr = 0xC0 + pos;
             break;
-        case 1: addr = LN2 + pos;
+        case 1: addr = 0xD0 + pos;
             break;
-        case 2: addr = LN3 + pos;
+        case 2: addr = 0xC8 + pos;
             break;
-        case 3: addr = LN4 + pos;
+        case 3: addr = 0xD8 + pos;
             break;
     }
 
     WriteCmd(addr);
 }
 
-//void writeIntArray(char ints[]) {
-//    for (int i = 0; i < StrLen(ints); i++) {
-//        writeInt(ints[i]);
-//    }
-//}
-
 void lcd_Clear() {
     WriteCmd(0x01);
     Delay(50);
 }
-
-//void lcd_Home() {
-//    WriteCmd(0x02);
-//}
 
 void lcd_CursorStatus(char i) {
     if (i == 0) {
