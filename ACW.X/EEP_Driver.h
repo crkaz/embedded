@@ -4,7 +4,7 @@
 
 	#include <xc.h> // include processor files - each processor file is guarded.  
     char EEP_Read_Char(char add);
-    char* EEP_Read_String(char add);
+    char* EEP_Read_String(char add, char strN);
     
     void EEP_Write_String(char add,char str[]);
     void EEP_Write_Char(char add, char ch);

@@ -11,7 +11,7 @@ void Delay(int n) {
 // Delay to give a more precise delay.
 // EXAMPLE USE: DelayT(t503us); // Where t503us == a const int array.
 
-void DelayT(int t[]) {
+void DelayT(char t[]) {
     char x = t[0];
     char y = t[1];
 
@@ -65,22 +65,12 @@ char StrToBcd(char str[]) {
 int BcdToDec(char bcd) {
     //    Multiply most significant bit and add least significant.
     int dec = ((bcd & 0xF0) >> 4) * 10 + (bcd & 0x0F);
-    
+
     return dec;
 }
 
 int IsLeapYear(int yr) {
-    yr += 2000;
-
     if (yr % 4 == 0) {
-        if (yr % 100 == 0) {
-            if (yr % 400 == 0) {
-                return 1;
-            } else {
-                return 0;
-            }
-            return 1;
-        }
         return 1;
     }
     return 0;
@@ -112,16 +102,16 @@ int IsLeapYear(int yr) {
 //    return f;
 //}
 
-float strFloat(char str[], int length){
+float strFloat(char str[], int length) {
     //const float sigs[] = {10.0, 1.0, 0.0, 0.1}; // 10s 1s . 0.1s e.g. 00.0
     float sum = 0.0;
     sum += (str[0] - '0') * 10;
     sum += (str[1] - '0');
     sum += (str[3] - '0') * 0.1;
-    
-//    for (unsigned char i = 0; i < length; ++i) {
-//        int val = str[i] - '0';
-//        sum += (val * sigs[i]);
-//    }
+
+    //    for (unsigned char i = 0; i < length; ++i) {
+    //        int val = str[i] - '0';
+    //        sum += (val * sigs[i]);
+    //    }
     return sum;
 }
