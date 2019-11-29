@@ -49,8 +49,10 @@ void CheckTemperature() {
         alarmChecks--;
     }
     
-    if (tempCount++ % 5)
+    if (tempCount++ % 10 == 0) {
         lastTemp = temperature;
+    }
+        
 
     if (IsTooHot == 0) {
         if (temperature < lowerThreshold) {
