@@ -18,6 +18,7 @@ const char NIGHT_UPPER_THRESH_TEMP = 0x30;
 const char DAY_START_TIME = 0x40;
 const char DAY_END_TIME = 0x50;
 int ui_Mode = 0;
+char IsTooHot = 0;
 
 void ui_DisplayStandby(void);
 void ui_DisplayMenu(char ln1[], char ln2[], char ln3[], char ln4[]);

@@ -38,7 +38,7 @@ void lcd_PrintChar(char character) {
     e = 0; //pull low enable signal.
 }
 
-void lcd_PrintString(char str[], int lineN, int pos) {
+void lcd_PrintString(char str[], char lineN, char pos) {
     lcd_SetCursorPos(lineN, pos);
     for (unsigned char i = 0; i < StrLen(str); ++i) {
         lcd_PrintChar(str[i]);
@@ -49,7 +49,7 @@ const int LN1 = 0xC0; // Address of the start of line 1.
 const int LN2 = 0xD0; // Address of the start of line 2.
 const int LN3 = 0xC8; // Address of the start of line 3.
 const int LN4 = 0xD8; // Address of the start of line 4.
-void lcd_SetCursorPos(int lineN, int pos) {
+void lcd_SetCursorPos(char lineN, char pos) {
     int addr;
     switch (lineN) {
         case 0: addr = LN1 + pos;

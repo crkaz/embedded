@@ -25,42 +25,48 @@ int NIGHTTIME[2] = {19, 30}; // 7:30pm
 float lowerThreshold = 0.0; // Temperature heating
 float upperThreshold = 60.0; // Temperature cooling
 float lastTemp = 0.0;
-char IsTooHot = 0;
+
 int alarmChecks = 0;
 
 const int alarmValue = 25; //5 per second
 // Check temperature thresholds and sound alarm or turn heating/cooling on if appropriate.
 //
 
+unsigned char tempCount = 0;
 void CheckTemperature() {
-    float temperature = strFloat(calculate_temp(get_temp()), 4);
-
+    float temperature = strFloat(calculate_temp(get_temp()));
+    
+    
     if (alarmChecks == 0 && IsTooHot != 0) {
         while (matrix_Scan() == '_') {
             buzzer_sound(5000, 10000, 1);
         }
-        Delay(5000);
         IsTooHot = 0;
+        systemsOff();
     }
 
     if ((IsTooHot == 'Y' && temperature >= lastTemp) || (IsTooHot == 'N' && temperature <= lastTemp)) {
         alarmChecks--;
     }
-
-    lastTemp = temperature;
+    
+    if (tempCount++ % 5)
+        lastTemp = temperature;
 
     if (IsTooHot == 0) {
-        if (temperature <= lowerThreshold) {
-            IsTooHot = 'N';
-            coolerOn();
-        } else if (temperature >= upperThreshold) {
-            IsTooHot = 'Y';
+        if (temperature < lowerThreshold) {
             heaterOn();
+            IsTooHot = 'N';
+        } else if (temperature > upperThreshold) {
+            coolerOn();
+            IsTooHot = 'Y';
         } else {
             return;
         }
         buzzer_sound(1000, 1, 1);
         alarmChecks = alarmValue;
+    } else if (temperature < upperThreshold && temperature > lowerThreshold) {
+        IsTooHot = 0;
+        systemsOff();  
     }
 }
 
@@ -68,9 +74,22 @@ void CheckTemperature() {
 //
 
 void CheckTime() {    
+    char EMPTYMEM = 0xFF;
+    
     char* eval = EEP_Read_String(NIGHT_LOWER_THRESH_TEMP, 0x00);
-    char EMPTYMEM[2] = {0xFF, 0xFF};
-    if (eval[0] == EMPTYMEM[0] && eval[1] == EMPTYMEM[1]) {
+    if (eval[0] == EMPTYMEM && eval[1] == EMPTYMEM) {
+        ui_Mode = 1;
+        return; // Force user into settings screen on first boot.
+    }
+    
+    eval = EEP_Read_String(DAY_LOWER_THRESH_TEMP, 0x00);
+    if (eval[0] == EMPTYMEM && eval[1] == EMPTYMEM) {
+        ui_Mode = 1;
+        return; // Force user into settings screen on first boot.
+    }
+    
+    eval = EEP_Read_String(DAY_END_TIME, 0x00);
+    if (eval[0] == EMPTYMEM && eval[1] == EMPTYMEM) {
         ui_Mode = 1;
         return; // Force user into settings screen on first boot.
     }
@@ -84,16 +103,20 @@ void CheckTime() {
     NIGHTTIME[0] = (EEP_Read_String(DAY_END_TIME, 0x01)[0] - '0' * 10) + EEP_Read_String(DAY_END_TIME, 0x01)[1] - '0';
     NIGHTTIME[1] = (EEP_Read_String(DAY_END_TIME, 0x01)[3] - '0' * 10) + EEP_Read_String(DAY_END_TIME, 0x01)[4] - '0';
 
-
-    if (hours > DAYTIME[0] && minutes > DAYTIME[1]) {
-        //NIGHT
-        lowerThreshold = strFloat(EEP_Read_String(NIGHT_LOWER_THRESH_TEMP, 0x00), 4);
-        upperThreshold = strFloat(EEP_Read_String(NIGHT_UPPER_THRESH_TEMP, 0x01), 4);
-    } else {
-        //DAY
-        lowerThreshold = strFloat(EEP_Read_String(DAY_LOWER_THRESH_TEMP, 0x00), 4);
-        upperThreshold = strFloat(EEP_Read_String(DAY_UPPER_THRESH_TEMP, 0x00), 4);
+    
+    
+    if ((hours >= DAYTIME[0]) && (hours <= NIGHTTIME[0])) { 
+        if ((hours == DAYTIME[0] && minutes > DAYTIME[1]) || (hours == NIGHTTIME[0] && minutes < NIGHTTIME[1])) {
+            lowerThreshold = strFloat(EEP_Read_String(DAY_LOWER_THRESH_TEMP, 0x00));
+            upperThreshold = strFloat(EEP_Read_String(DAY_UPPER_THRESH_TEMP, 0x01));    
+            return;
+        }
     }
+        
+    //Night
+    lowerThreshold = strFloat(EEP_Read_String(NIGHT_LOWER_THRESH_TEMP, 0x00));
+    upperThreshold = strFloat(EEP_Read_String(NIGHT_UPPER_THRESH_TEMP, 0x01));
+
 }
 
 void main(void) {
@@ -103,13 +126,14 @@ void main(void) {
     buzzer_init();
     //    rtc_SetTime(); // Remove after inital config.
     lcd_Init();
+
+    Delay(500);
     systemsOff();
     
-    Delay(1000);
     
     // Perform initial check.
     CheckTime(); // Check daytime/nighttime mode.
-    //    
+        
     //Loop
     for (;;) {
         if (ui_Mode == 0) { // Only perform checks when not setting.

@@ -17,7 +17,3 @@ void systemsOff() {
     heater = 0;
     cooler = 0;
 }
-
-char* getStatus(float temp) {
-    return "\0";
-}

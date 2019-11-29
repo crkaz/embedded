@@ -14,7 +14,14 @@ void ui_DisplayStandby() {
     lcd_PrintString(calculate_temp(get_temp()), 2, 3);
 
     lcd_PrintString("Status:", 3, 0);
-    lcd_PrintString("OK", 3, 4);
+    
+    if (IsTooHot == 0) {
+        lcd_PrintString("OK     ", 3, 4);    
+    } else if (IsTooHot == 'Y') {
+        lcd_PrintString("Cooling", 3, 4);
+    } else if (IsTooHot == 'N') {
+        lcd_PrintString("Heating", 3, 4);
+    }
 }
 
 void ui_DisplayMenu(char ln1[], char ln2[], char ln3[], char ln4[]) {
@@ -122,13 +129,13 @@ void ui_Navigate() {
             break;
         case '<':
             if (ui_Mode < MAX_SCREEN_INDEX + 1 && ui_Mode != 0) { // Check not in a sub menu.
-                ui_Mode -= 1; // Go back a screen.
+                ui_Mode--; // Go back a screen.
                 //                if (mode == -1) mode = MAX_SCREEN_INDEX; // Cycle to last menu item.
             }
             break;
         case '>':
             if (ui_Mode < MAX_SCREEN_INDEX) { // Check not in a sub menu.
-                ui_Mode += 1; // Go forward a screen.
+                ui_Mode++; // Go forward a screen.
                 //                if (mode > MAX_SCREEN_INDEX) mode = 0; // Cycle to first menu item.
             }
             break;
@@ -156,7 +163,7 @@ void ui_Render() {
         case 1: ui_DisplayMenu("Settings", "1.Date", "2.Time", "3.Daytime");
             break;
 
-        case 2: ui_DisplayMenu("...", "1.Thresholds (d)", "2.Thresholds (n)", "3.BEPIS");
+        case 2: ui_DisplayMenu("...", "1.Thresholds (d)", "2.Thresholds (n)", "");
             break;
 
         case 11: ui_DisplaySetDateTime(0x00); // Date.
@@ -168,8 +175,6 @@ void ui_Render() {
         case 21: ui_DisplaySetThresholds(0x00); // Thresholds (day).
             break;
         case 22: ui_DisplaySetThresholds(0x01); // Thresholds (night).
-            break;
-        case 23: lcd_PrintString("NOOG", 0, 0);
             break;
     }
 }

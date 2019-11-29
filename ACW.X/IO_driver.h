@@ -7,6 +7,5 @@
     void heaterOn(void);
     void coolerOn(void);
     void systemsOff(void);
-    char* getStatus(float temp);
     //int word;
 #endif	/* XC_IO_H */
