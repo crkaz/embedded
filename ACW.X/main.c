@@ -19,17 +19,18 @@
 #include "ui.h"
 
 
-uch dayStart[0x02] = {0x06, 0x1E}; // 6:30am
-uch dayEnd[0x02] = {0x13, 0x1E}; // 7:30pm
+uch dayStart[0x02]; // 6:30am
+uch dayEnd[0x02]; // 7:30pm
 //
 float lowerThreshold = 0.0; // Temperature heating
-float upperThreshold = 60.0; // Temperature cooling
+float upperThreshold = 0.0; // Temperature cooling
 float lastTemp = 0.0;
 uch alarmChecks = 0x00;
 const uch alarmValue = 0x19; // (25) ~5 iterations per second
 uch tempCount = 0x00;
 char isDay = 0x01;
 char isTooHot = 0x00;
+uch tempCheckInterval = 0x0A; // How often to record the temperature to monitor cooling/heating alarm.
 
 void CheckTemperature() {
     float temperature = StrToFloat(therm_GetTemp());
@@ -51,7 +52,7 @@ void CheckTemperature() {
     }
 
     // Update the "lastTemp" every 10 cycles (every cycle is too quick to detect change).
-    if (tempCount++ % 10 == 0) {
+    if (tempCount++ % tempCheckInterval == 0) {
         lastTemp = temperature;
     }
 
@@ -102,19 +103,19 @@ void CheckTime() {
     }
     //...
 
-    uch hours = ((rtc_GetString(0x00)[0x00] + toInt * 0x0A) + rtc_GetString(0x00)[0x01] + toInt);
-    uch minutes = ((rtc_GetString(0x00)[0x03] + toInt * 0x0A) + rtc_GetString(0x00)[0x04] + toInt);
+    uch hours = (((rtc_GetString(0x00)[0x00] + toInt) * 0x0A) + (rtc_GetString(0x00)[0x01] + toInt));
+    uch minutes = (((rtc_GetString(0x00)[0x03] + toInt) * 0x0A) + (rtc_GetString(0x00)[0x04] + toInt));
 
     dayStart[0] = ((eep_ReadString(DAY_START_TIME, 0x00)[0x00] + toInt) * 0x0A) + (eep_ReadString(DAY_START_TIME, 0x00)[0x01] + toInt); // Hours.
     dayStart[1] = ((eep_ReadString(DAY_START_TIME, 0x00)[0x03] + toInt) * 0x0A); // Minutes.
 
-    dayEnd[0] = ((eep_ReadString(DAY_END_TIME, 0x01)[0x00] + toInt) * 0xA) + (eep_ReadString(DAY_END_TIME, 0x01)[0x01] + toInt); // Hours.
-    dayEnd[1] = ((eep_ReadString(DAY_END_TIME, 0x01)[0x03] + toInt) * 0xA); // Minutes.
+    dayEnd[0] = ((eep_ReadString(DAY_END_TIME, 0x01)[0x00] + toInt) * 0x0A) + (eep_ReadString(DAY_END_TIME, 0x01)[0x01] + toInt); // Hours.
+    dayEnd[1] = ((eep_ReadString(DAY_END_TIME, 0x01)[0x03] + toInt) * 0x0A); // Minutes.
 
 
-    if (hours > dayStart[0] && hours < dayEnd[0]) {
+    if (hours > dayStart[0x00] && hours < dayEnd[0x00]) {
         isDay = 0x01;
-    } else if ((hours == dayStart[0] && minutes > dayStart[1]) || (hours == dayEnd[0] && minutes < dayEnd[1])) {
+    } else if ((hours == dayStart[0x00] && minutes > dayStart[0x01]) || (hours == dayEnd[0x00] && minutes < dayEnd[0x01])) {
         isDay = 0x01;
     } else {
         isDay = 0x00;

@@ -182,13 +182,13 @@ void ui_Render() {
 }
 
 uch ui_ValidateInput(char inputs[]) {
-    char returnVal = 1; // Valid.
-    int hrsYrs = ((inputs[0] - '0') * 10) + (inputs[1] - '0');
-    int minsMnths = ((inputs[2] - '0') * 10) + (inputs[3] - '0');
-    int nightHrs = ((inputs[3] - '0') * 10) + (inputs[4] - '0');
-    int nightMins = ((inputs[5] - '0') * 10);
-    int secDays = ((inputs[4] - '0') * 10) + (inputs[5] - '0');
-    int high = ((inputs[3] - '0') * 10) + (inputs[4] - '0');
+    uch returnVal = true; // Valid.
+    int hrsYrs = ((inputs[0x00] + toInt) * 0x0A) + (inputs[0x01] + toInt);
+    int minsMnths = ((inputs[0x02] + toInt) * 0x0A) + (inputs[0x03] + toInt);
+    int nightHrs = ((inputs[0x03] + toInt) * 0x0A) + (inputs[0x04] + toInt);
+    int nightMins = ((inputs[0x05] + toInt) * 0x0A);
+    int secDays = ((inputs[0x04] + toInt) * 0x0A) + (inputs[0x05] + toInt);
+    int high = ((inputs[0x03] + toInt) * 0x0A) + (inputs[0x04] + toInt);
     int maxDays = 0;
 
     switch (ui_Mode) {
