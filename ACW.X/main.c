@@ -8,94 +8,124 @@
 #pragma config LVP = OFF // Low-Voltage (Single-Supply) In-Circuit Serial Programming Enable bit (RB3 is digital I/O, HV on MCLR must be used for programming)
 
 // Drivers
-#include "Utils.h"
+#include "utils.h"
 #include "buzzer_driver.h"
 #include "lcd_driver.h"
 #include "rtc_driver.h"
 #include "thermometer_driver.h"
-#include "matrix.h"
-#include "EEP_Driver.h"
-#include "IO_driver.h"
+#include "matrix_driver.h"
+#include "eep_driver.h"
+#include "io_driver.h"
 #include "ui.h"
 
 
-int DAYTIME[2] = {6, 30}; // 6:30am
-int NIGHTTIME[2] = {19, 30}; // 7:30pm
+uch dayStart[0x02] = {0x06, 0x1E}; // 6:30am
+uch dayEnd[0x02] = {0x13, 0x1E}; // 7:30pm
 //
 float lowerThreshold = 0.0; // Temperature heating
 float upperThreshold = 60.0; // Temperature cooling
 float lastTemp = 0.0;
-char IsTooHot = 0;
-int alarmChecks = 0;
-
-const int alarmValue = 25; //5 per second
-// Check temperature thresholds and sound alarm or turn heating/cooling on if appropriate.
-//
+uch alarmChecks = 0x00;
+const uch alarmValue = 0x19; // (25) ~5 iterations per second
+uch tempCount = 0x00;
+char isDay = 0x01;
+char isTooHot = 0x00;
 
 void CheckTemperature() {
-    float temperature = strFloat(calculate_temp(get_temp()), 4);
+    float temperature = StrToFloat(therm_GetTemp());
 
-    if (alarmChecks == 0 && IsTooHot != 0) {
-        while (matrix_Scan() == '_') {
-            buzzer_sound(5000, 10000, 1);
+    if (alarmChecks == 0x00 && isTooHot != 0x00) {
+        lcd_Clear();
+        lcd_PrintString("Hold to disarm!", 0x00, 0x00);
+
+        while (matrix_GetInput() == '_') {
+            buzzer_sound(5000, 7500, 1);
         }
-        Delay(5000);
-        IsTooHot = 0;
+        isTooHot = 0x00;
+        io_SwitchOff();
+        lcd_Clear();
     }
 
-    if ((IsTooHot == 'Y' && temperature >= lastTemp) || (IsTooHot == 'N' && temperature <= lastTemp)) {
+    if ((isTooHot == 'Y' && temperature >= lastTemp) || (isTooHot == 'N' && temperature <= lastTemp)) {
         alarmChecks--;
     }
 
-    lastTemp = temperature;
+    // Update the "lastTemp" every 10 cycles (every cycle is too quick to detect change).
+    if (tempCount++ % 10 == 0) {
+        lastTemp = temperature;
+    }
 
-    if (IsTooHot == 0) {
+    if (isTooHot == 0x00) {
         if (temperature <= lowerThreshold) {
-            IsTooHot = 'N';
-            coolerOn();
+            isTooHot = 'N'; // No, it is too cold.
+            io_TogglePin(0, "HEATING ");
         } else if (temperature >= upperThreshold) {
-            IsTooHot = 'Y';
-            heaterOn();
+            isTooHot = 'Y'; // Yes, it is too hot.
+            io_TogglePin(1, "COOLING ");
         } else {
+            // Temperature is okay - manually set status string.
+            if (isDay)
+                io_Status = "OK-Day  ";
+            else
+                io_Status = "OK-Night";
             return;
         }
-        buzzer_sound(1000, 1, 1);
-        alarmChecks = alarmValue;
+        buzzer_sound(1000, 1, 1); // Indicate heating or cooling was activated.
+        alarmChecks = alarmValue; // Monitor temperature changes until OK status.
+    } else if (temperature < upperThreshold && temperature > lowerThreshold) {
+        isTooHot = 0x00;
+        io_SwitchOff();
     }
 }
 
-// Check/set nighttime (0) or daytime (1) mode
-//
-
 void CheckTime() {
-        lcd_PrintString("HELLOOOOO",1,0);
-        Delay(10000);
-    char* eval = EEP_Read_String(NIGHT_LOWER_THRESH_TEMP, 0x00);
-    lcd_PrintString(eval,0,0);
-    char EMPTYMEM[2] = {0xFF, 0xFF};
-    if (eval[0] == EMPTYMEM[0] && eval[1] == EMPTYMEM[1]) {
-        ui_Mode = 13;
+    // Force user into settings screen on first boot....
+    char emptyVal = 0xFF; // Identifier for empty eeprom cell.
+    char* eepVal = eep_ReadString(NIGHT_LOWER_THRESH_TEMP, 0x00);
+
+    if (eepVal[0] == emptyVal && eepVal[1] == emptyVal) {
+        ui_Mode = 2;
+        return; // Force user into settings screen on first boot.
+    }
+    eepVal = eep_ReadString(DAY_LOWER_THRESH_TEMP, 0x00);
+
+    if (eepVal[0] == emptyVal && eepVal[1] == emptyVal) {
+        ui_Mode = 2;
         return; // Force user into settings screen on first boot.
     }
 
-    int hours = (((int) rtc_GetString(0x00)[0] * 10) + (int) rtc_GetString(0x00)[0]);
-    int minutes = (((int) rtc_GetString(0x00)[3] * 10) + (int) rtc_GetString(0x00)[4]);
+    eepVal = eep_ReadString(DAY_END_TIME, 0x00);
 
-    DAYTIME[0] = (EEP_Read_String(DAY_START_TIME, 0x00)[0] - '0' * 10) + EEP_Read_String(DAY_START_TIME, 0x00)[1] - '0';
-    DAYTIME[1] = (EEP_Read_String(DAY_START_TIME, 0x00)[3] - '0' * 10) + EEP_Read_String(DAY_START_TIME, 0x00)[4] - '0';
+    if (eepVal[0] == emptyVal && eepVal[1] == emptyVal) {
+        ui_Mode = 2;
+        return; // Force user into settings screen on first boot.
+    }
+    //...
 
-    NIGHTTIME[0] = (EEP_Read_String(DAY_END_TIME, 0x01)[0] - '0' * 10) + EEP_Read_String(DAY_END_TIME, 0x01)[1] - '0';
-    NIGHTTIME[1] = (EEP_Read_String(DAY_END_TIME, 0x01)[3] - '0' * 10) + EEP_Read_String(DAY_END_TIME, 0x01)[4] - '0';
+    uch hours = ((rtc_GetString(0x00)[0x00] + toInt * 0x0A) + rtc_GetString(0x00)[0x01] + toInt);
+    uch minutes = ((rtc_GetString(0x00)[0x03] + toInt * 0x0A) + rtc_GetString(0x00)[0x04] + toInt);
+
+    dayStart[0] = ((eep_ReadString(DAY_START_TIME, 0x00)[0x00] + toInt) * 0x0A) + (eep_ReadString(DAY_START_TIME, 0x00)[0x01] + toInt); // Hours.
+    dayStart[1] = ((eep_ReadString(DAY_START_TIME, 0x00)[0x03] + toInt) * 0x0A); // Minutes.
+
+    dayEnd[0] = ((eep_ReadString(DAY_END_TIME, 0x01)[0x00] + toInt) * 0xA) + (eep_ReadString(DAY_END_TIME, 0x01)[0x01] + toInt); // Hours.
+    dayEnd[1] = ((eep_ReadString(DAY_END_TIME, 0x01)[0x03] + toInt) * 0xA); // Minutes.
 
 
-    if (hours > DAYTIME[0] && minutes > DAYTIME[1]) {
-        //NIGHT
-        lowerThreshold = strFloat(EEP_Read_String(NIGHT_LOWER_THRESH_TEMP, 0x00), 4);
-        upperThreshold = strFloat(EEP_Read_String(NIGHT_UPPER_THRESH_TEMP, 0x01), 4);
+    if (hours > dayStart[0] && hours < dayEnd[0]) {
+        isDay = 0x01;
+    } else if ((hours == dayStart[0] && minutes > dayStart[1]) || (hours == dayEnd[0] && minutes < dayEnd[1])) {
+        isDay = 0x01;
     } else {
-        //DAY
-        lowerThreshold = strFloat(EEP_Read_String(DAY_LOWER_THRESH_TEMP, 0x00), 4);
-        upperThreshold = strFloat(EEP_Read_String(DAY_UPPER_THRESH_TEMP, 0x00), 4);
+        isDay = 0x00;
+    }
+
+    if (isDay) {
+        lowerThreshold = StrToFloat(eep_ReadString(DAY_LOWER_THRESH_TEMP, 0x00));
+        upperThreshold = StrToFloat(eep_ReadString(DAY_UPPER_THRESH_TEMP, 0x01));
+    } else {
+        lowerThreshold = StrToFloat(eep_ReadString(NIGHT_LOWER_THRESH_TEMP, 0x00));
+        upperThreshold = StrToFloat(eep_ReadString(NIGHT_UPPER_THRESH_TEMP, 0x01));
     }
 }
 
@@ -104,21 +134,20 @@ void main(void) {
     rtc_Init();
     matrix_Init();
     buzzer_init();
-    //    rtc_SetTime(); // Remove after inital config.
     lcd_Init();
-    systemsOff();
+    io_Init();
 
-    // Perform initial check.
-    CheckTime(); // Check daytime/nighttime mode.
-    //    
+    // Perform initial check to check eeprom values and force user to configure if first boot..
+    CheckTime();
+
     //Loop
     for (;;) {
-        if (ui_Mode == 0) { // Only perform checks when not setting.
+        if (!ui_Mode) { // Only perform checks when on standby screen.
             CheckTime(); // Check daytime/nighttime mode.
             CheckTemperature(); // Check alarms   
         }
-        //rtc_Update();
-        //ui_Render(); // Render LCD according to current UI state.
-        //ui_Navigate(); // Check for user input to change UI state.
+        rtc_Update();
+        ui_Render(); // Render LCD according to current UI state.
+        ui_Navigate(); // Check for user input to change UI state.
     }
 }

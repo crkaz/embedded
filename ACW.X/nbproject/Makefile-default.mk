@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=main.c buzzer_driver.c lcd_driver.c thermometer_driver.c rtc_driver.c Utils.c matrix.c EEP_driver.c IO_driver.c ui.c
+SOURCEFILES_QUOTED_IF_SPACED=main.c buzzer_driver.c lcd_driver.c thermometer_driver.c rtc_driver.c ui.c utils.c io_driver.c eep_driver.c matrix_driver.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.p1 ${OBJECTDIR}/buzzer_driver.p1 ${OBJECTDIR}/lcd_driver.p1 ${OBJECTDIR}/thermometer_driver.p1 ${OBJECTDIR}/rtc_driver.p1 ${OBJECTDIR}/Utils.p1 ${OBJECTDIR}/matrix.p1 ${OBJECTDIR}/EEP_driver.p1 ${OBJECTDIR}/IO_driver.p1 ${OBJECTDIR}/ui.p1
-POSSIBLE_DEPFILES=${OBJECTDIR}/main.p1.d ${OBJECTDIR}/buzzer_driver.p1.d ${OBJECTDIR}/lcd_driver.p1.d ${OBJECTDIR}/thermometer_driver.p1.d ${OBJECTDIR}/rtc_driver.p1.d ${OBJECTDIR}/Utils.p1.d ${OBJECTDIR}/matrix.p1.d ${OBJECTDIR}/EEP_driver.p1.d ${OBJECTDIR}/IO_driver.p1.d ${OBJECTDIR}/ui.p1.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.p1 ${OBJECTDIR}/buzzer_driver.p1 ${OBJECTDIR}/lcd_driver.p1 ${OBJECTDIR}/thermometer_driver.p1 ${OBJECTDIR}/rtc_driver.p1 ${OBJECTDIR}/ui.p1 ${OBJECTDIR}/utils.p1 ${OBJECTDIR}/io_driver.p1 ${OBJECTDIR}/eep_driver.p1 ${OBJECTDIR}/matrix_driver.p1
+POSSIBLE_DEPFILES=${OBJECTDIR}/main.p1.d ${OBJECTDIR}/buzzer_driver.p1.d ${OBJECTDIR}/lcd_driver.p1.d ${OBJECTDIR}/thermometer_driver.p1.d ${OBJECTDIR}/rtc_driver.p1.d ${OBJECTDIR}/ui.p1.d ${OBJECTDIR}/utils.p1.d ${OBJECTDIR}/io_driver.p1.d ${OBJECTDIR}/eep_driver.p1.d ${OBJECTDIR}/matrix_driver.p1.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/main.p1 ${OBJECTDIR}/buzzer_driver.p1 ${OBJECTDIR}/lcd_driver.p1 ${OBJECTDIR}/thermometer_driver.p1 ${OBJECTDIR}/rtc_driver.p1 ${OBJECTDIR}/Utils.p1 ${OBJECTDIR}/matrix.p1 ${OBJECTDIR}/EEP_driver.p1 ${OBJECTDIR}/IO_driver.p1 ${OBJECTDIR}/ui.p1
+OBJECTFILES=${OBJECTDIR}/main.p1 ${OBJECTDIR}/buzzer_driver.p1 ${OBJECTDIR}/lcd_driver.p1 ${OBJECTDIR}/thermometer_driver.p1 ${OBJECTDIR}/rtc_driver.p1 ${OBJECTDIR}/ui.p1 ${OBJECTDIR}/utils.p1 ${OBJECTDIR}/io_driver.p1 ${OBJECTDIR}/eep_driver.p1 ${OBJECTDIR}/matrix_driver.p1
 
 # Source Files
-SOURCEFILES=main.c buzzer_driver.c lcd_driver.c thermometer_driver.c rtc_driver.c Utils.c matrix.c EEP_driver.c IO_driver.c ui.c
+SOURCEFILES=main.c buzzer_driver.c lcd_driver.c thermometer_driver.c rtc_driver.c ui.c utils.c io_driver.c eep_driver.c matrix_driver.c
 
 
 
@@ -134,38 +134,6 @@ ${OBJECTDIR}/rtc_driver.p1: rtc_driver.c  nbproject/Makefile-${CND_CONF}.mk
 	@-${MV} ${OBJECTDIR}/rtc_driver.d ${OBJECTDIR}/rtc_driver.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/rtc_driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/Utils.p1: Utils.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/Utils.p1.d 
-	@${RM} ${OBJECTDIR}/Utils.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/Utils.p1 Utils.c 
-	@-${MV} ${OBJECTDIR}/Utils.d ${OBJECTDIR}/Utils.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Utils.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/matrix.p1: matrix.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/matrix.p1.d 
-	@${RM} ${OBJECTDIR}/matrix.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/matrix.p1 matrix.c 
-	@-${MV} ${OBJECTDIR}/matrix.d ${OBJECTDIR}/matrix.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/matrix.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/EEP_driver.p1: EEP_driver.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/EEP_driver.p1.d 
-	@${RM} ${OBJECTDIR}/EEP_driver.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/EEP_driver.p1 EEP_driver.c 
-	@-${MV} ${OBJECTDIR}/EEP_driver.d ${OBJECTDIR}/EEP_driver.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/EEP_driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/IO_driver.p1: IO_driver.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/IO_driver.p1.d 
-	@${RM} ${OBJECTDIR}/IO_driver.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/IO_driver.p1 IO_driver.c 
-	@-${MV} ${OBJECTDIR}/IO_driver.d ${OBJECTDIR}/IO_driver.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/IO_driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
 ${OBJECTDIR}/ui.p1: ui.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/ui.p1.d 
@@ -173,6 +141,38 @@ ${OBJECTDIR}/ui.p1: ui.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/ui.p1 ui.c 
 	@-${MV} ${OBJECTDIR}/ui.d ${OBJECTDIR}/ui.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/ui.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/utils.p1: utils.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/utils.p1.d 
+	@${RM} ${OBJECTDIR}/utils.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/utils.p1 utils.c 
+	@-${MV} ${OBJECTDIR}/utils.d ${OBJECTDIR}/utils.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/utils.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/io_driver.p1: io_driver.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/io_driver.p1.d 
+	@${RM} ${OBJECTDIR}/io_driver.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/io_driver.p1 io_driver.c 
+	@-${MV} ${OBJECTDIR}/io_driver.d ${OBJECTDIR}/io_driver.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/io_driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/eep_driver.p1: eep_driver.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/eep_driver.p1.d 
+	@${RM} ${OBJECTDIR}/eep_driver.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/eep_driver.p1 eep_driver.c 
+	@-${MV} ${OBJECTDIR}/eep_driver.d ${OBJECTDIR}/eep_driver.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/eep_driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/matrix_driver.p1: matrix_driver.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/matrix_driver.p1.d 
+	@${RM} ${OBJECTDIR}/matrix_driver.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/matrix_driver.p1 matrix_driver.c 
+	@-${MV} ${OBJECTDIR}/matrix_driver.d ${OBJECTDIR}/matrix_driver.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/matrix_driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 else
 ${OBJECTDIR}/main.p1: main.c  nbproject/Makefile-${CND_CONF}.mk
@@ -215,38 +215,6 @@ ${OBJECTDIR}/rtc_driver.p1: rtc_driver.c  nbproject/Makefile-${CND_CONF}.mk
 	@-${MV} ${OBJECTDIR}/rtc_driver.d ${OBJECTDIR}/rtc_driver.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/rtc_driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/Utils.p1: Utils.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/Utils.p1.d 
-	@${RM} ${OBJECTDIR}/Utils.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/Utils.p1 Utils.c 
-	@-${MV} ${OBJECTDIR}/Utils.d ${OBJECTDIR}/Utils.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/Utils.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/matrix.p1: matrix.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/matrix.p1.d 
-	@${RM} ${OBJECTDIR}/matrix.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/matrix.p1 matrix.c 
-	@-${MV} ${OBJECTDIR}/matrix.d ${OBJECTDIR}/matrix.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/matrix.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/EEP_driver.p1: EEP_driver.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/EEP_driver.p1.d 
-	@${RM} ${OBJECTDIR}/EEP_driver.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/EEP_driver.p1 EEP_driver.c 
-	@-${MV} ${OBJECTDIR}/EEP_driver.d ${OBJECTDIR}/EEP_driver.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/EEP_driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/IO_driver.p1: IO_driver.c  nbproject/Makefile-${CND_CONF}.mk
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/IO_driver.p1.d 
-	@${RM} ${OBJECTDIR}/IO_driver.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/IO_driver.p1 IO_driver.c 
-	@-${MV} ${OBJECTDIR}/IO_driver.d ${OBJECTDIR}/IO_driver.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/IO_driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
 ${OBJECTDIR}/ui.p1: ui.c  nbproject/Makefile-${CND_CONF}.mk
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/ui.p1.d 
@@ -254,6 +222,38 @@ ${OBJECTDIR}/ui.p1: ui.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/ui.p1 ui.c 
 	@-${MV} ${OBJECTDIR}/ui.d ${OBJECTDIR}/ui.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/ui.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/utils.p1: utils.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/utils.p1.d 
+	@${RM} ${OBJECTDIR}/utils.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/utils.p1 utils.c 
+	@-${MV} ${OBJECTDIR}/utils.d ${OBJECTDIR}/utils.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/utils.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/io_driver.p1: io_driver.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/io_driver.p1.d 
+	@${RM} ${OBJECTDIR}/io_driver.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/io_driver.p1 io_driver.c 
+	@-${MV} ${OBJECTDIR}/io_driver.d ${OBJECTDIR}/io_driver.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/io_driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/eep_driver.p1: eep_driver.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/eep_driver.p1.d 
+	@${RM} ${OBJECTDIR}/eep_driver.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/eep_driver.p1 eep_driver.c 
+	@-${MV} ${OBJECTDIR}/eep_driver.d ${OBJECTDIR}/eep_driver.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/eep_driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/matrix_driver.p1: matrix_driver.c  nbproject/Makefile-${CND_CONF}.mk
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/matrix_driver.p1.d 
+	@${RM} ${OBJECTDIR}/matrix_driver.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx032 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/matrix_driver.p1 matrix_driver.c 
+	@-${MV} ${OBJECTDIR}/matrix_driver.d ${OBJECTDIR}/matrix_driver.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/matrix_driver.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 endif
 

@@ -1,17 +1,22 @@
 #include "thermometer_driver.h"
 
-void resetThermometer(void); // Privatised.
-void write_byte(unsigned char val); // Privatised.
-unsigned char read_byte(); // Privatised.
+#define dq RE0
+#define dq_dir TRISE0
+#define set_dq_high() dq_dir = 1
+#define set_dq_low() dq = 0; dq_dir = 0
 
-unsigned char TLV = 0; //temperature high byte                     
-unsigned char THV = 0; //temperature low byte   
-//char temperature[8]; //Stores the temperature
-char temperature[6]; //Stores the temperature
+int therm_ReadTemp(void); // Read the temperature from the thermistor and return as int.
+void therm_Reset(void); // Reset the component.
+void therm_WriteByte(uch val); // Write a command to the component.
+uch therm_ReadByte(); // Read from the component.
 
-void write_byte(unsigned char val) {
-    unsigned char i;
-    unsigned char temp;
+uch TLV = 0; //temperature high byte                     
+uch THV = 0; //temperature low byte   
+char temperature[0x06]; //Stores the temperature
+
+void therm_WriteByte(uch val) {
+    uch i;
+    uch temp;
 
     // Iterate through bits from l to r.
     for (i = 8; i > 0; i--) {
@@ -22,7 +27,7 @@ void write_byte(unsigned char val) {
         NOP();
         NOP();
         NOP();
-        //        NOP();
+        NOP();
         if (temp == 1) {
             set_dq_high();
         }
@@ -34,9 +39,9 @@ void write_byte(unsigned char val) {
     }
 }
 
-unsigned char read_byte() {
-    unsigned char i;
-    unsigned char value = 0; //read temperature         
+uch therm_ReadByte() {
+    uch i;
+    uch value = 0; //read temperature         
     static char j;
 
     for (i = 8; i > 0; i--) {
@@ -47,43 +52,43 @@ unsigned char read_byte() {
         NOP();
         NOP();
         NOP();
-        NOP(); //6us              
+        NOP();
         set_dq_high(); // pull high       
         NOP();
         NOP();
         NOP();
         NOP();
-        NOP(); //4us               
+        NOP();
         j = dq;
         if (j) value |= 0x80; // ????
-        DelayT(t63us); //63us              
+        DelayT(t63us);
     }
     return (value);
 }
 
-int get_temp() {
+int therm_ReadTemp() {
     //The sequence has to be
     // followed by each transaction: 1 Initialisation -> 2 ROM Function Command -> 3Memory
     // Function Command -> 4 Transaction/Data
     ADCON1 = 0X07; //a port all i/o
 
     set_dq_high();
-    resetThermometer(); //reset,wait for  18b20 response.                                                                                                              
-    write_byte(0XCC); //ignore ROM matching                                                                                                                            
-    write_byte(0X44); //send  temperature convert command                                                                                                              
+    therm_Reset(); //reset,wait for  18b20 response.                                                                                                              
+    therm_WriteByte(0XCC); //ignore ROM matching                                                                                                                            
+    therm_WriteByte(0X44); //send  temperature convert command                                                                                                              
     DelayT(t503us);
     DelayT(t503us);
 
-    resetThermometer(); //reset again,wait for 18b20 response                                                                                                        
-    write_byte(0XCC); //ignore ROM matching                                                                                                                            
-    write_byte(0XBE); //send read temperature command                                                                                                                  
-    TLV = read_byte(); //read temperature low byte                                                                                                                      
-    THV = read_byte(); //read temperature high byte                                                                                                                   
+    therm_Reset(); //reset again,wait for 18b20 response                                                                                                        
+    therm_WriteByte(0XCC); //ignore ROM matching                                                                                                                            
+    therm_WriteByte(0XBE); //send read temperature command                                                                                                                  
+    TLV = therm_ReadByte(); //read temperature low byte                                                                                                                      
+    THV = therm_ReadByte(); //read temperature high byte                                                                                                                   
     set_dq_high(); //release general line                                                                                                                           
     return (TLV >> 4) | ((THV << 4) & 0X3f); //temperature value
 }
 
-void resetThermometer(void) {
+void therm_Reset(void) {
     char presence = 1;
     while (presence) {
         set_dq_low(); // MCU pull low
@@ -100,14 +105,14 @@ void resetThermometer(void) {
     }
 }
 
-char* calculate_temp(int TZ) {
-    
+char* therm_GetTemp() {
+    int TZ = therm_ReadTemp();
     unsigned int wd = 0; //temperature BCD code  after convert
-    unsigned char TX = TLV << 4; //temperature decimal
+    uch TX = TLV << 4; //temperature decimal
 
-    temperature[0] = TZ / 10 + 48; //integer ten bit	
-    temperature[1] = TZ % 10 + 48; //integer Entries bit                                                                                                                            
-    temperature[2] = '.';
+    temperature[0x00] = TZ / 0x0A + 0x30; //integer ten bit	
+    temperature[0x01] = TZ % 0x0A + 0x30; //integer Entries bit                                                                                                                            
+    temperature[0x02] = '.';
 
     if (TX & 0x80) {
         wd += 5000;
@@ -119,15 +124,12 @@ char* calculate_temp(int TZ) {
         wd += 1250;
     }
     if (TX & 0x10) {
-        wd += 625; //hereinbefore four instructions are turn  decimal into BCD code        
+        wd += 625;
     }
 
-    temperature[3] = wd / 1000 + 48; //ten cent bit                                                                           
-    //	temperature[4] = (wd % 1000) / 100  + 48; //hundred cent bit                                                                       
-    //	temperature[5] = (wd % 100) / 10 + 48; //thousand cent bit                                                                      
-    //	temperature[6] = wd % 10 + 48; //myriad cent bit
-    temperature[4] = 'C';
-    temperature[5] = '\0';
+    temperature[0x03] = wd / 1000 + 0x30; //ten cent bit                                                                           
+    temperature[0x04] = 'C';
+    temperature[0x05] = eol;
 
     return temperature;
 }

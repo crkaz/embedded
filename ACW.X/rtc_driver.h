@@ -2,41 +2,24 @@
 // more than once.  
 #ifndef XC_RTC_H
 #define	XC_RTC_H
+
+// DRIVER DESCRIPTION:
+
+// INCLUDES.
 #include <xc.h> // include processor files - each processor file is guarded.  
-#include "Utils.h"
+#include "utils.h"
 
-char rtc_Vals[8]; //define the read time and date save table.
-char rtc_StrVals[9]; //define the read time and date save table.
-// DS1302 pin config.
-#define i_o   RB4 //1302I_O           
-#define sclk  RB0 //1302 clock        
-#define rst   RB5 //1302 enable bit   
+// DEFINES.
 
-// Args for get/set_time_bit()
-// NB: Write mode by default; +1 to set to read).
-//const char SEC = 0x80; 0
-//const char MIN = 0x82; 1
-//const char HOUR = 0x84; 2
-//const char DATE = 0x86; 3
-//const char MONTH = 0x88; 4
-//const char DAY = 0x8A; 5
-//const char YEAR = 0x8C; 6
-//    const char CTRL = 0x8E; 7
+// PUBLIC VARS.
 
-// Privatised.
-//    void WriteByte(unsigned char time_tx); //write one byte subroutine.
-//    unsigned char ReadByte(); //read one byte subroutine.
-
-void rtc_PortInit(void); //port initilize subroutine.
-void rtc_Init(void); //DS1302 initilize subroutine.
-void rtc_SetTime(void); //set time subroutine.
-//    char* rtc_GetTime(void); //get time subroutine.
-//char rtc_GetTimeComponent(char); // Get individual time/date component.
-//    char* rtc_GetTimeComponentAsString(char); // Get individual time/date component.
-//    char* rtc_GetTimeString(void); // Get full time as string.
-//    char* rtc_GetDateString(void); // Get full date as string.
+// PUBLIC METHODS.
+void rtc_Init(void); // Initialise DS1302.
+//void rtc_SetTime(void); // Set all time components with burst mode.
 void rtc_SetTimeComponent(char, char); // Set individual time component.
-char *rtc_GetString(char isTime);
-void rtc_Update(void);
+char *rtc_GetString(char isTime);  // Get the date or time in string format.
+void rtc_Update(void); // Read the clock with burst mode and update table.
+
+// PRIVATE METHODS.
 
 #endif	/* XC_RTC_H */

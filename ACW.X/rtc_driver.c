@@ -1,7 +1,11 @@
 #include "rtc_driver.h"
 
-char ReadByte(void); // Privatised.
-void WriteByte(char time_tx); // Privatised.
+#define i_o   RB4 //1302I_O           
+#define sclk  RB0 //1302 clock        
+#define rst   RB5 //1302 enable bit   
+
+char rtc_ReadByte(void); // Privatised.
+void rtc_WriteByte(char time_tx); // Privatised.
 
 //AM-PM/12-24 MODE
 //Bit 7 of the hours register is defined as the 12? or 24?hour mode select bit. When high, the 12?hour
@@ -10,7 +14,9 @@ void WriteByte(char time_tx); // Privatised.
 
 //define the time:       sec,  min,  hour, day, month, week, year, control word.
 //const char defaults[] = {0x45, 0x04, 0x02, 0x26, 0x11, 0x17, 0x19, 0x00};
-unsigned char time_rx = 0x30; //define receive reg.
+uch time_rx = 0x30; //define receive reg.
+char rtc_Vals[0x08]; //define the read time and date save table.
+char rtc_StrVals[0x09]; //define the read time and date save table.
 
 // Initialise DS1302 clock.
 
@@ -26,8 +32,8 @@ void rtc_Init() {
     sclk = 0; //pull low clock
     rst = 0; //reset DS1302
     rst = 1; //enable DS1302
-    WriteByte(0x8e); //send control command
-    WriteByte(0); //enable write DS1302
+    rtc_WriteByte(0x8e); //send control command
+    rtc_WriteByte(0); //enable write DS1302
     rst = 0; //reset
 }
 
@@ -49,8 +55,8 @@ void rtc_Init() {
 
 void rtc_SetTimeComponent(char b, char t) {
     rst = 1; // Enable.
-    WriteByte(b); // Select time component.
-    WriteByte(t); // Set time component to t.
+    rtc_WriteByte(b); // Select time component.
+    rtc_WriteByte(t); // Set time component to t.
     rst = 0; // Reset.
 }
 
@@ -58,26 +64,26 @@ void rtc_SetTimeComponent(char b, char t) {
 
 void rtc_Update() {
     rst = 1; //enable DS1302
-    WriteByte(0xbf); // Read burst mode.
+    rtc_WriteByte(0xbf); // Read burst mode.
     for (char i = 0x00; i < 0x07; ++i) //continue to read 7 bytes.
     {
-        rtc_Vals[i] = ReadByte();
+        rtc_Vals[i] = rtc_ReadByte();
     }
     rst = 0; //reset DS1302
 }
 
 // Write byte to active register.
 
-void WriteByte(char time_tx) {
+void rtc_WriteByte(char addr) {
     for (char i = 0x00; i < 0x08; ++i) //continue to write 8bit
     {
         i_o = 0; //
         sclk = 0; //pull low clk
-        if (time_tx & 1) //judge the send bit is 0 or 1.
+        if (addr & 1) //judge the send bit is 0 or 1.
         {
             i_o = 1; //is 1
         }
-        time_tx = time_tx >> 1; //rotate right 1 bit.
+        addr = addr >> 1; //rotate right 1 bit.
         sclk = 1; //pull high clk
     }
     sclk = 0; //finished 1 byte,pull low clk
@@ -85,7 +91,7 @@ void WriteByte(char time_tx) {
 
 // Read byte from active register.
 
-char ReadByte() {
+char rtc_ReadByte() {
     TRISB4 = 1; //continue to write 8bit
     for (char i = 0x00; i < 0x08; ++i) {
         sclk = 0; //pull low clk
@@ -117,7 +123,7 @@ char *rtc_GetString(char isDate) {
         rtc_StrVals[i + 0x02] = seperator; // 2, 5, 8
         j--;
     }
-    rtc_StrVals[0x08] = '\0';//eol; // Terminate char.
+    rtc_StrVals[0x08] = eol;
 
     return rtc_StrVals;
 }

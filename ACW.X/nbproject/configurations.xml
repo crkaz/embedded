@@ -8,11 +8,11 @@
       <itemPath>lcd_driver.h</itemPath>
       <itemPath>rtc_driver.h</itemPath>
       <itemPath>thermometer_driver.h</itemPath>
-      <itemPath>Utils.h</itemPath>
-      <itemPath>matrix.h</itemPath>
-      <itemPath>EEP_Driver.h</itemPath>
-      <itemPath>IO_driver.h</itemPath>
       <itemPath>ui.h</itemPath>
+      <itemPath>utils.h</itemPath>
+      <itemPath>io_driver.h</itemPath>
+      <itemPath>eep_driver.h</itemPath>
+      <itemPath>matrix_driver.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -26,11 +26,11 @@
       <itemPath>lcd_driver.c</itemPath>
       <itemPath>thermometer_driver.c</itemPath>
       <itemPath>rtc_driver.c</itemPath>
-      <itemPath>Utils.c</itemPath>
-      <itemPath>matrix.c</itemPath>
-      <itemPath>EEP_driver.c</itemPath>
-      <itemPath>IO_driver.c</itemPath>
       <itemPath>ui.c</itemPath>
+      <itemPath>utils.c</itemPath>
+      <itemPath>io_driver.c</itemPath>
+      <itemPath>eep_driver.c</itemPath>
+      <itemPath>matrix_driver.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
