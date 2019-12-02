@@ -6,6 +6,7 @@
 
 char rtc_ReadByte(void); // Privatised.
 void rtc_WriteByte(char time_tx); // Privatised.
+void rtc_SetDay(void);
 
 //AM-PM/12-24 MODE
 //Bit 7 of the hours register is defined as the 12? or 24?hour mode select bit. When high, the 12?hour
@@ -16,7 +17,8 @@ void rtc_WriteByte(char time_tx); // Privatised.
 //const char defaults[] = {0x45, 0x04, 0x02, 0x26, 0x11, 0x17, 0x19, 0x00};
 uch time_rx = 0x30; //define receive reg.
 char rtc_Vals[0x08]; //define the read time and date save table.
-char rtc_StrVals[0x09]; //define the read time and date save table.
+char rtc_StrVals[0x0D]; //define the read time and date save table.
+char days[] = {"MonTueWedThhFriSatSun"};
 
 // Initialise DS1302 clock.
 
@@ -51,7 +53,7 @@ void rtc_Init() {
 //}
 
 // SET INDIVIDUAL TIME COMPONENT
-// set_time_bit(SEC, 0x30); // EXAMPL: setting second bit to 30sec.
+// set_time_bit(SEC, 0x30); // EXAMPLE: setting second bit to 30sec.
 
 void rtc_SetTimeComponent(char b, char t) {
     rst = 1; // Enable.
@@ -70,6 +72,9 @@ void rtc_Update() {
         rtc_Vals[i] = rtc_ReadByte();
     }
     rst = 0; //reset DS1302
+
+    // Set week day.
+    rtc_SetDay();
 }
 
 // Write byte to active register.
@@ -123,7 +128,33 @@ char *rtc_GetString(char isDate) {
         rtc_StrVals[i + 0x02] = seperator; // 2, 5, 8
         j--;
     }
-    rtc_StrVals[0x08] = eol;
+
+    // Set day of week if date.
+    rtc_StrVals[0x08] = ' ';
+    uch day = rtc_Vals[0x05] * 0x03; // x3 to get start index of days arr.
+    for (uch i = 0x00; i < 0x03; ++i) { // Get 3 letter version of day.
+        if (isDate) {
+            rtc_StrVals[0x09 + i] = days[day + i]; //days[0x00 + i]; //
+        } else {
+            rtc_StrVals[0x09 + i] = eol;
+        }
+    }
+
+    rtc_StrVals[0x0C] = eol; // Set end char.
 
     return rtc_StrVals;
+}
+
+//https://www.hackerearth.com/blog/developers/how-to-find-the-day-of-a-week/
+
+void rtc_SetDay() {
+    int y = BcdToDec(rtc_Vals[0x06]) + 2000;
+    uch m = BcdToDec(rtc_Vals[0x04]);
+    uch d = BcdToDec(rtc_Vals[0x03]);
+
+    const uch t[] = {0x00, 0x03, 0x02, 0x05, 0x00, 0x03, 0x05, 0x01, 0x04, 0x06, 0x02, 0x04};
+    y -= m < 3;
+
+    uch day = ((y + y / 4 - y / 100 + y / 400 + t[m - 1] + d) % 7) - 1;
+    rtc_SetTimeComponent(0x8A, day);
 }

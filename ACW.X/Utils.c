@@ -83,16 +83,8 @@ uch IsLeapYear(int yr) {
     return false;
 }
 
-//https://www.hackerearth.com/blog/developers/how-to-find-the-day-of-a-week/
-//char* GetDay() {
-//    char *time = rtc_GetString();
-//    int y = (time[1] + toInt * 0x0A) + time[2] + toInt;
-//    int m = (time[3] + toInt * 0x0A) + time[4] + toInt;
-//    int d = (time[5] + toInt * 0x0A) + time[6] + toInt;
-//
-////    const char days[7] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-//    const int t[] = {0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4};
-//    y -= m < 3;
-//    
-//    return days(y + y / 4 - y / 100 + y / 400 + t[m - 1] + d) % 7;
-//}
+uch BcdToDec(char bcd) {
+    //    Multiply most significant bit and add least significant.
+    uch dec = ((bcd & 0xF0) >> 4) * 10 + (bcd & 0x0F);
+    return dec;
+}

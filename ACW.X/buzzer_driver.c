@@ -11,11 +11,11 @@ void buzzer_init() {
 
 // Sound the buzzer. 
 
-void buzzer_sound(int bT, int pT, int reps) {
+void buzzer_sound(int bT, int pT, uch reps) {
     // bT = buzzer time (lower == higher pitch).
     // pT = pause time. Use for breaks in continuous buzzing (e.g. alarm).
     // reps = repetitions. Use to repeat tone (e.g. alarm).
-    for (int i = 0; i < reps; ++i) {
+    for (uch i = 0x00; i < reps; ++i) {
         buz_on();
         for (int j = 0; j < bT; ++j) {
 

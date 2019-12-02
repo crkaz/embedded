@@ -24,7 +24,7 @@ const char NIGHT_LOWER_THRESH_TEMP = 0x20;
 const char NIGHT_UPPER_THRESH_TEMP = 0x30;
 const char DAY_START_TIME = 0x40;
 const char DAY_END_TIME = 0x50;
-int ui_Mode = 0;
+uch ui_Mode = 0;
 
 // PUBLIC METHODS.
 void ui_Navigate(void); // Determine UI state.

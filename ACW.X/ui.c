@@ -8,21 +8,21 @@ void ui_DisplaySetThresholds(char isNight); // Renders the screen to set the low
 uch ui_ValidateInput(char inputs[]); // Validates a user input based on the current UI state.
 char ui_GetInput(char seperator, char addr); // Gets and formats input from the user, and sets the use the values to update the system.
 
-const int MAX_SCREEN_INDEX = 2; // 0 == default, 1 == settings, 2 == settings...
+const uch MAX_SCREEN_INDEX = 0x02; // 0 == default, 1 == settings, 2 == settings...
 char changedMode = false;
 
 void ui_DisplayStandby() {
-    lcd_PrintString("Date:", 0x00, 0x00);
-    lcd_PrintString(rtc_GetString(0x01), 0x00, 0x03);
+    lcd_PrintString("Da:", 0x00, 0x00);
+    lcd_PrintString(rtc_GetString(0x01), 0x00, 0x02);
 
-    lcd_PrintString("Time:", 0x01, 0x00);
-    lcd_PrintString(rtc_GetString(0x00), 0x01, 0x03);
+    lcd_PrintString("Ti:", 0x01, 0x00);
+    lcd_PrintString(rtc_GetString(0x00), 0x01, 0x02);
 
-    lcd_PrintString("Temp:", 0x02, 0x00);
-    lcd_PrintString(therm_GetTemp(), 0x02, 0x03);
+    lcd_PrintString("Te:", 0x02, 0x00);
+    lcd_PrintString(therm_GetTemp(), 0x02, 0x02);
 
-    lcd_PrintString("Status:", 0x03, 0x00);
-    lcd_PrintString(io_Status, 0x03, 0x04);
+    lcd_PrintString("St:", 0x03, 0x00);
+    lcd_PrintString(io_Status, 0x03, 0x02);
 }
 
 void ui_DisplayMenu(char ln1[], char ln2[], char ln3[], char ln4[]) {
@@ -38,17 +38,17 @@ void ui_DisplaySetDateTime(char isTime) {
     //    lcd_CursorStatus(0x01); // Switch cursor on.
 
     char seperator = (0x0D * isTime) + 0x2D; // 58':' for time or 45'-' for date.
-    char *title = "#Date";
+    char *title = "Date";
     if (isTime)
-        title = "#Time";
+        title = "Time";
 
-    lcd_PrintString(title, 0, 0);
+    lcd_PrintString(title, 0x00, 0x00);
 
-    lcd_PrintString("Curr:", 1, 0);
-    lcd_PrintString(rtc_GetString(!isTime), 1, 3); // ! because getstring asks for isDate.
+    lcd_PrintString("Cur:", 0x01, 0x00);
+    lcd_PrintString(rtc_GetString(!isTime), 0x01, 0x02); // ! because getstring asks for isDate.
 
-    lcd_PrintString("New:", 2, 0);
-    lcd_SetCursorPos(2, 3);
+    lcd_PrintString("New:", 0x02, 0x00);
+    lcd_SetCursorPos(0x02, 0x02);
 
     // Wait for user to give valid value or cancel.
     if (isTime)
@@ -63,7 +63,7 @@ void ui_DisplaySetDaytime() {
     //    lcd_CursorStatus(0x01); // Switch cursor on.
 
     char seperator = ':';
-    char *title = "#Daytime";
+    char *title = "Daytime";
 
     char *dayStart = eep_ReadString(DAY_START_TIME, 0x00);
     char *dayEnd = eep_ReadString(DAY_END_TIME, 0x01);
@@ -89,9 +89,9 @@ void ui_DisplaySetThresholds(char isNight) {
     //    lcd_CursorStatus(0x01); // Switch cursor on.
 
     char seperator = '.';
-    char *title = "#Thresholds (d)";
+    char *title = "Thresholds (d)";
     if (isNight)
-        title = "#Thresholds (n)";
+        title = "Thresholds (n)";
 
     char *lowerThresh = eep_ReadString(DAY_LOWER_THRESH_TEMP + (isNight * 0x20), 0x00);
     char *upperThresh = eep_ReadString(DAY_UPPER_THRESH_TEMP + (isNight * 0x20), 0x01);
@@ -160,13 +160,14 @@ void ui_Render() {
             break;
 
             // Date and time settings.
-        case 1: ui_DisplayMenu("Settings", "1.Date", "2.Time", "3.Day");
+        case 1: ui_DisplayMenu("Settings", "1.Date", "2.Time", "...");
             break;
         case 11: ui_DisplaySetDateTime(0x00); // Date.
             break;
         case 12: ui_DisplaySetDateTime(0x01); // Time.
             break;
-        case 13: lcd_PrintString("NOT IMPLEMENTED", 0x00, 0x00); // Set day of week.
+            //        case 13: lcd_PrintString("NOT IMPLEMENTED", 0x00, 0x00); // Set day of week.
+        case 13: ui_Mode = 2;
             break;
 
             // Threshold settings.
@@ -247,7 +248,7 @@ char ui_GetInput(char separator, char addr) {
 
         while (input == '_') // Make responsive to user input.
             input = matrix_GetInput();
-        Delay(5500); // Delay key presses.
+        Delay(6000); // Delay key presses to prevent ghosting.
 
         switch (input) {
             case 's': // Enter/select.

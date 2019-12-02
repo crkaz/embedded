@@ -26,7 +26,7 @@ float lowerThreshold = 0.0; // Temperature heating
 float upperThreshold = 0.0; // Temperature cooling
 float lastTemp = 0.0;
 uch alarmChecks = 0x00;
-const uch alarmValue = 0x19; // (25) ~5 iterations per second
+const uch alarmValue = 0x2D; // (45) ~8 iterations per second
 uch tempCount = 0x00;
 char isDay = 0x01;
 char isTooHot = 0x00;
@@ -59,16 +59,16 @@ void CheckTemperature() {
     if (isTooHot == 0x00) {
         if (temperature <= lowerThreshold) {
             isTooHot = 'N'; // No, it is too cold.
-            io_TogglePin(0, "HEATING ");
+            io_TogglePin(0, "HEATING");
         } else if (temperature >= upperThreshold) {
             isTooHot = 'Y'; // Yes, it is too hot.
-            io_TogglePin(1, "COOLING ");
+            io_TogglePin(1, "COOLING");
         } else {
             // Temperature is okay - manually set status string.
             if (isDay)
-                io_Status = "OK-Day  ";
+                io_Status = "OK (day)";
             else
-                io_Status = "OK-Night";
+                io_Status = "OK (night)";
             return;
         }
         buzzer_sound(1000, 1, 1); // Indicate heating or cooling was activated.
@@ -103,8 +103,8 @@ void CheckTime() {
     }
     //...
 
-    uch hours = (((rtc_GetString(0x00)[0x00] + toInt) * 0x0A) + (rtc_GetString(0x00)[0x01] + toInt));
-    uch minutes = (((rtc_GetString(0x00)[0x03] + toInt) * 0x0A) + (rtc_GetString(0x00)[0x04] + toInt));
+    uch hours = ((rtc_GetString(0x00)[0x00] + toInt * 0x0A) + rtc_GetString(0x00)[0x01] + toInt);
+    uch minutes = ((rtc_GetString(0x00)[0x03] + toInt * 0x0A) + rtc_GetString(0x00)[0x04] + toInt);
 
     dayStart[0] = ((eep_ReadString(DAY_START_TIME, 0x00)[0x00] + toInt) * 0x0A) + (eep_ReadString(DAY_START_TIME, 0x00)[0x01] + toInt); // Hours.
     dayStart[1] = ((eep_ReadString(DAY_START_TIME, 0x00)[0x03] + toInt) * 0x0A); // Minutes.
