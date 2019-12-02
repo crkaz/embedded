@@ -6,7 +6,7 @@
 
 // INCLUDES.
 #include <xc.h>
-#include "utils.h"
+#include "Utils.h"
 #include "thermometer_driver.h"
 #include "rtc_driver.h"
 #include "buzzer_driver.h"

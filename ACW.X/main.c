@@ -8,7 +8,7 @@
 #pragma config LVP = OFF // Low-Voltage (Single-Supply) In-Circuit Serial Programming Enable bit (RB3 is digital I/O, HV on MCLR must be used for programming)
 
 // Drivers
-#include "utils.h"
+#include "Utils.h"
 #include "buzzer_driver.h"
 #include "lcd_driver.h"
 #include "rtc_driver.h"

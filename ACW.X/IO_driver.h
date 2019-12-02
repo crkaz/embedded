@@ -6,7 +6,7 @@
 
 // INCLUDES.
 #include <xc.h> // include processor files - each processor file is guarded.
-#include "utils.h"
+#include "Utils.h"
 
 // DEFINES.
 
