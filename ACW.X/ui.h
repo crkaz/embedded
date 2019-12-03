@@ -6,14 +6,14 @@
 
 // INCLUDES.
 #include <xc.h>
-#include "Utils.h"
+#include "utils.h"
 #include "thermometer_driver.h"
 #include "rtc_driver.h"
 #include "buzzer_driver.h"
-#include "matrix.h"
+#include "matrix_driver.h"
 #include "lcd_driver.h"
-#include "EEP_Driver.h"
-#include "IO_driver.h"
+#include "eep_driver.h"
+#include "io_driver.h"
 
 // DEFINES.
 
