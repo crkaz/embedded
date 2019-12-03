@@ -30,7 +30,7 @@ void lcd_WriteCmd(char command) {
 }
 
 void lcd_PrintChar(char character) {
-    if (character > '~') { //Stops the Chinese
+    if (character > '~') { //Stops Chinese characters
         character = ' ';
     }
     rs = 1; //is data not command.
