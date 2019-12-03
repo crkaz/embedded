@@ -11,7 +11,7 @@
 
 // INCLUDES.
 #include <xc.h> // include processor files - each processor file is guarded.  
-#include "Utils.h"
+#include "utils.h"
 
 // PUBLIC METHODS.
 void matrix_Init(void); // Initialise component.

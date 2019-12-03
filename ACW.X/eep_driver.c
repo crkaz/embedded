@@ -1,4 +1,4 @@
-#include"EEP_Driver.h"
+#include"eep_driver.h"
 
 void eep_WriteChar(char add, char ch);
 char eep_ReadChar(char add);
