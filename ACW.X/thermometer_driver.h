@@ -1,20 +1,26 @@
 // This is a guard condition so that contents of this file are not included more than once.  
 #ifndef XC_Thermometer_H
-	#define	XC_Thermometer_H
+#define	XC_Thermometer_H
 
-	#include <xc.h> // include processor files - each processor file is guarded.  
-    #include "Utils.h"
+// DRIVER DESCRIPTION:
 
-    #define dq RE0
-    #define dq_dir TRISE0
-    #define set_dq_high() dq_dir = 1
-    #define set_dq_low() dq = 0; dq_dir = 0
-//	void write_byte(unsigned char val); // Privatised.
-//	unsigned char read_byte(); // Privatised.
-//	void resetThermometer(void); // Privatised.
+// INCLUDES.
+#include <xc.h> // include processor files - each processor file is guarded.  
+#include "Utils.h"
 
-	int get_temp(void);
-	char* calculate_temp(int TZ);
+// DEFINES.
+
+// PUBLIC VARS.
+
+// PUBLIC METHODS.
+char* therm_GetTemp(void);
+
+// PRIVATE METHODS.
+//int therm_ReadTemp(void); // Read the temperature from the thermistor and return as int.
+//void therm_Reset(void); // Reset the component.
+//void therm_WriteByte(uch val); // Write a command to the component.
+//uch therm_ReadByte(); // Read from the component.
+
 
 #endif	/* XC_Thermometer_H */
 

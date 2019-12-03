@@ -1,6 +1,5 @@
 #include"Utils.h"
-//unsigned char table[] = { 0xc0, 0xf9, 0xa4, 0xb0, 0x99, 0x92, 0x82, 0xf8, 0x80, 0x90 }; // 7seg lcd nums 0-9
-char bcdToStr[3];
+char bcdToStr[0x03];
 
 // Delay for n instruction cycles.
 
@@ -11,9 +10,9 @@ void Delay(int n) {
 // Delay to give a more precise delay.
 // EXAMPLE USE: DelayT(t503us); // Where t503us == a const int array.
 
-void DelayT(int t[]) {
-    char x = t[0];
-    char y = t[1];
+void DelayT(uch t[]) {
+    char x = t[0x00];
+    char y = t[0x01];
 
     char z;
     do {
@@ -26,8 +25,8 @@ void DelayT(int t[]) {
 
 // Get length of a string.
 
-int StrLen(char a[]) {
-    int len = 0;
+uch StrLen(char a[]) {
+    uch len = 0x00;
     while (a[len])
         len++;
     return len;
@@ -38,57 +37,54 @@ int StrLen(char a[]) {
 char* BcdToStr(char bcd) {
     int tens = ((bcd & 0xF0) >> 4) + 48;
     int ones = (bcd & 0x0F) + 48;
-    bcdToStr[0] = tens;
-    bcdToStr[1] = ones;
-    bcdToStr[2] = '\0';
+    bcdToStr[0x00] = tens;
+    bcdToStr[0x01] = ones;
+    bcdToStr[0x02] = eol;
 
     return bcdToStr;
 }
 
-//// Convert an int to a char.
-//char IntToChar(int i) {
-//    char c = i + 48;
-//    return c;
-//}
-
+char StrToBcd(char str[]) {
+    //The last 4 bits of an ascii char for [0-9] are BCD encoded
+    //Use a Mask to remove the first four bits for both
+    //Shift the tens to the left 4 and then AND on the units
+    char a = str[0x00] + toInt;
+    a <<= 4;
+    char b = str[0x01] + toInt;
+    return a + b;
+}
 // Convert BCD (binary coded decimal) to decimal.
 
-int BcdToDec(char bcd) {
-    //    Multiply most significant bit and add least significant.
-    int dec = ((bcd & 0xF0) >> 4) * 10 + (bcd & 0x0F);
-    return dec;
+float StrToFloat(char str[]) {
+    float sum = 0.0;
+    sum += (str[0x00] + toInt) * 0x0A;
+    sum += (str[0x01] + toInt);
+    sum += (str[0x03] + toInt) * 0.1;
+    return sum;
 }
 
-int IsLeapYear(int yr) {
-    yr += 2000;
+//https://docs.microsoft.com/en-us/office/troubleshoot/excel/determine-a-leap-year
+
+uch IsLeapYear(int yr) {
+    yr = yr + 2000;
 
     if (yr % 4 == 0) {
         if (yr % 100 == 0) {
             if (yr % 400 == 0) {
-                return 1;
+                return true;
             } else {
-                return 0;
+                return false;
             }
-            return 1;
+            return true;
         }
-        return 1;
+        return false;
     }
-    return 0;
+
+    return false;
 }
 
-float strFloat(char str[], int length) {
-    float f = 0.0;
-    char decimalFound = '0';
-    
-    int i;
-    for (i = 0; i < length; i++) {
-        if (str[i] == '.') {
-            decimalFound = i;
-            break;
-        }
-
-        f += (decimalFound == 0) ? (int)str[i] *  (i*10) : (int)str[i] *  ((i - (int)decimalFound) / 10);     
-    }
-
-    return f;
+uch BcdToDec(char bcd) {
+    //    Multiply most significant bit and add least significant.
+    uch dec = ((bcd & 0xF0) >> 4) * 10 + (bcd & 0x0F);
+    return dec;
 }

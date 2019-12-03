@@ -1,17 +1,18 @@
 #include"matrix.h"
 
-int scan(int row); // Privatised.
+uch matrix_Scan(uch row);
+
+uch result;
 
 void matrix_Init() {
     TRISC = 0XF0; //C PORT high 4 bits INPUT,low 4 bits OUTPUT    
 }
-int result;
 
-char matrix_Scan() {
-    if (scan(0XF7) == 0)
-        if (scan(0XFB) == 0)
-            if (scan(0XFD) == 0)
-                if (scan(0XFE) == 0)
+char matrix_GetInput() {
+    if (matrix_Scan(0XF7) == 0x00)
+        if (matrix_Scan(0XFB) == 0x00)
+            if (matrix_Scan(0XFD) == 0x00)
+                if (matrix_Scan(0XFE) == 0x00)
                     result = 0xFF;
 
     switch (result) {
@@ -38,8 +39,8 @@ char matrix_Scan() {
     return '_'; // Nothing.
 }
 
-int scan(int row) {
-    const int HALFMASK = 0xF0;
+uch matrix_Scan(uch row) {
+    const uch HALFMASK = 0xF0;
 
     PORTC = row; //C3 OUTPUT low,the other 3 bits OUTPUT high                      
     NOP(); //delay                                                           
@@ -48,7 +49,7 @@ int scan(int row) {
 
     if (result != HALFMASK) { //judge if high 4 bits all 1(all 1 is no key press)               
         result |= (row - HALFMASK); //no,add low 4 bits 0x07 as key scan result
-        return 1;
+        return true;
     }
-    return 0;
+    return false;
 }
