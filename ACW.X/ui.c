@@ -246,8 +246,13 @@ char ui_GetInput(char separator, char addr) {
     while (busy) { // Wait for user input.
         input = '_';
 
-        while (input == '_') // Make responsive to user input.
+        while (input == '_') { // Make responsive to user input.
             input = matrix_GetInput();
+            if (ui_Mode == 12){
+                rtc_Update();
+                lcd_PrintString(rtc_GetString(0x00), 0x01, 0x02); // Update the current time value.
+            }
+        }
         Delay(6000); // Delay key presses to prevent ghosting.
 
         switch (input) {
