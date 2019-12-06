@@ -84,33 +84,33 @@ void CheckTime() {
     char emptyVal = 0xFF; // Identifier for empty eeprom cell.
     char* eepVal = eep_ReadString(NIGHT_LOWER_THRESH_TEMP, 0x00);
 
-    if (eepVal[0] == emptyVal && eepVal[1] == emptyVal) {
+    if (eepVal[0x00] == emptyVal && eepVal[0x01] == emptyVal) {
         ui_Mode = 2;
         return; // Force user into settings screen on first boot.
     }
     eepVal = eep_ReadString(DAY_LOWER_THRESH_TEMP, 0x00);
 
-    if (eepVal[0] == emptyVal && eepVal[1] == emptyVal) {
+    if (eepVal[0x00] == emptyVal && eepVal[0x01] == emptyVal) {
         ui_Mode = 2;
         return; // Force user into settings screen on first boot.
     }
 
     eepVal = eep_ReadString(DAY_END_TIME, 0x00);
 
-    if (eepVal[0] == emptyVal && eepVal[1] == emptyVal) {
+    if (eepVal[0x00] == emptyVal && eepVal[0x01] == emptyVal) {
         ui_Mode = 2;
         return; // Force user into settings screen on first boot.
     }
     //...
 
-    uch hours = ((rtc_GetString(0x00)[0x00] + toInt * 0x0A) + rtc_GetString(0x00)[0x01] + toInt);
-    uch minutes = ((rtc_GetString(0x00)[0x03] + toInt * 0x0A) + rtc_GetString(0x00)[0x04] + toInt);
+    uch hours = ((rtc_GetString(0x00)[0x00] + toInt) * 0x0A) + rtc_GetString(0x00)[0x01] + toInt;
+    uch minutes = ((rtc_GetString(0x00)[0x03] + toInt) * 0x0A) + rtc_GetString(0x00)[0x04] + toInt;
 
     dayStart[0] = ((eep_ReadString(DAY_START_TIME, 0x00)[0x00] + toInt) * 0x0A) + (eep_ReadString(DAY_START_TIME, 0x00)[0x01] + toInt); // Hours.
-    dayStart[1] = ((eep_ReadString(DAY_START_TIME, 0x00)[0x03] + toInt) * 0x0A); // Minutes.
+    dayStart[1] = (eep_ReadString(DAY_START_TIME, 0x00)[0x03] + toInt) * 0x0A; // Minutes.
 
     dayEnd[0] = ((eep_ReadString(DAY_END_TIME, 0x01)[0x00] + toInt) * 0x0A) + (eep_ReadString(DAY_END_TIME, 0x01)[0x01] + toInt); // Hours.
-    dayEnd[1] = ((eep_ReadString(DAY_END_TIME, 0x01)[0x03] + toInt) * 0x0A); // Minutes.
+    dayEnd[1] = (eep_ReadString(DAY_END_TIME, 0x01)[0x03] + toInt) * 0x0A; // Minutes.
 
 
     if (hours > dayStart[0x00] && hours < dayEnd[0x00]) {
