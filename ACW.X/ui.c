@@ -249,8 +249,8 @@ char ui_GetInput(char separator, char addr) {
         while (input == '_') { // Make responsive to user input.
             input = matrix_GetInput();
             if (ui_Mode == 12){
-                rtc_Update();
-                lcd_PrintString(rtc_GetString(0x00), 0x01, 0x02); // Update the current time value.
+                rtc_Update();  // Update the current time value.
+                lcd_PrintString(rtc_GetString(0x00), 0x01, 0x02);
             }
         }
         Delay(6000); // Delay key presses to prevent ghosting.
