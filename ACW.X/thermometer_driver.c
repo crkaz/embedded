@@ -70,7 +70,6 @@ int therm_ReadTemp() {
     //The sequence has to be
     // followed by each transaction: 1 Initialisation -> 2 ROM Function Command -> 3Memory
     // Function Command -> 4 Transaction/Data
-    ADCON1 = 0X07; //a port all i/o
 
     set_dq_high();
     therm_Reset(); //reset,wait for  18b20 response.                                                                                                              

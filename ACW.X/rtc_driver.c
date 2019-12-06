@@ -1,7 +1,7 @@
 #include "rtc_driver.h"
 
-#define i_o   RB4 //1302I_O           
-#define sclk  RB0 //1302 clock        
+#define i_o   RB4 //1302 io           
+#define sclk  RB0 //1302 input sync.
 #define rst   RB5 //1302 enable bit   
 
 char rtc_ReadByte(void); // Privatised.
@@ -18,18 +18,13 @@ void rtc_SetDay(void);
 uch time_rx = 0x30; //define receive reg.
 char rtc_Vals[0x08]; //define the read time and date save table.
 char rtc_StrVals[0x0D]; //define the read time and date save table.
-char days[] = {"MonTueWedThhFriSatSun"};
+char days[] = {"MonTueWedThuFriSatSun"};
 
 // Initialise DS1302 clock.
 
 void rtc_Init() {
-    TRISA = 0x00; //a port all output
-    TRISD = 0x00; //d port all output
-    ADCON1 = 0x06; //a port all i/o
     TRISB = 0x02; //rb1 input, others output.
-    OPTION_REG = 0X00; //open b port internal pull high.
-    PORTA = 0XFF;
-    PORTD = 0XFF; //clear all display
+    OPTION_REG = 0X00; //open b port internal pull high. See page 23 of pic data sheet.
 
     sclk = 0; //pull low clock
     rst = 0; //reset DS1302

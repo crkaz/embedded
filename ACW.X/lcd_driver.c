@@ -9,7 +9,7 @@ void lcd_WriteCmd(char command); // Privatise.
 
 void lcd_Init() {
     psb = 1; // As parallel.
-    ADCON1 = 0X07; //a port as ordinary i/o.
+    ADCON1 = 0X07; //All pins in port a as digital i/o (not using ADC).
     TRISA = 0X00; //a port as output.
     TRISD = 0X00; //d port as output.
 
