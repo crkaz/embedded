@@ -59,10 +59,10 @@ void CheckTemperature() {
     if (isTooHot == 0x00) {
         if (temperature <= lowerThreshold) {
             isTooHot = 'N'; // No, it is too cold.
-            io_TogglePin(0, "HEATING");
+            io_TogglePin(0, "HEATING   ");
         } else if (temperature >= upperThreshold) {
             isTooHot = 'Y'; // Yes, it is too hot.
-            io_TogglePin(1, "COOLING");
+            io_TogglePin(1, "COOLING   ");
         } else {
             // Temperature is okay - manually set status string.
             if (isDay)
