@@ -1,28 +1,29 @@
-// This is a guard condition so that contents of this file are not included
-// more than once.  
 #ifndef XC_LCD_H
 #define	XC_LCD_H
 
 // DRIVER DESCRIPTION:
+// Interface with the 128x64 LCD component.
 
 // INCLUDES.
 #include <xc.h> // include processor files - each processor file is guarded.  
 #include "utils.h"
 
-// DEFINES.
+// PRIVATE.
+//#define rs RA5 // Command or data.
+//#define rw RA4 // Read or write.
+//#define e RA3 // Enable.
+//#define psb RA2 // Parallel or serial.
 
-// PUBLIC VARS.
+// void lcd_WriteCmd(char command); // Write a command byte to the component.
+
+
+// PUBLIC.
 char lcd_EMPTY_STRING[] = "               \0"; // Empty string for clearing a line.
 
-// PUBLIC METHODS.
-//void lcd_CursorStatus(char i); // Switch cursor on (1) or off (0);
-void lcd_SetCursorPos(uch lineN, uch pos); // Set the position of the cursor.
-void lcd_Init(void); // Initialise component.
+void lcd_SetCursorPos(uch lineN, uch pos); // Set the position of the cursor, where lineN == the line number and pos == the cursor pos.
+void lcd_Init(void); // Initialise ports and pins.
 void lcd_PrintChar(char character); // Print a single char at the current cursor pos.
-void lcd_PrintString(char str[], uch lineN, uch pos); // Print a series of chars, starting from the current cursor pos.
-void lcd_Clear(void); // Cler the whole lcd.
+void lcd_PrintString(char str[], uch lineN, uch pos); // Print a series of chars from the current cursor pos.
+void lcd_Clear(void); // Clear the whole lcd. 
 
-// PRIVATE METHODS.
-
-#endif	/* XC_HEADER_TEMPLATE_H */
-
+#endif

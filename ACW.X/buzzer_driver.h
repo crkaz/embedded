@@ -1,22 +1,20 @@
-// This is a guard condition so that contents of this file are not included
-// more than once.  
 #ifndef XC_BUZZER_H
 #define	XC_BUZZER_H
 
 // DRIVER DESCRIPTION:
+// Interface with the buzzer component.
 
 // INCLUDES.
 #include <xc.h> // include processor files - each processor file is guarded.  
 #include "utils.h"
 
-// DEFINES.
+// PRIVATE.
+// #define buz RE1 // Use pin RE1.                                      
+// #define buzOn() buz = 1 // Set RE1 high.
+// #define buzOff() buz = 0; // Set RE1 low.
 
-// PUBLIC VARS.
+// PUBLIC.
+void buzzer_init(void); // Initialise ports and pins.
+void buzzer_sound(int bT, int pT, uch reps); // Sound the buzzer for a duration of bT, reps times, with a pause of pT between each rep.
 
-// PUBLIC METHODS.
-void buzzer_init(void);
-void buzzer_sound(int bT, int pT, uch reps);
-
-// PRIVATE METHODS.
-
-#endif	/* XC_HEADER_TEMPLATE_H */
+#endif

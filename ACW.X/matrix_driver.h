@@ -13,10 +13,14 @@
 #include <xc.h> // include processor files - each processor file is guarded.  
 #include "utils.h"
 
-// PUBLIC METHODS.
-void matrix_Init(void); // Initialise component.
-char matrix_GetInput(void); // Get scan the 4x4 matrix for user interaction and return appropriate char.
+// PRIVATE.
+// uch result; // Stores key press location from matrix_Scan.
 
-// PRIVATE METHODS.
+// uch matrix_Scan(uch row); // Get key press location.
 
-#endif	/* XC_Matrix_H */
+
+// PUBLIC.
+void matrix_Init(void); // Initialise ports and pins.
+char matrix_GetInput(void); // Scan the 4x4 matrix for user interaction and return input.
+
+#endif
