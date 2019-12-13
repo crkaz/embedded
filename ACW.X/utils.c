@@ -68,20 +68,11 @@ float StrToFloat(char str[]) {
 uch IsLeapYear(int yr) {
     yr = yr + 2000;
 
-    if (yr % 4 == 0) {
-        if (yr % 100 == 0) {
-            if (yr % 400 == 0) {
-                return true;
-            } else {
-                return false;
-            }
-            return true;
-        }
+    if (((yr % 4 == 0) && (yr % 100 != 0)) || (yr % 400 == 0))
+        return true;
+    else
         return false;
     }
-
-    return false;
-}
 
 uch BcdToDec(char bcd) {
     //    Multiply most significant bit and add least significant.
