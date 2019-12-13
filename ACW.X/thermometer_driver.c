@@ -8,7 +8,7 @@
 int therm_ReadTemp(void); // Read the temperature from the thermistor and return as int.
 void therm_Reset(void); // Reset the component.
 void therm_WriteByte(uch val); // Write a command to the component.
-uch therm_ReadByte(); // Read from the component.
+uch therm_ReadByte(void); // Read from the component.
 
 uch TLV = 0; //temperature high byte                     
 uch THV = 0; //temperature low byte   

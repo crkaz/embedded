@@ -9,10 +9,10 @@ void matrix_Init() {
 }
 
 char matrix_GetInput() {
-    if (matrix_Scan(0XF7) == 0x00)
-        if (matrix_Scan(0XFB) == 0x00)
-            if (matrix_Scan(0XFD) == 0x00)
-                if (matrix_Scan(0XFE) == 0x00)
+    if (matrix_Scan(0XF7) == false)
+        if (matrix_Scan(0XFB) == false)
+            if (matrix_Scan(0XFD) == false)
+                if (matrix_Scan(0XFE) == false)
                     result = 0xFF;
 
     switch (result) {

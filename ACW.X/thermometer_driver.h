@@ -13,13 +13,13 @@
 // PUBLIC VARS.
 
 // PUBLIC METHODS.
-char* therm_GetTemp(void);
+char* therm_GetTemp(void); // Returns the temperature as a formatted string to 1 dp ("00.0C").
 
 // PRIVATE METHODS.
 //int therm_ReadTemp(void); // Read the temperature from the thermistor and return as int.
 //void therm_Reset(void); // Reset the component.
 //void therm_WriteByte(uch val); // Write a command to the component.
-//uch therm_ReadByte(); // Read from the component.
+//uch therm_ReadByte(void); // Read from the component.
 
 
 #endif	/* XC_Thermometer_H */
