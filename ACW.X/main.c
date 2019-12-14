@@ -70,8 +70,8 @@ void CheckTemperature() {
             io_TogglePin(1, "COOLING   ");
         } else {
             // Temperature is okay - manually set status string.
-            if (isDay)
-                io_Status = "OK (day)";
+            if (isDay)      
+                io_Status = "OK (day)  ";
             else
                 io_Status = "OK (night)";
             return;

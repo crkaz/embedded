@@ -35,8 +35,8 @@ uch StrLen(char a[]) {
 // Convert BCD (binary coded decimal) to string.
 
 char* BcdToStr(char bcd) {
-    int tens = ((bcd & 0xF0) >> 4) + toInt; // Get left half of char as int.
-    int ones = (bcd & 0x0F) + toInt; // Get right  half of char as int.
+    int tens = ((bcd & 0xF0) >> 4) + 48; // Get left half of char as int.
+    int ones = (bcd & 0x0F) + 48; // Get right  half of char as int.
     bcdToStr[0x00] = tens; 
     bcdToStr[0x01] = ones;
     bcdToStr[0x02] = eol; 
