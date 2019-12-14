@@ -53,22 +53,22 @@ void lcd_PrintString(char str[], uch lineN, uch pos) {
 void lcd_SetCursorPos(uch lineN, uch pos) {
     int addr;
     switch (lineN) {
-        case 0: addr = 0xC0 + pos;
+        case 0: addr = 0xC0 + pos; // Line 1.
             break;
-        case 1: addr = 0xD0 + pos;
+        case 1: addr = 0xD0 + pos; // Line 2.
             break;
-        case 2: addr = 0xC8 + pos;
+        case 2: addr = 0xC8 + pos; // Line 3.
             break;
-        case 3: addr = 0xD8 + pos;
+        case 3: addr = 0xD8 + pos; // Line 4.
             break;
     }
 
-    lcd_WriteCmd(addr);
+    lcd_WriteCmd(addr); // Set cursor position.
 }
 
 void lcd_Clear() {
-    lcd_WriteCmd(0x01);
-    Delay(50);
+    lcd_WriteCmd(0x01); // Clear cmd.
+    Delay(50); // Stop freeze.
 }
 
 //void lcd_CursorStatus(char i) {

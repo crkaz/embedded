@@ -4,16 +4,17 @@
 #define pin1 RB7 // Use pin RE2.
 
 void io_Init() {
-    // Default off.
+    // Set pins to off by default.
     io_Status = "Init...";
-    pin0 = 0x00;
-    pin1 = 0x00;
+    pin0 = 0x00; // Off.
+    pin1 = 0x00; // Off.
 }
 
 void io_TogglePin(uch pinN, char status[]) {
-    io_Status = status;
-    switch (pinN) {
-        case 0x00: pin0 = !pin0;
+    io_Status = status; // Update status string.
+    
+    switch (pinN) { // Toggle selected pin.
+        case 0x00: pin0 = !pin0; // boolean NOT to flip.
             break;
         case 0x01: pin1 = !pin1;
             break;
@@ -21,6 +22,6 @@ void io_TogglePin(uch pinN, char status[]) {
 }
 
 void io_SwitchOff() {
-    pin0 = 0x00;
-    pin1 = 0x00;
+    pin0 = 0x00; // Off.
+    pin1 = 0x00; // Off.
 }

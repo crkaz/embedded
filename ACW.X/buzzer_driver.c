@@ -18,11 +18,11 @@ void buzzer_sound(int bT, int pT, uch reps) {
     for (uch i = 0x00; i < reps; ++i) {
         buzOn();
         for (int j = 0; j < bT; ++j) {
-
+            // Sounding buzzer.
         }
-        buzOff();
+        buzOff(); // Stop buzzing.
         for (int j = 0; j < pT; ++j) {
-
+            // Pausing.
         }
     }
 }
