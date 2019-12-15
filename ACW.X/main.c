@@ -18,20 +18,19 @@
 #include "io_driver.h"
 #include "ui.h"
 
-
 uch dayStart[0x02]; // 6:30am
 uch dayEnd[0x02]; // 7:30pm
-//
 float lowerThreshold = 0.0; // Heating turns on.
 float upperThreshold = 0.0; // Cooling turns on.
 float lastTemp = 0.0; // Temperature in last iteration.
-uch alarmChecks = 0x00; // S
+uch alarmChecks = 0x00; // Disarm timer.
 const uch alarmValue = 0x2D; // (45) ~8 iterations per second
 uch tempCount = 0x00; // Counter until last temp is recorded (so it isn't updated continually).
 char isDay = true; // Day/night flag.
 char isTooHot = 0x00; // Hot/cold/ok flag.
 uch tempCheckInterval = 0x0A; // How often to record the temperature to monitor cooling/heating alarm.
 
+// Check the system temperature and interface with the IO driver as necessary.
 void CheckTemperature() {
     float temperature = StrToFloat(therm_GetTemp()); // Get the current temperature as a float.
 
@@ -84,6 +83,7 @@ void CheckTemperature() {
     }
 }
 
+// Determine whether it is day or night.
 void CheckTime() {
     // Force user into settings screen on first boot....
     char emptyVal = 0xFF; // Identifier for empty eeprom cell.
@@ -142,6 +142,7 @@ void CheckTime() {
     }
 }
 
+// Initialise and run the application.
 void main(void) {
     // Ready the application.
     rtc_Init();
