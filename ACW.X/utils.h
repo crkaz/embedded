@@ -29,7 +29,7 @@ char* BcdToStr(char); // Convert BCD (binary coded decimal) to string.
 char StrToBcd(char str[]); // Convert string to BCD (binary coded decimal).
 uch IsLeapYear(int yr); // Return whether n
 float StrToFloat(char str[]); // Convert a string with format ##.# to float representation.
-uch BcdToDec(char bcd);
+uch BcdToDec(char bcd); // Convert a BCD (binary coded decimal) to decimal.
 
 // PRIVATE METHODS.
 

@@ -9,7 +9,7 @@ void lcd_WriteCmd(char command); // Privatise.
 
 void lcd_Init() {
     psb = 1; // As parallel.
-    ADCON1 = 0X07; //a port as ordinary i/o.
+    ADCON1 = 0X07; //All pins in port a as digital i/o (not using ADC).
     TRISA = 0X00; //a port as output.
     TRISD = 0X00; //d port as output.
 
@@ -53,22 +53,22 @@ void lcd_PrintString(char str[], uch lineN, uch pos) {
 void lcd_SetCursorPos(uch lineN, uch pos) {
     int addr;
     switch (lineN) {
-        case 0: addr = 0xC0 + pos;
+        case 0: addr = 0xC0 + pos; // Line 1.
             break;
-        case 1: addr = 0xD0 + pos;
+        case 1: addr = 0xD0 + pos; // Line 2.
             break;
-        case 2: addr = 0xC8 + pos;
+        case 2: addr = 0xC8 + pos; // Line 3.
             break;
-        case 3: addr = 0xD8 + pos;
+        case 3: addr = 0xD8 + pos; // Line 4.
             break;
     }
 
-    lcd_WriteCmd(addr);
+    lcd_WriteCmd(addr); // Set cursor position.
 }
 
 void lcd_Clear() {
-    lcd_WriteCmd(0x01);
-    Delay(50);
+    lcd_WriteCmd(0x01); // Clear cmd.
+    Delay(50); // Stop freeze.
 }
 
 //void lcd_CursorStatus(char i) {

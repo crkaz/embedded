@@ -27,7 +27,7 @@ void DelayT(uch t[]) {
 
 uch StrLen(char a[]) {
     uch len = 0x00;
-    while (a[len])
+    while (a[len]) // Step through chars and iterate counter.
         len++;
     return len;
 }
@@ -35,11 +35,11 @@ uch StrLen(char a[]) {
 // Convert BCD (binary coded decimal) to string.
 
 char* BcdToStr(char bcd) {
-    int tens = ((bcd & 0xF0) >> 4) + 48;
-    int ones = (bcd & 0x0F) + 48;
-    bcdToStr[0x00] = tens;
+    int tens = ((bcd & 0xF0) >> 4) + 48; // Get left half of char as int.
+    int ones = (bcd & 0x0F) + 48; // Get right  half of char as int.
+    bcdToStr[0x00] = tens; 
     bcdToStr[0x01] = ones;
-    bcdToStr[0x02] = eol;
+    bcdToStr[0x02] = eol; 
 
     return bcdToStr;
 }
@@ -53,35 +53,24 @@ char StrToBcd(char str[]) {
     char b = str[0x01] + toInt;
     return a + b;
 }
-// Convert BCD (binary coded decimal) to decimal.
 
 float StrToFloat(char str[]) {
     float sum = 0.0;
-    sum += (str[0x00] + toInt) * 0x0A;
-    sum += (str[0x01] + toInt);
-    sum += (str[0x03] + toInt) * 0.1;
+    sum += (str[0x00] + toInt) * 0x0A; // Tens.
+    sum += (str[0x01] + toInt); // Units.
+    sum += (str[0x03] + toInt) * 0.1; // Decimal.
     return sum;
 }
 
-//https://docs.microsoft.com/en-us/office/troubleshoot/excel/determine-a-leap-year
-
+// https://www.tutorialspoint.com/learn_c_by_examples/leap_year_program_in_c.htm
 uch IsLeapYear(int yr) {
     yr = yr + 2000;
 
-    if (yr % 4 == 0) {
-        if (yr % 100 == 0) {
-            if (yr % 400 == 0) {
-                return true;
-            } else {
-                return false;
-            }
-            return true;
-        }
-        return false;
+    if (((yr % 4 == 0) && (yr % 100 != 0)) || (yr % 400 == 0))
+        return true; // Is leap year.
+    else
+        return false; // Is not leap year.
     }
-
-    return false;
-}
 
 uch BcdToDec(char bcd) {
     //    Multiply most significant bit and add least significant.

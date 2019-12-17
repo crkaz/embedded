@@ -1,4 +1,4 @@
-#include "thermometer_driver.h"
+    #include "thermometer_driver.h"
 
 #define dq RE0
 #define dq_dir TRISE0
@@ -8,7 +8,7 @@
 int therm_ReadTemp(void); // Read the temperature from the thermistor and return as int.
 void therm_Reset(void); // Reset the component.
 void therm_WriteByte(uch val); // Write a command to the component.
-uch therm_ReadByte(); // Read from the component.
+uch therm_ReadByte(void); // Read from the component.
 
 uch TLV = 0; //temperature high byte                     
 uch THV = 0; //temperature low byte   
@@ -60,7 +60,7 @@ uch therm_ReadByte() {
         NOP();
         NOP();
         j = dq;
-        if (j) value |= 0x80; // ????
+        if (j) value |= 0x80;
         DelayT(t63us);
     }
     return (value);
@@ -70,12 +70,13 @@ int therm_ReadTemp() {
     //The sequence has to be
     // followed by each transaction: 1 Initialisation -> 2 ROM Function Command -> 3Memory
     // Function Command -> 4 Transaction/Data
-    ADCON1 = 0X07; //a port all i/o
 
     set_dq_high();
     therm_Reset(); //reset,wait for  18b20 response.                                                                                                              
     therm_WriteByte(0XCC); //ignore ROM matching                                                                                                                            
-    therm_WriteByte(0X44); //send  temperature convert command                                                                                                              
+    therm_WriteByte(0X44); //send  temperature convert command        
+    
+    // Wait a while.
     DelayT(t503us);
     DelayT(t503us);
 
@@ -95,7 +96,6 @@ void therm_Reset(void) {
         DelayT(t503us);
         set_dq_high(); // release general line and wait for pull high
         DelayT(t70us);
-        //        presence = (dq == 1) ? 1 : 0; // Didn't receive response : Did Receive response.
 
         if (dq == 1)
             presence = 1; // Didn't receive response.
@@ -114,6 +114,7 @@ char* therm_GetTemp() {
     temperature[0x01] = TZ % 0x0A + 0x30; //integer Entries bit                                                                                                                            
     temperature[0x02] = '.';
 
+    // Calculate decimal component.
     if (TX & 0x80) {
         wd += 5000;
     }

@@ -1,7 +1,6 @@
 #include"matrix_driver.h"
 
-uch matrix_Scan(uch row);
-
+uch matrix_Scan(uch row); // Scan port C to detect the button pressed.
 uch result;
 
 void matrix_Init() {
@@ -9,11 +8,12 @@ void matrix_Init() {
 }
 
 char matrix_GetInput() {
-    if (matrix_Scan(0XF7) == 0x00)
-        if (matrix_Scan(0XFB) == 0x00)
-            if (matrix_Scan(0XFD) == 0x00)
-                if (matrix_Scan(0XFE) == 0x00)
-                    result = 0xFF;
+    // Scan each row of the matrix for input.
+    if (matrix_Scan(0XF7) == false)
+        if (matrix_Scan(0XFB) == false)
+            if (matrix_Scan(0XFD) == false)
+                if (matrix_Scan(0XFE) == false)
+                    result = 0xFF; // No input detected.
 
     switch (result) {
         case 0xe7: return 's'; // Select. //// Bottom right.
