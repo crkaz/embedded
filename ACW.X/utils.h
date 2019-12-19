@@ -27,7 +27,7 @@ void DelayT(uch t[]); // Delay a specific time given by a pre-calcuated, char ar
 uch StrLen(char*); // Get length of a string.
 char* BcdToStr(char); // Convert BCD (binary coded decimal) to string.
 char StrToBcd(char str[]); // Convert string to BCD (binary coded decimal).
-uch IsLeapYear(int yr); // Return whether n
+uch IsLeapYear(int yr); // Return whether the year is a leap year or not.
 float StrToFloat(char str[]); // Convert a string with format ##.# to float representation.
 uch BcdToDec(char bcd); // Convert a BCD (binary coded decimal) to decimal.
 
