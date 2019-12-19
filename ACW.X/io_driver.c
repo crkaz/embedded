@@ -1,7 +1,7 @@
 #include "io_driver.h"
 
-#define pin0 RB6 // Use pin RE0.                                      
-#define pin1 RB7 // Use pin RE2.
+#define pin0 RB6                                      
+#define pin1 RB7
 
 void io_Init() {
     // Set pins to off by default.

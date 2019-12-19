@@ -9,6 +9,8 @@
 #include "utils.h"
 
 // DEFINES.
+//#define pin0 RB6 // Use pin RB6.                                      
+//#define pin1 RB7 // Use pin RB7.
 
 // PUBLIC VARS.
 char *io_Status;
